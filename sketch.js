@@ -22,8 +22,11 @@ const config = {
     units: [
         {
             id: 2,
+            name: loc.unit('mercenary').name
         }
-    ]
+    ],
+    items: [ ],
+
 };
 
 // previous saved data
@@ -41,10 +44,18 @@ const data = {
             units: [],
             buildings: [
                 {
+                    id: 15,
                     buildingId: 4,
                     level: 3,
-                    position: 25,
-                    content: { unitsInCreation: [] }
+                    location: 25,
+                    content: { unitsInCreation: [] },
+                    updateProgress: 37,
+                },
+                {
+                    id: 8,
+                    buildingId: 6,
+                    location: 11,
+                    constructionProgress: 60
                 }
             ]
         }
