@@ -1,6 +1,5 @@
 // ----- Config -----
 
-// logical game structure.
 const config = {
   buildingsBuildParallel: 2,
   buildings: [
@@ -8,14 +7,19 @@ const config = {
       id: 4,
       texts: l10n.building("barracks"),
       gfx: gfx.building("barracks"),
-      requirements: [
-        { type: "playerLevel", level: 2 },
-        { type: "building", id: 13, level: 5 },
-      ],
-      price: [
-        { resourceId: 2, amount: 300 },
-        { resourceId: 1, amount: 100 },
-      ],
+      requirements: {
+        level1: [
+          { type: "playerLevel", level: 2 },
+          { type: "building", id: 13, level: 5 },
+        ],
+        level10: [{ type: "item", itemId: 29 }],
+      },
+      price: {
+        level1: [
+          { resourceId: 2, amount: 300 },
+          { resourceId: 1, amount: 100 },
+        ],
+      },
       effects: [
         {
           type: "create units",
@@ -43,6 +47,38 @@ const config = {
             level10: "*2",
           },
         },
+        {
+          type: "increase/capacity",
+          resourceId: 2,
+          amount: {
+            level1: 75,
+            level2: 150,
+            level3: 240,
+            level4: 360,
+            level10: 2400,
+          },
+        },
+      ],
+    },
+    {
+      id: 3,
+      texts: l10n.building("greenhouse"),
+      gfx: gfx.building("commandCenter"),
+      price: [
+        { resourceId: 1, amount: 720 },
+        { resourceId: 2, amount: 2000 },
+      ],
+      requirements: {
+        level1: [{ type: "not-building", id: 3 }],
+      },
+      effects: [
+        {
+          type: "sendTroops",
+          amount: {
+            level1: 1,
+            level2: 2,
+          },
+        },
       ],
     },
   ],
@@ -56,6 +92,9 @@ const config = {
         range: 20,
         shield: 100,
         capacity: 2000,
+        life: 200,
+        speed: 500,
+        maintenance: 200,
       },
       price: [
         { resourceId: 2, amount: 300 },
@@ -73,6 +112,7 @@ const config = {
       id: 0,
       texts: l10n.item("dove"),
       gfx: gfx.item("dove"),
+      category: 1,
       price: [{ resourceId: 0, amount: 300 }],
       effects: [
         {
@@ -85,6 +125,7 @@ const config = {
       id: 1,
       texts: l10n.item("resourcePack").config({ resourceId: 2, amount: 20 }),
       gfx: gfx.item("resourcePack").config({ resourceId: 2, amount: 20 }),
+      category: 3,
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
@@ -98,6 +139,7 @@ const config = {
       id: 2,
       texts: l10n.item("hammers"),
       gfx: gfx.item("hammers"),
+      category: 5,
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
@@ -110,6 +152,7 @@ const config = {
       id: 3,
       texts: l10n.item("buildingSpeedup").config({ time: "2h" }),
       gfx: gfx.item("buildingSpeedup").config({ time: "2h" }),
+      category: 8,
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
@@ -118,16 +161,28 @@ const config = {
         },
       ],
     },
+    {
+      id: 4,
+      texts: l10n.item("beginnerPackage"),
+      gfx: gfx.item("beginnerPackage"),
+      price: [{ resourceId: 0, amount: 250 }],
+      items: [
+        { itemId: 2, amount: 3 },
+        { itemId: 1, amount: 10 },
+        { itemId: 15, amount: 1 },
+      ],
+    },
   ],
 };
 
-// live data
 const data = {
   player: {
     name: "Bob",
     level: 4,
     avatarId: 6,
     groupId: 5397,
+    xp: 304737,
+    prestige: 73892,
   },
   towns: [
     {
