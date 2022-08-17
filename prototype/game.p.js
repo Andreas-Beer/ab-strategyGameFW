@@ -1,6 +1,4 @@
 function convertDurationIntoMs(duration) {
-  console.log("duration", duration);
-
   if (typeof duration === "number") {
     return duration;
   }
@@ -20,7 +18,7 @@ function convertDurationIntoMs(duration) {
   throw Error("unknown duration unit: " + duration);
 }
 
-// Ticket
+// START Ticket
 const timeoutQueue = [];
 const intervalQueue = [];
 
@@ -75,17 +73,22 @@ const ticker = {
   },
 };
 
+// END Ticket
+
 export default class Game {
   constructor({ config, data }) {
     if (!config) {
       throw Error("a new Game need to have a configuration");
     }
     this.config = config;
+    this.data = data;
 
     tick();
   }
 
-  createBuilding(buildingTypeId, buildingSlotId) {
+  createBuilding({ buildingTypeId, buildingSlotId, townId }) {
+    // ToDo: Validate Town and position
+
     const buildingConfig = this.config.buildings.find(
       (b) => b.id === buildingTypeId
     );
@@ -96,12 +99,23 @@ export default class Game {
 
     const { buildTime } = buildingConfig;
 
-    ticker.setTimeout(() => {
-      console.log("building created");
+    ticker.setTimeout((dur) => {
+      console.log("building created", buildTime, dur);
+
+      const town = this.data.towns.find((t) => (t.id = townId));
+      if (town) {
+        town.buildings.push({ id: "foo1", buildingTypeId });
+      } else {
+        this.data.towns.push({ buildings: [{ id: 0, buildingTypeId }] });
+      }
     }, buildTime);
 
     ticker.setInterval((dur) => {
-      console.log("building...", convertDurationIntoMs(buildTime) - dur);
+      const durMs = convertDurationIntoMs(buildTime);
+      const timeLeft = durMs - dur;
+      const percentage = Math.round((timeLeft / durMs) * 100 * 1000) / 1000;
+
+      // console.log("building...", percentage + "%");
     }, buildTime);
   }
 }

@@ -1,5 +1,5 @@
-import config from "./config.scheme";
-import data from "./data.scheme";
+import config from "./config.p";
+import data from "./data.p";
 
 // create a new game
 const game = new Game({ config, data }).on("error", onGameError);

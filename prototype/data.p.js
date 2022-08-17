@@ -9,6 +9,7 @@ const data = {
   },
   towns: [
     {
+      id: 1,
       name: "Funky Town",
       location: [1682, 2864],
       buildings: [
