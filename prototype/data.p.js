@@ -19,7 +19,7 @@ const data = {
           level: 3,
           location: 25,
           content: { unitsInCreation: [] },
-          updateProgress: 37,
+          constructionProgress: 37,
         },
         {
           id: 8,

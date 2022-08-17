@@ -1,81 +1,5 @@
 import Building from "./Entities/Building.js";
-
-function convertDurationIntoMs(duration) {
-  if (typeof duration === "number") {
-    return duration;
-  }
-
-  if (duration.endsWith("min")) {
-    return parseFloat(duration) * 60 * 1000;
-  }
-
-  if (duration.endsWith("s")) {
-    return parseFloat(duration) * 1000;
-  }
-
-  if (duration.endsWith("ms")) {
-    return parseFloat(duration);
-  }
-
-  throw Error("unknown duration unit: " + duration);
-}
-
-// START Ticket
-const timeoutQueue = [];
-const intervalQueue = [];
-
-const TICK_SPEED = 10;
-let lastTick = Date.now();
-let gameDuration = 0;
-
-function tick(now = Date.now()) {
-  const duration = now - lastTick;
-  gameDuration += duration;
-
-  for (const task of intervalQueue) {
-    // console.log("intervalQueue", gameDuration, task.duration, timeoutQueue);
-    task.callback(task.duration - gameDuration);
-    if (task.duration < gameDuration) {
-      intervalQueue.shift();
-    }
-  }
-
-  for (const task of timeoutQueue) {
-    if (task.duration > gameDuration) {
-      break;
-    }
-    // console.log("timeoutQueue", gameDuration);
-    task.callback();
-    timeoutQueue.shift();
-  }
-
-  lastTick = now;
-  setTimeout(() => tick(Date.now()), TICK_SPEED);
-}
-
-const ticker = {
-  setTimeout: function (callback, duration) {
-    if (!duration) {
-      throw Error("needs a duration!");
-    }
-
-    const relativeDuration = gameDuration + convertDurationIntoMs(duration);
-    timeoutQueue.push({ duration: relativeDuration, callback });
-    timeoutQueue.sort((a, b) => a.duration - b.duration);
-  },
-
-  setInterval: function (callback, duration) {
-    if (!duration) {
-      throw Error("needs a duration!");
-    }
-
-    const relativeDuration = gameDuration + convertDurationIntoMs(duration);
-    intervalQueue.push({ duration: relativeDuration, callback });
-    intervalQueue.sort((a, b) => a.duration - b.duration);
-  },
-};
-
-// END Ticket
+import { convertDurationIntoMs, ticker } from "./Modules/Ticker.js";
 
 export default class Game {
   constructor({ config, data }) {
@@ -85,7 +9,7 @@ export default class Game {
     this.config = config;
     this.data = data;
 
-    tick();
+    ticker.start();
   }
 
   createBuilding({ buildingTypeId, buildingSlotId, townId }) {
@@ -104,12 +28,12 @@ export default class Game {
     }
 
     const { buildTime } = buildingConfig;
+    const building = new Building({ typeId: buildingTypeId });
 
     ticker.setTimeout((dur) => {
       console.log("building created", buildTime, dur);
 
       const town = this.data.towns.find((t) => (t.id = townId));
-      const building = new Building({ typeId: buildingTypeId });
       if (town) {
         town.buildings.push(building);
       } else {
@@ -122,7 +46,11 @@ export default class Game {
       const timeLeft = durMs - dur;
       const percentage = Math.round((timeLeft / durMs) * 100 * 1000) / 1000;
 
-      console.log("building...", percentage + "%");
+      building.setConstructionProgress(percentage);
+
+      console.log("building...", percentage + "%", building);
     }, buildTime);
   }
+
+  on(eventName, eventHandler) {}
 }
