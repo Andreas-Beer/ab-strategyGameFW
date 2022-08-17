@@ -15,7 +15,7 @@ const data = {
       buildings: [
         {
           id: 15,
-          buildingId: 4,
+          buildingTypeId: 4,
           level: 3,
           location: 25,
           content: { unitsInCreation: [] },
@@ -23,7 +23,7 @@ const data = {
         },
         {
           id: 8,
-          buildingId: 6,
+          buildingTypeId: 6,
           location: 11, // Slot ID
           constructionProgress: 60,
         },

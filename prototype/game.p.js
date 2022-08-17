@@ -1,3 +1,5 @@
+import Building from "./Entities/Building.js";
+
 function convertDurationIntoMs(duration) {
   if (typeof duration === "number") {
     return duration;
@@ -87,7 +89,11 @@ export default class Game {
   }
 
   createBuilding({ buildingTypeId, buildingSlotId, townId }) {
-    // ToDo: Validate Town and position
+    // ToDo: Validate - Town ID
+    // ToDo: Validate - Building ID
+    // ToDo: Validate - Building parallel restrictions
+    // ToDo: Validate - Building Requirements
+    // ToDo: Validate - Building Price by resource capacity
 
     const buildingConfig = this.config.buildings.find(
       (b) => b.id === buildingTypeId
@@ -103,10 +109,11 @@ export default class Game {
       console.log("building created", buildTime, dur);
 
       const town = this.data.towns.find((t) => (t.id = townId));
+      const building = new Building({ typeId: buildingTypeId });
       if (town) {
-        town.buildings.push({ id: "foo1", buildingTypeId });
+        town.buildings.push(building);
       } else {
-        this.data.towns.push({ buildings: [{ id: 0, buildingTypeId }] });
+        this.data.towns.push({ buildings: [building] });
       }
     }, buildTime);
 
@@ -115,7 +122,7 @@ export default class Game {
       const timeLeft = durMs - dur;
       const percentage = Math.round((timeLeft / durMs) * 100 * 1000) / 1000;
 
-      // console.log("building...", percentage + "%");
+      console.log("building...", percentage + "%");
     }, buildTime);
   }
 }
