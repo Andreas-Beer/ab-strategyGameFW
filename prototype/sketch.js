@@ -3,8 +3,11 @@
 // import options;
 
 // create a new game
+const l10n = new L10n('de-DE');
+const gfx = new Gfx();
+const gameOptions = new GameOptions({ options })
 const gameData = new GameData({ data });
-const gameConfig = new GameConfig({ config, options });
+const gameConfig = new GameConfig({ config, l10n, gfx });
 
 const eventBus = new EventBus();
 const game = new Game({ gameConfig, gameData, eventBus });
