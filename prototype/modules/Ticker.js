@@ -22,13 +22,35 @@ function convertDurationIntoMs(duration) {
 const timeoutQueue = [];
 const intervalQueue = [];
 
-const TICK_SPEED = 10;
+const TICK_SPEED = 100;
 let lastTick = Date.now();
 let gameDuration = 0;
 
-function start(now = Date.now()) {
+let expected = Date.now() + TICK_SPEED;
+
+function start() {
+  const now = Date.now();
+  const drift = now - expected; // the drift (positive for overshooting)
+  expected += TICK_SPEED;
+
+  if (drift > TICK_SPEED) {
+    // something really bad happened. Maybe the browser (tab) was inactive?
+    // possibly special handling to avoid futile "catch up" run
+    console.warn("Ticker.js:39 - OH no !", { drift });
+  }
+
   const duration = now - lastTick;
   gameDuration += duration;
+  const nextTick = Math.max(0, TICK_SPEED - drift);
+
+  // console.log("tick", {
+  //   duration,
+  //   // expected,
+  //   // drift,
+  //   // TICK_SPEED,
+  //   // nextTick,
+  //   gameDuration,
+  // });
 
   for (const task of intervalQueue) {
     // console.log("intervalQueue", gameDuration, task.duration, timeoutQueue);
@@ -48,7 +70,7 @@ function start(now = Date.now()) {
   }
 
   lastTick = now;
-  setTimeout(() => start(Date.now()), TICK_SPEED);
+  setTimeout(start, nextTick);
 }
 
 const ticker = {

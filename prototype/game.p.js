@@ -48,7 +48,7 @@ export default class Game {
 
       building.setConstructionProgress(percentage);
 
-      console.log("building...", percentage + "%", building);
+      // console.log("building...", percentage + "%", building);
     }, buildTime);
   }
 }
