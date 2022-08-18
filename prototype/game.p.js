@@ -51,6 +51,4 @@ export default class Game {
       console.log("building...", percentage + "%", building);
     }, buildTime);
   }
-
-  on(eventName, eventHandler) {}
 }

@@ -1,29 +1,43 @@
-import config from "./config.p";
-import data from "./data.p";
+// import config;
+// import data;
 
 // create a new game
-const game = new Game({ config, data }).on("error", onGameError);
+const gameData = new GameConfig({ data });
+const gameConfig = new GameConfig({ config, data });
+
+const eventBus = new EventBus();
+const game = new Game({ gameConfig, gameData, eventBus });
+new Ui({ game, eventBus });
+new View({ game, eventBus });
+
+//
+//
+//
+//
+//
+// EXAMPLES
+//
+//
+//
+//
 
 // Example create a barracks building
-const buildingTypeId_01 = 4;
-const buildingSlotId_01 = 10;
-const unitBuilding_01 = game
-  .createBuilding(buildingTypeId_01, buildingSlotId_01)
-  .on("finish", onCreateBuildingFinished)
-  .on("progress", onCreateBuildingProgress);
+const unitBuilding_01 = game.createBuilding({
+  buildingTypeId: 4,
+  buildSlotId: 10,
+  townId: 1,
+});
 
 // Example create units
-const unitTypeId = 2;
-game
-  .createUnit(unitBuilding_01, unitTypeId, 30)
-  .on("unitProgress", () => onUnitProgress)
-  .on("unitFinish", () => onUnitFinished);
+game.createUnit({
+  buildingId: 20,
+  unitTypeId: 2,
+  amount: 30,
+});
 
 // Example create a resourceBuilding
-const buildingTypeId_02 = 4;
-const buildingSlotId_02 = 10;
-const resourceBuilding_01 = game
-  .createBuilding(buildingTypeId_02, buildingSlotId_02)
-  .on("finish", onCreateBuildingFinished)
-  .on("progress", onCreateBuildingProgress)
-  .on("cycle", onResourceBuildingCycling);
+const resourceBuilding_01 = game.createBuilding({
+  buildingTypeId: 4,
+  buildSlotId: 12,
+  townId: 1,
+});
