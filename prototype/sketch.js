@@ -1,14 +1,15 @@
 // import config;
 // import data;
+// import options;
 
 // create a new game
-const gameData = new GameConfig({ data });
-const gameConfig = new GameConfig({ config, data });
+const gameData = new GameData({ data });
+const gameConfig = new GameConfig({ config, options });
 
 const eventBus = new EventBus();
 const game = new Game({ gameConfig, gameData, eventBus });
-new Ui({ game, eventBus });
-new View({ game, eventBus });
+new Ui({ game, options, eventBus });
+new View({ game, options, eventBus });
 
 //
 //
