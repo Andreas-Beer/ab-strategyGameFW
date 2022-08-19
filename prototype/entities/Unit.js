@@ -1,10 +1,9 @@
-let id = 100;
+let id = 10000;
 
-export default class Building {
+export default class Unit {
   constructor({ typeId, level = 1 }) {
     this._id = id++;
     this._typeid = typeId;
-    this._level = level;
     this._constructionProgress = 0;
   }
 
@@ -14,9 +13,5 @@ export default class Building {
     }
 
     this._constructionProgress = Math.max(Math.min(value, 100), 0);
-  }
-
-  update() {
-    this._level++;
   }
 }

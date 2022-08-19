@@ -16,7 +16,7 @@ const config = {
           { resourceId: 1, amount: 100 },
         ],
       },
-      buildTime: "10s",
+      duration: { level1: "10s" },
       effects: [
         {
           type: "create units",
@@ -31,7 +31,7 @@ const config = {
     {
       id: 2,
       price: [{ resourceId: 1, amount: 100 }],
-      buildTime: "1min",
+      duration: "1min",
       effects: [
         {
           type: "increase/resource",
@@ -89,6 +89,7 @@ const config = {
         speed: 500,
         maintenance: 200,
       },
+      duration: "500ms",
       price: [
         { resourceId: 2, amount: 300 },
         { resourceId: 1, amount: 100 },
@@ -107,7 +108,7 @@ const config = {
       price: [{ resourceId: 0, amount: 300 }],
       effects: [
         {
-          type: "buff/peace",
+          type: "townBuff/peace",
           expire: "10t",
         },
       ],
@@ -130,7 +131,7 @@ const config = {
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
-          type: "buff/buildParallel",
+          type: "playerBuff/buildParallel",
           expire: "10t",
         },
       ],
@@ -138,13 +139,19 @@ const config = {
     {
       id: 3,
       category: 8,
+      useableInInventory: false,
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
-          type: "speedup",
+          type: "speedup/building",
           amount: "2h",
         },
       ],
+      chances: {
+        gambling: 1300,
+        battle: 1000,
+        scavenging: 1000,
+      },
     },
     {
       id: 4,

@@ -7,7 +7,7 @@ const game = new Game({ config, data });
 const buildingTypeId_01 = 4;
 const buildingSlotId_01 = 10;
 const townId_01 = 2;
-const unitBuilding_01 = game.createBuilding({
+game.createBuilding({
   buildingTypeId: buildingTypeId_01,
   buildingSlotId: buildingSlotId_01,
   townId: townId_01,

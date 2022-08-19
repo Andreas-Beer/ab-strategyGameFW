@@ -1,18 +1,20 @@
+let taskId = 0;
+
 function convertDurationIntoMs(duration) {
   if (typeof duration === "number") {
     return duration;
   }
 
-  if (duration.endsWith("min")) {
-    return parseFloat(duration) * 60 * 1000;
+  if (duration.endsWith("ms")) {
+    return parseFloat(duration);
   }
 
   if (duration.endsWith("s")) {
     return parseFloat(duration) * 1000;
   }
 
-  if (duration.endsWith("ms")) {
-    return parseFloat(duration);
+  if (duration.endsWith("min")) {
+    return parseFloat(duration) * 60 * 1000;
   }
 
   throw Error("unknown duration unit: " + duration);
@@ -20,7 +22,7 @@ function convertDurationIntoMs(duration) {
 
 // START Ticker
 const timeoutQueue = [];
-const intervalQueue = [];
+const processQueue = [];
 
 const TICK_SPEED = 100;
 let lastTick = Date.now();
@@ -43,20 +45,23 @@ function start() {
   gameDuration += duration;
   const nextTick = Math.max(0, TICK_SPEED - drift);
 
-  // console.log("tick", {
-  //   duration,
-  //   // expected,
-  //   // drift,
-  //   // TICK_SPEED,
-  //   // nextTick,
-  //   gameDuration,
-  // });
-
-  for (const task of intervalQueue) {
-    // console.log("intervalQueue", gameDuration, task.duration, timeoutQueue);
-    task.callback(task.duration - gameDuration);
+  for (const task of processQueue) {
+    // console.log(
+    //   "processQueue - Running ...",
+    //   gameDuration,
+    //   task.duration,
+    //   timeoutQueue
+    // );
+    task.options?.onProcess?.(task.duration - gameDuration);
     if (task.duration < gameDuration) {
-      intervalQueue.shift();
+      processQueue.shift();
+      task.options?.onFinish(task.duration - gameDuration);
+      // console.log(
+      //   "processQueue - Finish",
+      //   gameDuration,
+      //   task.duration,
+      //   timeoutQueue
+      // );
     }
   }
 
@@ -65,7 +70,7 @@ function start() {
       break;
     }
     // console.log("timeoutQueue", gameDuration);
-    task.callback();
+    task.options?.onFinish?.();
     timeoutQueue.shift();
   }
 
@@ -73,28 +78,42 @@ function start() {
   setTimeout(start, nextTick);
 }
 
+function createTask(duration, options) {
+  const relativeTaskDuration = gameDuration + convertDurationIntoMs(duration);
+  const newTask = { id: taskId++, duration: relativeTaskDuration, options };
+
+  return newTask;
+}
+
 const ticker = {
-  setTimeout: function (callback, duration) {
+  setTimeout: function (duration, options) {
     if (!duration) {
       throw Error("needs a duration!");
     }
 
-    const relativeDuration = gameDuration + convertDurationIntoMs(duration);
-    timeoutQueue.push({ duration: relativeDuration, callback });
+    const newTask = createTask(duration, options);
+    timeoutQueue.push(newTask);
     timeoutQueue.sort((a, b) => a.duration - b.duration);
+    return newTask.id;
   },
 
-  setInterval: function (callback, duration) {
+  setProcess: function (duration, options) {
     if (!duration) {
       throw Error("needs a duration!");
     }
 
-    const relativeDuration = gameDuration + convertDurationIntoMs(duration);
-    intervalQueue.push({ duration: relativeDuration, callback });
-    intervalQueue.sort((a, b) => a.duration - b.duration);
+    const newTask = createTask(duration, options);
+    processQueue.push(newTask);
+    processQueue.sort((a, b) => a.duration - b.duration);
+    return newTask.id;
   },
 
   start,
 };
 
-export { ticker, convertDurationIntoMs };
+const test = {
+  processQueue: processQueue,
+  timeoutQueue,
+};
+
+export { ticker, convertDurationIntoMs, test };
