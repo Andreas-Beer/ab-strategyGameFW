@@ -1,6 +1,6 @@
 import Building from "./Entities/Building.js";
 import Unit from "./Entities/Unit.js";
-import { convertDurationIntoMs, ticker, test } from "./Modules/Ticker.js";
+import { convertDurationIntoMs, ticker } from "./Modules/Ticker.js";
 
 function getTownById(data, townId) {
   const towns = data.towns;
@@ -56,18 +56,23 @@ export default class Game {
           this.data.towns.push({ id: townId, buildings: [building] });
         }
       },
-      onProcess: (dur) => {
-        const durMs = convertDurationIntoMs(duration);
-        const timeLeft = durMs - dur;
-        const percentage = Math.round((timeLeft / durMs) * 100 * 1000) / 1000;
+      onProcess: (timeLeft) => {
+        const completeDuration = convertDurationIntoMs(duration);
+        const processDuration = completeDuration - timeLeft;
+        const percentage =
+          Math.round((processDuration / completeDuration) * 100 * 1000) / 1000;
 
         building.setConstructionProgress(percentage);
 
-        console.log("building...", percentage + "%", building);
+        console.log("building...", percentage + "%", {
+          timeLeft,
+          processDuration,
+          completeDuration,
+        });
       },
     });
 
-    console.log({ processId, test });
+    console.log({ processId });
   }
 
   createUnit({ unitTypeId, creationBuildingId, townId, unitAmount = 1 } = {}) {
