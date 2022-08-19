@@ -2,15 +2,17 @@ import config from "./config.p.js";
 import data from "./data.p.js";
 import Game from "./game.p.js";
 
-const game = new Game({ config, data });
+import Config from "./Wrapper/Config.js";
+import Data from "./Wrapper/Data.js";
 
-const buildingTypeId_01 = 4;
-const buildingSlotId_01 = 10;
-const townId_01 = 1;
+const gameData = new Data(data);
+const gameConfig = new Config(config);
+const game = new Game({ config: gameConfig, data: gameData });
+
 game.createBuilding({
-  buildingTypeId: buildingTypeId_01,
-  buildingSlotId: buildingSlotId_01,
-  townId: townId_01,
+  buildingTypeId: 4,
+  buildingSlotId: 10,
+  townId: 1,
 });
 
 window.game = { game, config, data };

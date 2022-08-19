@@ -1,21 +1,6 @@
 import Building from "./Entities/Building.js";
 import Unit from "./Entities/Unit.js";
 import { convertDurationIntoMs, ticker } from "./Modules/Ticker.js";
-
-function getTownById(data, townId) {
-  const towns = data.towns;
-  const searchedTown = towns.find((t) => t.id === townId);
-  if (searchedTown) {
-    return searchedTown;
-  }
-  console.warn(
-    `a town with the id ${townId} does not exists. The townsIds are [${towns
-      .map((t) => t.id)
-      .join(", ")}]`
-  );
-  return null;
-}
-
 export default class Game {
   constructor({ config, data }) {
     if (!config) {
@@ -29,23 +14,15 @@ export default class Game {
   // ToDo: extract into a building creator Module
   createBuilding({ buildingTypeId, buildingSlotId, townId }) {
     // ToDo: Validate - Town ID
-    const town = getTownById(this.data, townId);
-    if (!town) {
-      throw new Error("town does not exist");
-    }
+    const town = this.data.getTownById(townId);
 
-    // ToDo: Validate - Building ID
+    // ToDo: Validate - BuildingType ID
+    const buildingConfig =
+      this.config.getBuildingConfigByTypeId(buildingTypeId);
+
     // ToDo: Validate - Building parallel restrictions
     // ToDo: Validate - Building Requirements
     // ToDo: Validate - Building Price by resource capacity
-
-    const buildingConfig = this.config.buildings.find(
-      (b) => b.id === buildingTypeId
-    );
-
-    if (!buildingConfig) {
-      throw Error(`building type id ${buildingTypeId} does not exists`);
-    }
 
     const duration = buildingConfig.duration.level1;
     const building = new Building({ typeId: buildingTypeId });
@@ -72,61 +49,61 @@ export default class Game {
   }
 
   // ToDo: extract into unit creator Module
-  createUnit({ unitTypeId, creationBuildingId, townId, unitAmount = 1 } = {}) {
-    // ToDo: Validate - Town ID
-    // ToDo: Validate - Creation-Building ID
-    // ToDo: Validate - Unit Slots available
-    // ToDo: Validate - Creation Price by resource capacity
+  // createUnit({ unitTypeId, creationBuildingId, townId, unitAmount = 1 } = {}) {
+  //   // ToDo: Validate - Town ID
+  //   // ToDo: Validate - Creation-Building ID
+  //   // ToDo: Validate - Unit Slots available
+  //   // ToDo: Validate - Creation Price by resource capacity
 
-    const town = getTownById(this.data, townId);
+  //   const town = this.gameData.getTownById(townId);
 
-    const unitConfig = this.config.units.find((u) => u.id === unitTypeId);
-    const building = town.buildings.find((b) => b._id === creationBuildingId);
+  //   const unitConfig = this.config.units.find((u) => u.id === unitTypeId);
+  //   const building = town.buildings.find((b) => b._id === creationBuildingId);
 
-    if (!building) {
-      throw Error(
-        `The creation building with the id ${creationBuildingId} does not exists. the buildings are ${JSON.stringify(
-          town.buildings,
-          null,
-          4
-        )}`
-      );
-    }
+  //   if (!building) {
+  //     throw Error(
+  //       `The creation building with the id ${creationBuildingId} does not exists. the buildings are ${JSON.stringify(
+  //         town.buildings,
+  //         null,
+  //         4
+  //       )}`
+  //     );
+  //   }
 
-    if (!unitConfig) {
-      throw Error(
-        `unit type id ${unitTypeId} does not exists out of [${this.config.units
-          .map((u) => u.id)
-          .join(", ")}]`
-      );
-    }
+  //   if (!unitConfig) {
+  //     throw Error(
+  //       `unit type id ${unitTypeId} does not exists out of [${this.config.units
+  //         .map((u) => u.id)
+  //         .join(", ")}]`
+  //     );
+  //   }
 
-    const duration = unitConfig.duration;
-    const unit = new Unit({ typeId: unitTypeId, config: unitConfig });
+  //   const duration = unitConfig.duration;
+  //   const unit = new Unit({ typeId: unitTypeId, config: unitConfig });
 
-    const processId = ticker.setProcess(duration, {
-      onProcess: (dur) => {
-        const durMs = convertDurationIntoMs(duration);
-        const timeLeft = durMs - dur;
-        const percentage = Math.round((timeLeft / durMs) * 100 * 1000) / 1000;
+  //   const processId = ticker.setProcess(duration, {
+  //     onProcess: (dur) => {
+  //       const durMs = convertDurationIntoMs(duration);
+  //       const timeLeft = durMs - dur;
+  //       const percentage = Math.round((timeLeft / durMs) * 100 * 1000) / 1000;
 
-        console.log(
-          "building.content.unitCreation",
-          building.content.unitCreation
-        );
-      },
-      onFinish: (dur) => {
-        console.log("unit created", duration, dur);
+  //       console.log(
+  //         "building.content.unitCreation",
+  //         building.content.unitCreation
+  //       );
+  //     },
+  //     onFinish: (dur) => {
+  //       console.log("unit created", duration, dur);
 
-        if (town.units[unitTypeId]) {
-          town.units[unitTypeId] += unitAmount;
-        } else {
-          town.units[unitTypeId] = unitAmount;
-        }
-      },
-    });
+  //       if (town.units[unitTypeId]) {
+  //         town.units[unitTypeId] += unitAmount;
+  //       } else {
+  //         town.units[unitTypeId] = unitAmount;
+  //       }
+  //     },
+  //   });
 
-    console.log("building.content.unitCreation", building.content.unitCreation);
-    building.content.unitCreation.push(Unit);
-  }
+  //   console.log("building.content.unitCreation", building.content.unitCreation);
+  //   building.content.unitCreation.push(Unit);
+  // }
 }
