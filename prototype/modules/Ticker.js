@@ -23,17 +23,16 @@ function convertDurationIntoMs(duration) {
 const timeoutQueue = [];
 const processQueue = [];
 
-const TICK_SPEED = 100;
+const TICK_DURATION = 30;
 let lastTick = Date.now();
 let gameDuration = 0;
-let expected = Date.now() + TICK_SPEED;
+let expected = Date.now() + TICK_DURATION;
 
 function checkTimeoutQueue(gameDuration) {
   for (const task of timeoutQueue) {
     if (task.duration > gameDuration) {
       break;
     }
-    // console.log("timeoutQueue", gameDuration);
     task.options?.onFinish?.();
     timeoutQueue.shift();
   }
@@ -41,22 +40,10 @@ function checkTimeoutQueue(gameDuration) {
 
 function checkProcessQueue(gameDuration) {
   for (const task of processQueue) {
-    // console.log(
-    //   "processQueue - Running ...",
-    //   gameDuration,
-    //   task.duration,
-    //   timeoutQueue
-    // );
     task.options?.onProcess?.(task.duration - gameDuration);
     if (task.duration <= gameDuration) {
       processQueue.shift();
-      task.options?.onFinish(task.duration - gameDuration);
-      // console.log(
-      //   "processQueue - Finish",
-      //   gameDuration,
-      //   task.duration,
-      //   timeoutQueue
-      // );
+      task.options?.onFinish?.(task.duration - gameDuration);
     }
   }
 }
@@ -65,17 +52,17 @@ function tick() {
   const now = Date.now();
   const duration = now - lastTick;
   const drift = now - expected; // the drift (positive for overshooting)
-  const nextTick = Math.max(0, TICK_SPEED - drift);
+  const nextTick = Math.max(0, TICK_DURATION - drift);
   lastTick = now;
 
-  if (drift > TICK_SPEED) {
+  if (drift > TICK_DURATION) {
     // something really bad happened. Maybe the browser (tab) was inactive?
     // possibly special handling to avoid futile "catch up" run
     console.warn("Ticker.js - drift too high! - OH no !", { drift: drift });
   }
 
   gameDuration += duration;
-  expected += TICK_SPEED;
+  expected += TICK_DURATION;
 
   checkProcessQueue(gameDuration);
   checkTimeoutQueue(gameDuration);

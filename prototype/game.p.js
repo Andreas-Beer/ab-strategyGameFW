@@ -26,9 +26,14 @@ export default class Game {
 
     ticker.start();
   }
-
+  // ToDo: extract into a building creator Module
   createBuilding({ buildingTypeId, buildingSlotId, townId }) {
     // ToDo: Validate - Town ID
+    const town = getTownById(this.data, townId);
+    if (!town) {
+      throw new Error("town does not exist");
+    }
+
     // ToDo: Validate - Building ID
     // ToDo: Validate - Building parallel restrictions
     // ToDo: Validate - Building Requirements
@@ -48,13 +53,7 @@ export default class Game {
     const processId = ticker.setProcess(duration, {
       onFinish: (dur) => {
         console.log("building created", duration, dur, building._id);
-
-        const town = this.data.towns.find((t) => t.id === townId);
-        if (town) {
-          town.buildings.push(building);
-        } else {
-          this.data.towns.push({ id: townId, buildings: [building] });
-        }
+        building.setConstructionProgress(100);
       },
       onProcess: (timeLeft) => {
         const completeDuration = convertDurationIntoMs(duration);
@@ -64,17 +63,15 @@ export default class Game {
 
         building.setConstructionProgress(percentage);
 
-        console.log("building...", percentage + "%", {
-          timeLeft,
-          processDuration,
-          completeDuration,
-        });
+        console.log("building...", percentage + "%", building);
       },
     });
 
+    town.buildings.push(building);
     console.log({ processId });
   }
 
+  // ToDo: extract into unit creator Module
   createUnit({ unitTypeId, creationBuildingId, townId, unitAmount = 1 } = {}) {
     // ToDo: Validate - Town ID
     // ToDo: Validate - Creation-Building ID
