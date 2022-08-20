@@ -5,6 +5,10 @@ function convertDurationIntoMs(duration) {
     return duration;
   }
 
+  if (typeof duration !== "string") {
+    throw Error("duration must be a string: " + duration);
+  }
+
   if (duration.endsWith("ms")) {
     return parseFloat(duration);
   }
@@ -67,7 +71,7 @@ function tick() {
 
   checkProcessQueue(gameDuration);
   checkTimeoutQueue(gameDuration);
-  setTimeout(tick, nextTick);
+  window.setTimeout(tick, nextTick);
 }
 
 function createTask(duration, options) {
@@ -77,8 +81,20 @@ function createTask(duration, options) {
   return newTask;
 }
 
-const ticker = {
-  setTimeout: function (duration, options) {
+export default class Ticker {
+  constructor() {
+    this.instance = null;
+    tick();
+  }
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new Ticker();
+    }
+    return this.instance;
+  }
+
+  setTimeout(duration, options) {
     if (!duration) {
       throw Error("needs a duration!");
     }
@@ -87,9 +103,9 @@ const ticker = {
     timeoutQueue.push(newTask);
     timeoutQueue.sort((a, b) => a.duration - b.duration);
     return newTask.id;
-  },
+  }
 
-  setProcess: function (duration, options) {
+  setProcess(duration, options) {
     if (!duration) {
       throw Error("needs a duration!");
     }
@@ -98,9 +114,7 @@ const ticker = {
     processQueue.push(newTask);
     processQueue.sort((a, b) => a.duration - b.duration);
     return newTask.id;
-  },
+  }
+}
 
-  start: tick,
-};
-
-export { ticker, convertDurationIntoMs, timeoutQueue, processQueue };
+export { convertDurationIntoMs, timeoutQueue, processQueue };

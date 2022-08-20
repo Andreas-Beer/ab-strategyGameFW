@@ -36,7 +36,7 @@ const config = {
         level1: [
           {
             type: "increase/resource",
-            repeat: "200ms",
+            repeat: "5s",
             resourceId: 2,
             amount: 200,
           },

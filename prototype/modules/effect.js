@@ -1,4 +1,4 @@
-import { ticker, processQueue } from "./Ticker.js";
+import Ticker from "./Ticker.js";
 
 class Effect {
   constructor(effect) {
@@ -6,27 +6,23 @@ class Effect {
   }
 }
 
-function invokeEffect(effect, data, townId, ticker2) {
-  console.log("effect.js - invokeEffect() - (before)", processQueue);
+function invokeEffect(effect, data, townId) {
   const { type, repeat, resourceId, amount } = effect;
   const town = data.getTownById(townId);
 
   if (type.indexOf("increase") !== -1 && type.indexOf("resource") !== -1) {
     if (repeat) {
       const onFinish = () => {
+        console.log("effect finish!");
         data.increaseValue(townId, "resources", resourceId, amount);
-        ticker.setProcess(repeat, {
+        Ticker.getInstance().setProcess(repeat, {
           onFinish,
-          onProcess: (time) => {
-            console.log("process", time);
-          },
         });
       };
       onFinish();
     } else {
       data.increaseValue(townId, "resources", resourceId, amount);
     }
-    console.log("effect.js - invokeEffect() - (after)", processQueue);
   }
 }
 
