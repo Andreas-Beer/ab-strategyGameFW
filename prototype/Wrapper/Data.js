@@ -14,4 +14,8 @@ export default class Data {
     }
     return searchedTown;
   }
+
+  increaseValue(townId, type, value, amount) {
+    this.getTownById(townId)[type][value] += amount;
+  }
 }

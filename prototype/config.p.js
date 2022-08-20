@@ -31,30 +31,17 @@ const config = {
     {
       id: 2,
       price: [{ resourceId: 1, amount: 100 }],
-      duration: "1min",
-      effects: [
-        {
-          type: "increase/resource",
-          repeat: "1h",
-          resourceId: 2,
-          amount: {
-            level1: 200,
-            level3: 600,
-            level10: "*2",
+      duration: { level1: "1s" },
+      effects: {
+        level1: [
+          {
+            type: "increase/resource",
+            repeat: "200ms",
+            resourceId: 2,
+            amount: 200,
           },
-        },
-        {
-          type: "increase/capacity",
-          resourceId: 2,
-          amount: {
-            level1: 75,
-            level2: 150,
-            level3: 240,
-            level4: 360,
-            level10: 2400,
-          },
-        },
-      ],
+        ],
+      },
     },
     {
       id: 3,
@@ -62,7 +49,7 @@ const config = {
         { resourceId: 1, amount: 720 },
         { resourceId: 2, amount: 2000 },
       ],
-      buildTime: "1min",
+      duration: { level1: "1min" },
       requirements: {
         level1: [{ type: "not-building", id: 3 }],
       },

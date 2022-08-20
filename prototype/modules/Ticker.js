@@ -23,7 +23,8 @@ function convertDurationIntoMs(duration) {
 const timeoutQueue = [];
 const processQueue = [];
 
-const TICK_DURATION = 30;
+const TICK_DURATION = 100;
+const TICK_DRIFT_THRESHOLD = 100;
 let lastTick = Date.now();
 let gameDuration = 0;
 let expected = Date.now() + TICK_DURATION;
@@ -55,7 +56,7 @@ function tick() {
   const nextTick = Math.max(0, TICK_DURATION - drift);
   lastTick = now;
 
-  if (drift > TICK_DURATION) {
+  if (drift > TICK_DURATION && drift - TICK_DURATION > TICK_DRIFT_THRESHOLD) {
     // something really bad happened. Maybe the browser (tab) was inactive?
     // possibly special handling to avoid futile "catch up" run
     console.warn("Ticker.js - drift too high! - OH no !", { drift: drift });
@@ -102,4 +103,4 @@ const ticker = {
   start: tick,
 };
 
-export { ticker, convertDurationIntoMs };
+export { ticker, convertDurationIntoMs, timeoutQueue, processQueue };

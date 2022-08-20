@@ -10,7 +10,7 @@ const gameConfig = new Config(config);
 const game = new Game({ config: gameConfig, data: gameData });
 
 game.createBuilding({
-  buildingTypeId: 4,
+  buildingTypeId: 2,
   buildingSlotId: 10,
   townId: 1,
 });

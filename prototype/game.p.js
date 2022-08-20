@@ -1,6 +1,12 @@
 import Building from "./Entities/Building.js";
 import Unit from "./Entities/Unit.js";
-import { convertDurationIntoMs, ticker } from "./Modules/Ticker.js";
+import { invokeEffect } from "./modules/effect.js";
+import {
+  convertDurationIntoMs,
+  ticker,
+  processQueue,
+} from "./Modules/Ticker.js";
+
 export default class Game {
   constructor({ config, data }) {
     if (!config) {
@@ -13,10 +19,10 @@ export default class Game {
   }
   // ToDo: extract into a building creator Module
   createBuilding({ buildingTypeId, buildingSlotId, townId }) {
-    // ToDo: Validate - Town ID
+    // Validate - Town ID
     const town = this.data.getTownById(townId);
 
-    // ToDo: Validate - BuildingType ID
+    // Validate - BuildingType ID
     const buildingConfig =
       this.config.getBuildingConfigByTypeId(buildingTypeId);
 
@@ -29,8 +35,16 @@ export default class Game {
 
     const processId = ticker.setProcess(duration, {
       onFinish: (dur) => {
-        console.log("building created", duration, dur, building._id);
         building.setConstructionProgress(100);
+
+        const buildingEffects = buildingConfig.effects.level1;
+
+        console.log("building created", duration);
+
+        for (const effect of buildingEffects) {
+          invokeEffect(effect, this.data, townId, ticker);
+          console.log("game.js - (after)", processQueue);
+        }
       },
       onProcess: (timeLeft) => {
         const completeDuration = convertDurationIntoMs(duration);
@@ -41,6 +55,12 @@ export default class Game {
         building.setConstructionProgress(percentage);
 
         console.log("building...", percentage + "%", building);
+      },
+    });
+
+    ticker.setTimeout("20s", {
+      onFinish: () => {
+        console.log("timeout finished");
       },
     });
 
