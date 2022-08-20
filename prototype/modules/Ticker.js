@@ -81,17 +81,22 @@ function createTask(duration, options) {
   return newTask;
 }
 
+let instance = null;
+
 export default class Ticker {
   constructor() {
-    this.instance = null;
+    if (instance) {
+      throw Error("only one Ticker allowed!");
+    }
+
     tick();
   }
 
   static getInstance() {
-    if (!this.instance) {
-      this.instance = new Ticker();
+    if (!instance) {
+      instance = new Ticker();
     }
-    return this.instance;
+    return instance;
   }
 
   setTimeout(duration, options) {

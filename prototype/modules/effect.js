@@ -1,27 +1,28 @@
 import Ticker from "./Ticker.js";
 
-class Effect {
-  constructor(effect) {
-    this.effect = effect;
-  }
+function parseEffect(effect) {
+  const [action, category] = effect.type.split("/");
+  return { action, category, ...effect };
 }
 
 function invokeEffect(effect, data, townId) {
-  const { type, repeat, resourceId, amount } = effect;
   const town = data.getTownById(townId);
+  const parsedEffect = parseEffect(effect);
+  const { action, category, repeat, resourceId, amount } = parsedEffect;
 
-  if (type.indexOf("increase") !== -1 && type.indexOf("resource") !== -1) {
+  if (action === "increase") {
     if (repeat) {
       const onFinish = () => {
-        console.log("effect finish!");
-        data.increaseValue(townId, "resources", resourceId, amount);
         Ticker.getInstance().setProcess(repeat, {
           onFinish,
         });
+        data.increaseValue(townId, category, resourceId, amount);
+        console.log("effect invoked repeat", parsedEffect, town);
       };
       onFinish();
     } else {
-      data.increaseValue(townId, "resources", resourceId, amount);
+      data.increaseValue(townId, category, resourceId, amount);
+      console.log("effect invoked", parsedEffect, town);
     }
   }
 }

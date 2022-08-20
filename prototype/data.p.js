@@ -45,11 +45,8 @@ const data = {
         6: 100,
         20: 12,
       },
-      resources: {
-        0: 0,
-        1: 0,
-        2: 0,
-      },
+      resource: {},
+      capacity: {},
     },
   ],
 };

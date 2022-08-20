@@ -40,6 +40,15 @@ const config = {
             resourceId: 2,
             amount: 200,
           },
+          {
+            type: "increase/xp",
+            amount: 500,
+          },
+          {
+            type: "increase/capacity",
+            resourceId: 2,
+            amount: 2000,
+          },
         ],
       },
     },

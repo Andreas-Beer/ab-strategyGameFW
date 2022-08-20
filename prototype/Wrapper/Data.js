@@ -16,6 +16,21 @@ export default class Data {
   }
 
   increaseValue(townId, type, value, amount) {
-    this.getTownById(townId)[type][value] += amount;
+    const town = this.getTownById(townId);
+
+    if (!value) {
+      town[type] = town[type] ? town[type] + amount : amount;
+      return;
+    }
+
+    if (!town[type]) {
+      town[type] = {};
+    }
+
+    if (!town[type][value]) {
+      town[type][value] = amount;
+    } else {
+      town[type][value] += amount;
+    }
   }
 }
