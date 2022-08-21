@@ -16,7 +16,7 @@ const config = {
           { resourceId: 1, amount: 100 },
         ],
       },
-      duration: { level1: "10s" },
+      duration: { level1: "10s", level2: "20s" },
       effects: [
         {
           type: "create units",
@@ -35,19 +35,19 @@ const config = {
       effects: {
         level1: [
           {
-            type: "increase/resource",
+            type: "modify/resource",
             repeat: "5s",
             resourceId: 2,
-            amount: 200,
+            amount: +200,
           },
           {
-            type: "increase/xp",
-            amount: 500,
-          },
-          {
-            type: "increase/capacity",
+            type: "modify/capacity",
             resourceId: 2,
-            amount: 2000,
+            amount: +2000,
+          },
+          {
+            type: "modify/xp",
+            amount: +500,
           },
         ],
       },
@@ -156,6 +156,19 @@ const config = {
         { itemId: 2, amount: 3 },
         { itemId: 1, amount: 10 },
         { itemId: 15, amount: 1 },
+      ],
+    },
+    {
+      id: 5,
+      category: 5,
+      price: [{ resourceId: 0, amount: 10 }],
+      effects: [
+        {
+          type: "townBuff/resource",
+          resourceId: 2,
+          amount: "+40%",
+          expire: "10t",
+        },
       ],
     },
   ],

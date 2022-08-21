@@ -15,7 +15,7 @@ export default class Data {
     return searchedTown;
   }
 
-  increaseValue(townId, type, value, amount) {
+  modifyValue(townId, type, value, amount) {
     const town = this.getTownById(townId);
 
     if (!value) {

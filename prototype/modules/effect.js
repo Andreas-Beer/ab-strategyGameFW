@@ -10,18 +10,18 @@ function invokeEffect(effect, data, townId) {
   const parsedEffect = parseEffect(effect);
   const { action, category, repeat, resourceId, amount } = parsedEffect;
 
-  if (action === "increase") {
+  if (action === "modify") {
     if (repeat) {
       const onFinish = () => {
         Ticker.getInstance().setProcess(repeat, {
           onFinish,
         });
-        data.increaseValue(townId, category, resourceId, amount);
+        data.modifyValue(townId, category, resourceId, amount);
         console.log("effect invoked repeat", parsedEffect, town);
       };
       onFinish();
     } else {
-      data.increaseValue(townId, category, resourceId, amount);
+      data.modifyValue(townId, category, resourceId, amount);
       console.log("effect invoked", parsedEffect, town);
     }
   }

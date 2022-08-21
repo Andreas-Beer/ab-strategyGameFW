@@ -64,6 +64,7 @@ function tick() {
     // something really bad happened. Maybe the browser (tab) was inactive?
     // possibly special handling to avoid futile "catch up" run
     console.warn("Ticker.js - drift too high! - OH no !", { drift: drift });
+    return;
   }
 
   gameDuration += duration;
