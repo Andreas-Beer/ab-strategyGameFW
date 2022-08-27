@@ -24,6 +24,14 @@ function convertDurationIntoMs(duration) {
     return parseFloat(duration) * 60 * 1000;
   }
 
+  if (duration.endsWith("h")) {
+    return parseFloat(duration) * 60 * 60 * 1000;
+  }
+
+  if (duration.endsWith("w")) {
+    return parseFloat(duration) * 7 * 60 * 60 * 1000;
+  }
+
   throw Error("unknown duration unit: " + duration);
 }
 
@@ -35,11 +43,25 @@ let lastTick = Date.now();
 let gameDuration = 0;
 let expected = Date.now() + TICK_DURATION;
 
-function checkProcessQueue(gameDuration) {
-  for (const task of processQueue) {
+/**
+ *
+ * @param {Array} queue
+ * @param {number} gameDuration
+ */
+function checkQueue(queue, gameDuration) {
+  console.log(
+    queue.map((e) => e.duration),
+    gameDuration
+  );
+
+  for (let i = 0; i < queue.length; i++) {
+    const task = queue[i];
     task.options?.onProcess?.(task.duration - gameDuration);
+
     if (task.duration <= gameDuration) {
-      processQueue.shift();
+      queue.shift();
+      console.log("task finish", i, queue);
+      i--;
       task.options?.onFinish?.(task.duration - gameDuration);
     }
   }
@@ -62,7 +84,7 @@ function tick() {
   gameDuration += duration;
   expected += TICK_DURATION;
 
-  checkProcessQueue(gameDuration);
+  checkQueue(processQueue, gameDuration);
   setTimeout(tick, nextTick);
 }
 

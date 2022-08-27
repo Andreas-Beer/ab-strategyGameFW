@@ -15,4 +15,10 @@ game.createBuilding({
   townId: 1,
 });
 
+game.createBuilding({
+  buildingTypeId: 3,
+  buildingSlotId: 10,
+  townId: 1,
+});
+
 global.game = { game, config, data };

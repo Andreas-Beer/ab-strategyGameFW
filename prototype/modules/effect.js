@@ -20,12 +20,12 @@ function invokeEffect(effect, data, townId) {
           onFinish,
         });
         data.modifyValue(townId, category, resourceId, amount);
-        logger.log("effect invoked repeat");
+        logger.log("effect invoked repeat", action, amount);
       };
       onFinish();
     } else {
       data.modifyValue(townId, category, resourceId, amount);
-      logger.log("effect invoked");
+      logger.log("effect invoked", action, amount);
     }
   }
 }

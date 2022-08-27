@@ -40,7 +40,7 @@ export default class Game {
         }
 
         for (const effect of buildingEffects) {
-          invokeEffect(effect, this.data, townId);
+          // invokeEffect(effect, this.data, townId);
         }
       },
       onProcess: (timeLeft) => {
@@ -51,7 +51,7 @@ export default class Game {
 
         building.setConstructionProgress(percentage);
 
-        console.log("building...", percentage + "%", building);
+        console.log("building...", percentage + "%");
       },
     });
 
