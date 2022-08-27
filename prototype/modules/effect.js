@@ -1,4 +1,7 @@
+import Logger from "./Logger.js";
 import Ticker from "./Ticker.js";
+
+const logger = new Logger();
 
 function parseEffect(effect) {
   const [action, category] = effect.type.split("/");
@@ -17,12 +20,12 @@ function invokeEffect(effect, data, townId) {
           onFinish,
         });
         data.modifyValue(townId, category, resourceId, amount);
-        console.log("effect invoked repeat", parsedEffect, town);
+        logger.log("effect invoked repeat");
       };
       onFinish();
     } else {
       data.modifyValue(townId, category, resourceId, amount);
-      console.log("effect invoked", parsedEffect, town);
+      logger.log("effect invoked");
     }
   }
 }

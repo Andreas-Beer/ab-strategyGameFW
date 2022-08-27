@@ -1,4 +1,7 @@
+import Logger from "./Logger.js";
+
 let taskId = 0;
+const logger = new Logger();
 
 function convertDurationIntoMs(duration) {
   if (typeof duration === "number") {
@@ -24,7 +27,6 @@ function convertDurationIntoMs(duration) {
   throw Error("unknown duration unit: " + duration);
 }
 
-const timeoutQueue = [];
 const processQueue = [];
 
 const TICK_DURATION = 100;
@@ -32,16 +34,6 @@ const TICK_DRIFT_THRESHOLD = 100;
 let lastTick = Date.now();
 let gameDuration = 0;
 let expected = Date.now() + TICK_DURATION;
-
-function checkTimeoutQueue(gameDuration) {
-  for (const task of timeoutQueue) {
-    if (task.duration > gameDuration) {
-      break;
-    }
-    task.options?.onFinish?.();
-    timeoutQueue.shift();
-  }
-}
 
 function checkProcessQueue(gameDuration) {
   for (const task of processQueue) {
@@ -63,7 +55,7 @@ function tick() {
   if (drift > TICK_DURATION && drift - TICK_DURATION > TICK_DRIFT_THRESHOLD) {
     // something really bad happened. Maybe the browser (tab) was inactive?
     // possibly special handling to avoid futile "catch up" run
-    console.warn("Ticker.js - drift too high! - OH no !", { drift: drift });
+    logger.log("Ticker.js - drift too high! - OH no !", { drift: drift });
     return;
   }
 
@@ -71,8 +63,7 @@ function tick() {
   expected += TICK_DURATION;
 
   checkProcessQueue(gameDuration);
-  checkTimeoutQueue(gameDuration);
-  window.setTimeout(tick, nextTick);
+  setTimeout(tick, nextTick);
 }
 
 function createTask(duration, options) {
@@ -100,17 +91,6 @@ export default class Ticker {
     return instance;
   }
 
-  setTimeout(duration, options) {
-    if (!duration) {
-      throw Error("needs a duration!");
-    }
-
-    const newTask = createTask(duration, options);
-    timeoutQueue.push(newTask);
-    timeoutQueue.sort((a, b) => a.duration - b.duration);
-    return newTask.id;
-  }
-
   setProcess(duration, options) {
     if (!duration) {
       throw Error("needs a duration!");
@@ -123,4 +103,4 @@ export default class Ticker {
   }
 }
 
-export { convertDurationIntoMs, timeoutQueue, processQueue };
+export { convertDurationIntoMs };

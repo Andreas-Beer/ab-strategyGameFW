@@ -1,0 +1,24 @@
+{
+  "name": "ab-strategyGameFW",
+  "version": "1.0.0",
+  "description": "",
+  "main": "prototype/main.p.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andreas-Beer/ab-strategyGameFW.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Andreas-Beer/ab-strategyGameFW/issues"
+  },
+  "homepage": "https://github.com/Andreas-Beer/ab-strategyGameFW#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}

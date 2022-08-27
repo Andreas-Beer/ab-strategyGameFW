@@ -15,4 +15,4 @@ game.createBuilding({
   townId: 1,
 });
 
-window.game = { game, config, data };
+global.game = { game, config, data };
