@@ -14,28 +14,28 @@ const data = {
     {
       id: 1,
       name: "Funky Town",
-      location: [1682, 2864],
+      location: { cords: [1682, 2864] },
       buildings: [
         {
           id: 15,
           buildingTypeId: 4,
           level: 3,
-          location: 25,
+          location: { slotId: 25 },
           content: { unitsInCreation: [] },
           constructionProgress: 37,
         },
         {
           id: 8,
           buildingTypeId: 6,
-          location: 11, // Slot ID
+          location: { slotId: 11 },
           constructionProgress: 60,
         },
       ],
       effects: [
         {
-          type: "buff/resource",
+          type: "buff/resource/2",
+          repeat: "5h",
           expire: "3t",
-          resourceId: 2,
           amount: "*2.4",
         },
         {
