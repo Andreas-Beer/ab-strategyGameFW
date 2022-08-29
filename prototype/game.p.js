@@ -40,7 +40,7 @@ export default class Game {
         }
 
         for (const effect of buildingEffects) {
-          // invokeEffect(effect, this.data, townId);
+          invokeEffect(effect, this.data, townId);
         }
       },
       onProcess: (timeLeft) => {
