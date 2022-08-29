@@ -9,6 +9,10 @@ const data = {
     xp: 304737,
     prestige: 73892,
     effects: [],
+    resources: {
+      0: 20,
+      1: 100,
+    },
   },
   towns: [
     {
@@ -49,7 +53,9 @@ const data = {
         6: 100,
         20: 12,
       },
-      resource: {},
+      resource: {
+        1: 20,
+      },
       capacity: {},
     },
   ],

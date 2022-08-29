@@ -4,11 +4,10 @@ import { invokeEffect } from "./modules/effect.js";
 import Ticker, { convertDurationIntoMs } from "./modules/Ticker.js";
 
 export default class Game {
-  constructor({ config, data }) {
-    if (!config) {
-      throw Error("a new Game need to have a configuration defined");
+  constructor({ data }) {
+    if (!data) {
+      throw Error("a new Game need to have a data defined");
     }
-    this.config = config;
     this.data = data;
   }
   // ToDo: extract into a building creator Module
@@ -17,8 +16,7 @@ export default class Game {
     const town = this.data.getTownById(townId);
 
     // Validate - BuildingType ID
-    const buildingConfig =
-      this.config.getBuildingConfigByTypeId(buildingTypeId);
+    const buildingConfig = this.data.getBuildingConfigByTypeId(buildingTypeId);
 
     // ToDo: Validate - Building parallel restrictions
     // ToDo: Validate - Building Requirements
@@ -60,6 +58,10 @@ export default class Game {
     console.log({ processId });
   }
 
+  buyItem(itemId) {
+    this.data.buyItem(itemId);
+  }
+
   // ToDo: extract into unit creator Module
   // createUnit({ unitTypeId, creationBuildingId, townId, unitAmount = 1 } = {}) {
   //   // ToDo: Validate - Town ID
@@ -69,7 +71,7 @@ export default class Game {
 
   //   const town = this.gameData.getTownById(townId);
 
-  //   const unitConfig = this.config.units.find((u) => u.id === unitTypeId);
+  //   const unitConfig = this.data.units.find((u) => u.id === unitTypeId);
   //   const building = town.buildings.find((b) => b._id === creationBuildingId);
 
   //   if (!building) {
@@ -84,7 +86,7 @@ export default class Game {
 
   //   if (!unitConfig) {
   //     throw Error(
-  //       `unit type id ${unitTypeId} does not exists out of [${this.config.units
+  //       `unit type id ${unitTypeId} does not exists out of [${this.data.units
   //         .map((u) => u.id)
   //         .join(", ")}]`
   //     );

@@ -104,7 +104,10 @@ const config = {
     {
       id: 1,
       category: 3,
-      price: [{ resourceId: 0, amount: 10 }],
+      price: [
+        { resourceId: 0, amount: 10 },
+        { resourceId: 1, amount: 30 },
+      ],
       effects: [
         {
           type: "increase/resource",
