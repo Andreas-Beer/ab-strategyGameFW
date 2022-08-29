@@ -4,14 +4,13 @@ import { invokeEffect } from "./modules/effect.js";
 import Ticker, { convertDurationIntoMs } from "./modules/Ticker.js";
 
 export default class Game {
-  constructor({ config, data, userId }) {
+  constructor({ config, data }) {
     if (!config) {
       throw Error("a new Game need to have a configuration defined");
     }
     if (!userId) {
       throw Error("a new Game need to have an userID defined");
     }
-    this.userId = userId;
     this.config = config;
     this.data = data;
   }

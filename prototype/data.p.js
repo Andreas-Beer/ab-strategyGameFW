@@ -1,11 +1,14 @@
 const data = {
   player: {
+    id: 1234,
+    email: "bob@me.net",
     name: "Bob",
     level: 4,
     avatarId: 6,
     groupId: 5397,
     xp: 304737,
     prestige: 73892,
+    effects: [],
   },
   towns: [
     {

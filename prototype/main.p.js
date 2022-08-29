@@ -7,7 +7,7 @@ import Data from "./Wrapper/Data.js";
 
 const gameData = new Data(data);
 const gameConfig = new Config(config);
-const game = new Game({ config: gameConfig, data: gameData, userId: 123 });
+const game = new Game({ config: gameConfig, data: gameData });
 
 game.createBuilding({
   buildingTypeId: 2,

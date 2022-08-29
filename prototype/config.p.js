@@ -36,8 +36,8 @@ const config = {
         level1: [
           {
             type: "modify/resource/2",
-            repeat: "5s",
             amount: +200,
+            repeat: "5s",
           },
           {
             type: "modify/capacity/2",
