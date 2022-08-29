@@ -35,14 +35,12 @@ const config = {
       effects: {
         level1: [
           {
-            type: "modify/resource",
+            type: "modify/resource/2",
             repeat: "5s",
-            resourceId: 2,
             amount: +200,
           },
           {
-            type: "modify/capacity",
-            resourceId: 2,
+            type: "modify/capacity/2",
             amount: +2000,
           },
           {

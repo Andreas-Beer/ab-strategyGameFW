@@ -49,18 +49,11 @@ let expected = Date.now() + TICK_DURATION;
  * @param {number} gameDuration
  */
 function checkQueue(queue, gameDuration) {
-  console.log(
-    queue.map((e) => e.duration),
-    gameDuration
-  );
-
   for (let i = 0; i < queue.length; i++) {
     const task = queue[i];
     task.options?.onProcess?.(task.duration - gameDuration);
-
     if (task.duration <= gameDuration) {
       queue.shift();
-      console.log("task finish", i, queue);
       i--;
       task.options?.onFinish?.(task.duration - gameDuration);
     }

@@ -4,10 +4,14 @@ import { invokeEffect } from "./modules/effect.js";
 import Ticker, { convertDurationIntoMs } from "./modules/Ticker.js";
 
 export default class Game {
-  constructor({ config, data }) {
+  constructor({ config, data, userId }) {
     if (!config) {
-      throw Error("a new Game need to have a configuration");
+      throw Error("a new Game need to have a configuration defined");
     }
+    if (!userId) {
+      throw Error("a new Game need to have an userID defined");
+    }
+    this.userId = userId;
     this.config = config;
     this.data = data;
   }
@@ -40,7 +44,7 @@ export default class Game {
         }
 
         for (const effect of buildingEffects) {
-          invokeEffect(effect, this.data, townId);
+          invokeEffect(effect, this.data, townId, this.userID);
         }
       },
       onProcess: (timeLeft) => {
