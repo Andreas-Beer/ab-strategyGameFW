@@ -17,17 +17,15 @@ const config = {
         ],
       },
       duration: { level1: "10s", level2: "20s" },
-      effects: [
-        {
-          type: "ability/create-units",
-          unitsTypes: "all",
-          slots: {
-            level1: 2,
-            level2: "+4",
-            level3: "+6",
-          },
+      abilities: [{ type: "create/units", kinds: "all" }],
+      view: {
+        name: "#Barrack",
+        slots: {
+          level1: 2,
+          level2: "+4",
+          level3: "+6",
         },
-      ],
+      },
     },
     {
       id: 2,
@@ -61,15 +59,10 @@ const config = {
       requirements: {
         level1: [{ type: "not-building", id: 3 }],
       },
-      effects: [
-        {
-          type: "#CommandCenter",
-          amount: {
-            level1: 1,
-            level2: 2,
-          },
-        },
-      ],
+      abilities: [{ type: "send/units", kinds: "all" }],
+      view: {
+        name: "#CommandCenter",
+      },
     },
   ],
   units: [
