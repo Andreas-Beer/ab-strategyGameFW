@@ -1,6 +1,6 @@
-import config from "./config.p.js";
-import data from "./data.p.js";
-import Game from "./game.p.js";
+import config from "./config.js";
+import data from "./data.js";
+import Game from "./game.js";
 
 import Config from "./Wrapper/Config.js";
 import Data from "./Wrapper/Data.js";

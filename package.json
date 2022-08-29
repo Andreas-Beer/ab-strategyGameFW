@@ -2,7 +2,7 @@
   "name": "ab-strategyGameFW",
   "version": "1.0.0",
   "description": "",
-  "main": "prototype/main.p.js",
+  "main": "prototype/main.js",
   "type": "module",
   "scripts": {
     "dev": "nodemon ."
