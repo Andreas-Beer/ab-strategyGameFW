@@ -19,7 +19,8 @@ const config = {
       duration: { level1: "10s", level2: "20s" },
       effects: [
         {
-          type: "create units",
+          type: "ability/create-units",
+          unitsTypes: "all",
           slots: {
             level1: 2,
             level2: "+4",
@@ -31,7 +32,7 @@ const config = {
     {
       id: 2,
       price: [{ resourceId: 1, amount: 100 }],
-      duration: { level1: "1s" },
+      duration: { level1: "30s" },
       effects: {
         level1: [
           {
@@ -56,13 +57,13 @@ const config = {
         { resourceId: 1, amount: 720 },
         { resourceId: 2, amount: 2000 },
       ],
-      duration: { level1: "1min" },
+      duration: { level1: "20s" },
       requirements: {
         level1: [{ type: "not-building", id: 3 }],
       },
       effects: [
         {
-          type: "sendTroops",
+          type: "#CommandCenter",
           amount: {
             level1: 1,
             level2: 2,

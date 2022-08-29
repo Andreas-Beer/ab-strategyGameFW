@@ -15,10 +15,12 @@ game.createBuilding({
   townId: 1,
 });
 
-game.createBuilding({
-  buildingTypeId: 3,
-  buildingSlotId: 10,
-  townId: 1,
-});
+setTimeout(() => {
+  game.createBuilding({
+    buildingTypeId: 3,
+    buildingSlotId: 10,
+    townId: 1,
+  });
+}, 500);
 
 global.game = { game, config, data };
