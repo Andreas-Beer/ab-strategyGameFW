@@ -1,7 +1,11 @@
+import Logger from "../modules/Logger.js";
+
 let id = 100;
 
+const logger = new Logger();
+
 export default class Building {
-  constructor({ typeId, level = 1 }) {
+  constructor({ typeId, level = 0 }) {
     this._id = id++;
     this._typeid = typeId;
     this._level = level;
@@ -12,11 +16,19 @@ export default class Building {
     if (typeof value !== "number") {
       throw Error("the value must be a number");
     }
+    if (this._constructionProgress === 100) {
+      return;
+    }
 
-    this._constructionProgress = Math.max(Math.min(value, 100), 0);
+    const percentage = Math.max(Math.min(value, 100), 0);
+    this._constructionProgress = percentage;
+
+    if (percentage === 100) {
+      this._update();
+    }
   }
 
-  update() {
+  _update() {
     this._level++;
   }
 }

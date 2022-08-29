@@ -8,9 +8,6 @@ export default class Game {
     if (!config) {
       throw Error("a new Game need to have a configuration defined");
     }
-    if (!userId) {
-      throw Error("a new Game need to have an userID defined");
-    }
     this.config = config;
     this.data = data;
   }
@@ -31,12 +28,13 @@ export default class Game {
     const building = new Building({ typeId: buildingTypeId });
 
     const processId = Ticker.getInstance().setProcess(duration, {
-      onFinish: (dur) => {
+      onFinish: () => {
         building.setConstructionProgress(100);
 
         const buildingEffects = buildingConfig.effects.level1;
 
         console.log("building created", duration);
+        console.log("data", this.data._data.towns[0].buildings);
 
         if (!buildingEffects) {
           return;
@@ -54,7 +52,7 @@ export default class Game {
 
         building.setConstructionProgress(percentage);
 
-        console.log("building...", percentage + "%");
+        console.log("building...", percentage + "%", building);
       },
     });
 

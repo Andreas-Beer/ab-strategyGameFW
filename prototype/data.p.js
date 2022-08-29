@@ -26,6 +26,7 @@ const data = {
         },
         {
           id: 8,
+          level: 0,
           buildingTypeId: 6,
           location: { slotId: 11 },
           constructionProgress: 60,
