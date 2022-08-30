@@ -21,6 +21,16 @@ const game = new Game({ data: gameData });
 //   });
 // }, 500);
 
-game.buyItem(1);
+console.log(game.buyItem(1));
+console.log("res  :", gameData._data.player.resources);
+console.log("items:", gameData._data.player.items);
 
-global.game = { game, config, data };
+console.log(game.buyItem(2));
+console.log("res  :", gameData._data.player.resources);
+console.log("items:", gameData._data.player.items);
+
+console.log("ERROR:", game.buyItem(2).message);
+console.log("res  :", gameData._data.player.resources);
+console.log("items:", gameData._data.player.items);
+
+// global.game = { game, config, data };

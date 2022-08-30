@@ -9,6 +9,7 @@ const data = {
     xp: 304737,
     prestige: 73892,
     effects: [],
+    items: {},
     resources: {
       0: 20,
       1: 100,

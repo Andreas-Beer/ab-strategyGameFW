@@ -1,29 +1,8 @@
-function getItemDefinition(config, itemId) {
-  const itemDefinition = config.items.find((item) => item.id === itemId);
-  if (!itemDefinition) {
-    throw new Error(`Item with ID "${itemId}" not found`);
-  }
-  return itemDefinition;
-}
-
-function checkLiquidity(data, item) {
-  const { price } = item;
-  const { resources } = data.player;
-  console.log({ price, resources, data });
-
-  let enoughResources = true;
-  for (const { resourceId, amount } of price) {
-    const resourceStock = resources[resourceId];
-    if (!resourceStock) {
-      throw new Error(`the resource ${resourceId} does not exist`);
-    }
-    if (resourceStock < amount) {
-      throw new Error(`there is not enough amount of resource ${resourceId}.`);
-    }
-  }
-
-  return enoughResources;
-}
+import {
+  getItemDefinition,
+  checkLiquidity,
+  transaction,
+} from "../modules/items.js";
 
 export default class Data {
   constructor({ data, config }) {
@@ -73,12 +52,5 @@ export default class Data {
       );
     }
     return buildingConfig;
-  }
-
-  buyItem(itemId) {
-    const itemDefinition = getItemDefinition(this._config, itemId);
-    const isLiquid = checkLiquidity(this._data, itemDefinition);
-
-    console.log({ isLiquid });
   }
 }

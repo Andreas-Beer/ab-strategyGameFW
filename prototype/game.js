@@ -1,6 +1,11 @@
 import Building from "./Entities/Building.js";
 import Unit from "./Entities/Unit.js";
 import { invokeEffect } from "./modules/effect.js";
+import {
+  getItemDefinition,
+  checkLiquidity,
+  transaction,
+} from "./modules/items.js";
 import Ticker, { convertDurationIntoMs } from "./modules/Ticker.js";
 
 export default class Game {
@@ -8,15 +13,15 @@ export default class Game {
     if (!data) {
       throw Error("a new Game need to have a data defined");
     }
-    this.data = data;
+    this._data = data;
   }
   // ToDo: extract into a building creator Module
   createBuilding({ buildingTypeId, buildingSlotId, townId }) {
     // Validate - Town ID
-    const town = this.data.getTownById(townId);
+    const town = this._data.getTownById(townId);
 
     // Validate - BuildingType ID
-    const buildingConfig = this.data.getBuildingConfigByTypeId(buildingTypeId);
+    const buildingConfig = this._data.getBuildingConfigByTypeId(buildingTypeId);
 
     // ToDo: Validate - Building parallel restrictions
     // ToDo: Validate - Building Requirements
@@ -32,14 +37,14 @@ export default class Game {
         const buildingEffects = buildingConfig.effects.level1;
 
         console.log("building created", duration);
-        console.log("data", this.data._data.towns[0].buildings);
+        console.log("data", this._data._data.towns[0].buildings);
 
         if (!buildingEffects) {
           return;
         }
 
         for (const effect of buildingEffects) {
-          invokeEffect(effect, this.data, townId, this.userID);
+          invokeEffect(effect, this._data, townId, this.userID);
         }
       },
       onProcess: (timeLeft) => {
@@ -59,7 +64,25 @@ export default class Game {
   }
 
   buyItem(itemId) {
-    this.data.buyItem(itemId);
+    const itemsDefinitions = this._data._config.items;
+    const itemDefinition = getItemDefinition(itemsDefinitions, itemId);
+    const resourcesStack = this._data._data.player.resources;
+    const data = this._data._data;
+
+    if (itemDefinition.error) {
+      return itemDefinition.error;
+    }
+
+    const liquidityResult = checkLiquidity(
+      resourcesStack,
+      itemDefinition.price
+    );
+
+    if (liquidityResult.error) {
+      return liquidityResult.error;
+    }
+
+    transaction(data, itemDefinition);
   }
 
   // ToDo: extract into unit creator Module
@@ -71,7 +94,7 @@ export default class Game {
 
   //   const town = this.gameData.getTownById(townId);
 
-  //   const unitConfig = this.data.units.find((u) => u.id === unitTypeId);
+  //   const unitConfig = this._data.units.find((u) => u.id === unitTypeId);
   //   const building = town.buildings.find((b) => b._id === creationBuildingId);
 
   //   if (!building) {
@@ -86,7 +109,7 @@ export default class Game {
 
   //   if (!unitConfig) {
   //     throw Error(
-  //       `unit type id ${unitTypeId} does not exists out of [${this.data.units
+  //       `unit type id ${unitTypeId} does not exists out of [${this._data.units
   //         .map((u) => u.id)
   //         .join(", ")}]`
   //     );
