@@ -28,8 +28,12 @@ function convertDurationIntoMs(duration) {
     return parseFloat(duration) * 60 * 60 * 1000;
   }
 
+  if (duration.endsWith("d")) {
+    return parseFloat(duration) * 24 * 60 * 60 * 1000;
+  }
+
   if (duration.endsWith("w")) {
-    return parseFloat(duration) * 7 * 60 * 60 * 1000;
+    return parseFloat(duration) * 7 * 24 * 60 * 60 * 1000;
   }
 
   throw Error("unknown duration unit: " + duration);

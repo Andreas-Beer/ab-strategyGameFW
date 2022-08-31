@@ -1,4 +1,4 @@
-const config = {
+const config: Config = {
   buildingsBuildParallel: 2,
   buildings: [
     {
@@ -11,28 +11,31 @@ const config = {
         level10: [{ type: "item", itemId: 29 }],
       },
       price: {
-        level1: [
+        1: [
           { resourceId: 2, amount: 300 },
           { resourceId: 1, amount: 100 },
         ],
       },
-      duration: { level1: "10s", level2: "20s" },
+      duration: { 1: "10s", 2: "20s" },
       abilities: [{ type: "create/units", kinds: "all" }],
-      view: {
+      controller: {
         name: "#Barrack",
-        slots: {
-          level1: 2,
-          level2: "+4",
-          level3: "+6",
+        config: {
+          slots: {
+            1: 2,
+            2: "+4",
+            3: "+6",
+          },
         },
       },
     },
     {
       id: 2,
-      price: [{ resourceId: 1, amount: 100 }],
-      duration: { level1: "30s" },
+      price: { 1: [{ resourceId: 1, amount: 100 }] },
+      duration: { 1: "30s" },
+      requirements: [],
       effects: {
-        level1: [
+        1: [
           {
             type: "modify/resource/2",
             amount: +200,
@@ -51,16 +54,17 @@ const config = {
     },
     {
       id: 3,
-      price: [
-        { resourceId: 1, amount: 720 },
-        { resourceId: 2, amount: 2000 },
-      ],
-      duration: { level1: "20s" },
-      requirements: {
-        level1: [{ type: "not-building", id: 3 }],
+      price: {
+        1: [
+          { resourceId: 1, amount: 720 },
+          { resourceId: 2, amount: 2000 },
+        ],
       },
-      abilities: [{ type: "send/units", kinds: "all" }],
-      view: {
+      duration: { 1: "20s" },
+      requirements: {
+        1: [{ type: "not-building", id: 3 }],
+      },
+      controller: {
         name: "#CommandCenter",
       },
     },
@@ -86,18 +90,19 @@ const config = {
         { type: "playerLevel", level: 6 },
         { type: "building", id: 5, level: 3 },
       ],
-      consume: [{ resourceId: 3, amount: 30, repeat: "1h" }],
+      effects: [{ resourceId: 3, amount: 30, repeat: "1h" }],
     },
   ],
   items: [
     {
       id: 0,
+      useableInInventory: true,
       category: 1,
       price: [{ resourceId: 0, amount: 300 }],
       effects: [
         {
           type: "townBuff/peace",
-          expire: "10t",
+          expire: "10d",
         },
       ],
     },
@@ -110,8 +115,7 @@ const config = {
       ],
       effects: [
         {
-          type: "increase/resource",
-          resourceId: 2,
+          type: "increase/resource/2",
           amount: 20,
         },
       ],
@@ -119,11 +123,12 @@ const config = {
     {
       id: 2,
       category: 5,
+      useableInInventory: true,
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
-          type: "playerBuff/buildParallel",
-          expire: "10t",
+          type: "buff/buildParallel",
+          expire: "10d",
         },
       ],
     },
@@ -146,23 +151,30 @@ const config = {
     },
     {
       id: 4,
+      category: 3,
+      useableInInventory: true,
       price: [{ resourceId: 0, amount: 250 }],
-      items: [
-        { itemId: 2, amount: 3 },
-        { itemId: 1, amount: 10 },
-        { itemId: 15, amount: 1 },
+      effects: [
+        {
+          type: "package/items",
+          items: [
+            { itemId: 2, amount: 3 },
+            { itemId: 1, amount: 10 },
+            { itemId: 15, amount: 1 },
+          ],
+        },
       ],
     },
     {
       id: 5,
       category: 5,
+      useableInInventory: true,
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
-          type: "townBuff/resource",
-          resourceId: 2,
+          type: "townBuff/resource/2",
           amount: "+40%",
-          expire: "10t",
+          expire: "10d",
         },
       ],
     },

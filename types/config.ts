@@ -1,12 +1,4 @@
-type BuildingConfig = {
-  id: number;
-  price: Price[];
-  requirements: Requirement;
+type Config = {
+  buildings: BuildingConfig[];
+  items: ItemConfig[];
 };
-
-type ItemConfig = {
-  id: number;
-  price: { [level: number]: Price[] };
-};
-
-type Config = {};
