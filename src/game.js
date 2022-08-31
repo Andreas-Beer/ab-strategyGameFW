@@ -73,14 +73,14 @@ export default class Game {
 
     const liquidityResult = checkLiquidity(
       resourcesStack,
-      itemDefinition.price
+      itemDefinition.payload.price
     );
 
     if (liquidityResult.error) {
       return liquidityResult.error;
     }
 
-    transaction(data, itemDefinition);
+    transaction(data, itemDefinition.payload);
   }
 
   // ToDo: extract into unit creator Module

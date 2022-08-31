@@ -1,1 +1,1 @@
-type ValidationResult = { isValid: boolean; error?: Error };
+type ValidationResult = { error: Error } | { value: any };
