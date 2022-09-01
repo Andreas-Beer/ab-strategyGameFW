@@ -1,73 +1,57 @@
-import { findBy, maybeError } from "../helper/functions";
+import { findBy, log } from "../helper/functions";
+import { Maybe, Right, maybeError, identity } from "../helper/functors";
 
-class Err {
-  _error: Error;
-  constructor(error: Error) {
-    this._error = error;
-  }
+function getItemDefinition(itemConfigs: ItemConfig[], itemId: number) {
+  console.log({ itemConfigs, itemId });
 
-  get error() {
-    return this._error;
-  }
-
-  map(fn: Function) {
-    return new Err(this._error);
-  }
-}
-
-class Value {
-  _value: any;
-  constructor(value: any) {
-    this._value = value;
-  }
-
-  get value() {
-    return this._value;
-  }
-
-  map(fn: Function) {
-    const result = fn(this._value);
-
-    if (result instanceof Error) {
-      return new Err(result);
-    }
-    return new Value(result);
-  }
-}
-
-function getItemDefinition(
-  itemConfigs: ItemConfig[],
-  itemId: number
-): ValidationResult {
-  const result = new Value(itemConfigs)
+  const result = Right(itemConfigs)
     .map(findBy("id")(itemId))
-    .map(maybeError(`Item with ID "${itemId}" not found`));
+    .chain(maybeError(`Item with ID "${itemId}" not found`))
+    .chain(identity);
+
+  console.log("result", result);
 
   return result;
 }
 
-function checkLiquidity(
-  resources: ResourceData,
-  prices: Price[]
-): ValidationResult {
-  for (const { resourceId, amount } of prices) {
-    const resourceStock = resources[resourceId];
-    if (resourceStock == undefined) {
-      return {
-        error: new Error(`the resource ${resourceId} does not exist`),
-      };
-    }
+function checkLiquidity(resources: ResourceData, prices: Price[]) {
+  return null;
+  // const x = prices.map((price) =>
+  //   Maybe(price).fold((price) =>
+  //     Maybe(resources[price.resourceId])
+  //       .map((resourceStock) => resourceStock >= price.amount)
+  //       .map(
+  //         maybeError(
+  //           new Error(
+  //             `there is not enough amount of resource ${price.resourceId}. stock is 'resourceStock' but ${price.amount} are needed`
+  //           )
+  //         )
+  //       )
+  //   )
+  // );
 
-    if (resourceStock < amount) {
-      return {
-        error: new Error(
-          `there is not enough amount of resource ${resourceId}. stock is ${resourceStock} but ${amount} are needed`
-        ),
-      };
-    }
-  }
+  // console.log("x", x);
 
-  return { value: true };
+  // for (const { resourceId, amount } of prices) {
+  //   const resourceStock = resources[resourceId];
+
+  //   const result = Maybe(resourceStock)
+  //     .map(maybeError(new Error(`the resource ${resourceId} does not exist`)))
+  //     .map((resourceStock: number) => resourceStock > amount)
+  //     .map(
+  //       maybeError(
+  //         new Error(
+  //           `there is not enough amount of resource ${resourceId}. stock is ${resourceStock} but ${amount} are needed`
+  //         )
+  //       )
+  //     );
+
+  //   if ("error" in result) {
+  //     return result;
+  //   }
+  // }
+
+  // return { value: true };
 }
 
 function transaction(

@@ -18,8 +18,7 @@ describe("items.js", () => {
         [fixtureItem1],
         fixtureItem1.id
       );
-      expect(getItemDefinitionResult.value).toBe(fixtureItem1);
-      expect(getItemDefinitionResult.error).not.toBeDefined;
+      expect(getItemDefinitionResult).toBe(fixtureItem1);
     });
     test("should return error if item definition was not found", () => {
       const getItemDefinitionResult = getItemDefinition([fixtureItem1], 123823);
@@ -32,7 +31,13 @@ describe("items.js", () => {
         fixtureData.resources,
         fixtureItem1.price
       );
-      expect(liquidity.value).toBeDefined;
+      expect(liquidity).toBeDefined;
+    });
+    test("should return error if is not liquid", () => {
+      const liquidity = checkLiquidity(fixtureData.resources, [
+        { resourceId: 1, amount: 101 },
+      ]);
+      expect(liquidity instanceof Error).toBeTruthy;
     });
   });
 });
