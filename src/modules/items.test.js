@@ -1,4 +1,4 @@
-import { getItemDefinition, checkLiquidity } from "./items.ts";
+import { getItemDefinition, checkLiquidity } from "./items";
 
 const fixtureItem1 = {
   id: 1,
