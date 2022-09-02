@@ -2,14 +2,17 @@ class ItemNotFoundError extends Error {
   public type = "ITEM_NOT_FOUND_ERROR";
 }
 
-function findItemConfig(itemConfigs: ItemConfig[], itemId: number) {
+function findItemConfig(itemConfigs: ItemConfig[], itemId: number): Result {
   const foundDefinition = itemConfigs.find((def) => def.id === itemId);
   if (!foundDefinition) {
     return {
-      error: new ItemNotFoundError(`The id ${itemId} is not an item`),
+      success: false,
+      value: new ItemNotFoundError(`The id ${itemId} is not an item`),
     };
   }
-  return { value: foundDefinition };
+  return { success: true, value: foundDefinition };
 }
 
-export { findItemConfig };
+function checkLiquidity(resources: ResourceData, prices: Price[]): Result {}
+
+export { findItemConfig, checkLiquidity };
