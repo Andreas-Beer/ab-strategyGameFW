@@ -13,6 +13,23 @@ class ResourceNotEnoughAmountError extends Error {
   public category = "NORMAL";
 }
 
+function addItem(id: number, playerData: PlayerData): Result {
+  if (!playerData.items[id]) {
+    playerData.items[id] = 1;
+  } else {
+    playerData.items[id] += 1;
+  }
+
+  return { success: true, value: true };
+}
+
+// function removeItem(id: number, playerData: PlayerData) {
+//   playerData.items[id] -= 1;
+//   if (playerData.items[id] === 0) {
+//     delete playerData.items[id];
+//   }
+// }
+
 function findItemConfig(itemConfigs: ItemConfig[], itemId: number): Result {
   const foundDefinition = itemConfigs.find((def) => def.id === itemId);
   if (!foundDefinition) {
@@ -50,7 +67,29 @@ function checkResourceAmount(resources: ResourceData, price: Price): Result {
   return { success: true, value: true };
 }
 
-function checkLiquidity(resources: ResourceData, prices: Price[]): Result {}
+function checkLiquidity(resources: ResourceData, prices: Price[]): Result {
+  const errors = prices
+    .map((price) => checkResourceAmount(resources, price))
+    .filter((result) => !result.success)
+    .map((result) => result.value.type);
+
+  if (errors.length === 0) {
+    return { success: true, value: true };
+  }
+
+  return { success: false, value: errors };
+}
+
+function buyItem(itemConfig: ItemConfig, playerData: PlayerData) {
+  const { price, id } = itemConfig;
+
+  for (const p of price) {
+    const { resourceId, amount } = p;
+    playerData.resources[resourceId] -= amount;
+  }
+
+  addItem(itemConfig, playerData);
+}
 
 const test = {
   checkResourceAmount,
@@ -62,4 +101,4 @@ const errors = {
   ResourceNotEnoughAmountError,
 };
 
-export { test, errors, findItemConfig, checkLiquidity };
+export { test, errors, findItemConfig, checkLiquidity, buyItem, addItem };
