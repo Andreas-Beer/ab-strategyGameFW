@@ -7,7 +7,7 @@
     "start": "ts-node .",
     "build": "rimraf dist && tsc",
     "dev": "nodemon",
-    "test": "ts-mocha src/**/*.test.ts",
+    "test": "ts-mocha src/**/*test.ts",
     "test:watch": "npm run test -- -w --watch-files 'src/**/*.ts'"
   },
   "repository": {
