@@ -1,14 +1,14 @@
-const config: Config = {
+const config: ConfigData = {
   buildingsBuildParallel: 2,
   buildings: [
     {
       id: 4,
       requirements: {
-        level1: [
+        1: [
           { type: "playerLevel", level: 2 },
-          { type: "building", id: 13, level: 5 },
+          { type: "building", buildingId: 13, level: 5 },
         ],
-        level10: [{ type: "item", itemId: 29 }],
+        10: [{ type: "item", itemId: 29 }],
       },
       price: {
         1: [
@@ -17,7 +17,7 @@ const config: Config = {
         ],
       },
       duration: { 1: "10s", 2: "20s" },
-      abilities: [{ type: "create/units", kinds: "all" }],
+      // abilities: [{ type: "create/units", kinds: "all" }],
       controller: {
         name: "#Barrack",
         config: {
@@ -62,7 +62,7 @@ const config: Config = {
       },
       duration: { 1: "20s" },
       requirements: {
-        1: [{ type: "not-building", id: 3 }],
+        1: [{ type: "not-building", buildingId: 3 }],
       },
       controller: {
         name: "#CommandCenter",
@@ -88,7 +88,7 @@ const config: Config = {
       ],
       requirements: [
         { type: "playerLevel", level: 6 },
-        { type: "building", id: 5, level: 3 },
+        { type: "building", buildingId: 5, level: 3 },
       ],
       effects: [{ resourceId: 3, amount: 30, repeat: "1h" }],
     },
@@ -96,7 +96,6 @@ const config: Config = {
   items: [
     {
       id: 0,
-      useableInInventory: true,
       category: 1,
       price: [{ resourceId: 0, amount: 300 }],
       effects: [
@@ -115,7 +114,7 @@ const config: Config = {
       ],
       effects: [
         {
-          type: "increase/resource/2",
+          type: "modify/resource/2",
           amount: 20,
         },
       ],
@@ -123,7 +122,6 @@ const config: Config = {
     {
       id: 2,
       category: 5,
-      useableInInventory: true,
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
@@ -135,7 +133,7 @@ const config: Config = {
     {
       id: 3,
       category: 8,
-      useableInInventory: false,
+      isUnusableInInventory: true,
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
@@ -152,7 +150,7 @@ const config: Config = {
     {
       id: 4,
       category: 3,
-      useableInInventory: true,
+      isUnusableInInventory: true,
       price: [{ resourceId: 0, amount: 250 }],
       effects: [
         {
@@ -168,7 +166,7 @@ const config: Config = {
     {
       id: 5,
       category: 5,
-      useableInInventory: true,
+      isUnusableInInventory: true,
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
@@ -181,4 +179,8 @@ const config: Config = {
   ],
 };
 
-export default config;
+function getConfig() {
+  return config;
+}
+
+export { getConfig };

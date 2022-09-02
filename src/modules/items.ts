@@ -1,8 +1,13 @@
+import { getConfig } from "../data/configData";
+
+class ItemConfigNotFoundError extends Error {
+  public type = "ITEM_CONFIG_NOT_FOUND_ERROR";
+  public category = "CRITICAL";
+}
 class ItemNotFoundError extends Error {
   public type = "ITEM_NOT_FOUND_ERROR";
   public category = "CRITICAL";
 }
-
 class ResourceNotFoundError extends Error {
   public type = "RESOURCE_NOT_FOUND_ERROR";
   public category = "CRITICAL";
@@ -23,19 +28,42 @@ function addItem(id: number, playerData: PlayerData): Result {
   return { success: true, value: true };
 }
 
-// function removeItem(id: number, playerData: PlayerData) {
-//   playerData.items[id] -= 1;
-//   if (playerData.items[id] === 0) {
-//     delete playerData.items[id];
-//   }
-// }
+function buyItem(itemConfig: ItemConfig, playerData: PlayerData) {
+  const { price, id } = itemConfig;
 
-function findItemConfig(itemConfigs: ItemConfig[], itemId: number): Result {
+  for (const p of price) {
+    const { resourceId, amount } = p;
+    playerData.resources[resourceId] -= amount;
+  }
+
+  addItem(id, playerData);
+}
+
+function useItem(id: number) {}
+
+function removeItem(id: number, playerData: PlayerData): Result {
+  if (!playerData.items[id]) {
+    return {
+      success: false,
+      value: new ItemNotFoundError(`the item with the id ${id} was not found`),
+    };
+  }
+
+  playerData.items[id] -= 1;
+  if (playerData.items[id] === 0) {
+    delete playerData.items[id];
+  }
+
+  return { success: true, value: true };
+}
+
+function findItemConfig(itemId: number): Result {
+  const itemConfigs = getConfig().items;
   const foundDefinition = itemConfigs.find((def) => def.id === itemId);
   if (!foundDefinition) {
     return {
       success: false,
-      value: new ItemNotFoundError(`The id ${itemId} is not an item`),
+      value: new ItemConfigNotFoundError(`The id ${itemId} is not an item`),
     };
   }
   return { success: true, value: foundDefinition };
@@ -80,25 +108,18 @@ function checkLiquidity(resources: ResourceData, prices: Price[]): Result {
   return { success: false, value: errors };
 }
 
-function buyItem(itemConfig: ItemConfig, playerData: PlayerData) {
-  const { price, id } = itemConfig;
-
-  for (const p of price) {
-    const { resourceId, amount } = p;
-    playerData.resources[resourceId] -= amount;
-  }
-
-  addItem(itemConfig, playerData);
-}
-
-const test = {
+const internal = {
+  removeItem,
   checkResourceAmount,
+  findItemConfig,
+  checkLiquidity,
 };
 
 const errors = {
+  ItemConfigNotFoundError,
   ItemNotFoundError,
   ResourceNotFoundError,
   ResourceNotEnoughAmountError,
 };
 
-export { test, errors, findItemConfig, checkLiquidity, buyItem, addItem };
+export { internal, errors, addItem, buyItem, useItem };

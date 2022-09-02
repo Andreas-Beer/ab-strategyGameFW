@@ -6,5 +6,5 @@ type ItemConfig = {
 
   // Feels not right here.
   chances?: Record<"gambling" | "battle" | "scavenging", number>;
-  useableInInventory: boolean;
+  isUnusableInInventory?: boolean;
 };

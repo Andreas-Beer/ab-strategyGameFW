@@ -1,12 +1,21 @@
 import { expect } from "chai";
+import * as sinon from "sinon";
+import config, * as configModule from "../data/configData";
 import {
-  findItemConfig,
-  errors,
-  test,
-  checkLiquidity,
+  errors as itemErrors,
+  internal as itemInternals,
   buyItem,
   addItem,
 } from "./items";
+
+const { checkLiquidity, checkResourceAmount, findItemConfig, removeItem } =
+  itemInternals;
+const {
+  ItemConfigNotFoundError,
+  ItemNotFoundError,
+  ResourceNotEnoughAmountError,
+  ResourceNotFoundError,
+} = itemErrors;
 
 let resources: ResourceData;
 let items: ResourceData;
@@ -24,94 +33,110 @@ describe("items", () => {
     resources = { 1: 100, 2: 200 };
     items = {};
     playerData = { resources, items } as PlayerData;
+
+    // Stubs
+    sinon
+      .stub(configModule, "getConfig")
+      .returns({ items: [item1] } as ConfigData);
+  });
+  afterEach(() => {
+    sinon.restore();
   });
 
-  describe("findItemConfig", () => {
-    it("should return the right definition if the given id is in the list", () => {
-      const itemDefinition = findItemConfig([item1], 1);
-      expect(itemDefinition.value).to.be.eq(item1);
-    });
-    it("should return an ItemNotFoundError if the given id is not in the list", () => {
-      const itemDefinition = findItemConfig([item1], 2);
-      expect(itemDefinition.value).not.to.be.undefined;
-      expect(itemDefinition.value).to.be.an.instanceof(
-        errors.ItemNotFoundError
-      );
-    });
-  });
+  describe("API", () => {
+    describe("addItem", () => {
+      it("should add a new item id to the stack if the item is not in the stack", () => {
+        const { id } = item1;
+        expect(playerData.items[id]).to.be.undefined;
+        const result = addItem(id, playerData);
+        expect(playerData.items[id]).to.be.eq(1);
+        expect(result.success).to.be.true;
+      });
 
-  describe("checkResourceAmount", () => {
-    it("should return true if the price covers the stack", () => {
-      const amountCheck = test.checkResourceAmount(resources, price1);
-      expect(amountCheck.value).to.be.true;
-    });
-    it("should return an ResourceNotFoundError if the resource is unknown", () => {
-      const amountCheck = test.checkResourceAmount(resources, price9999X);
-      expect(amountCheck.value).to.be.an.instanceof(
-        errors.ResourceNotFoundError
-      );
-    });
-    it("should return an ResourceNotEnoughAmountError if the price don't covers the stack", () => {
-      const amountCheck = test.checkResourceAmount(resources, price2X);
-      expect(amountCheck.value).to.be.an.instanceof(
-        errors.ResourceNotEnoughAmountError
-      );
-    });
-  });
+      it("should increase the item stack if the resource is already in the stack", () => {
+        const { id } = item1;
+        playerData.items[id] = 1;
 
-  describe("checkLiquidity", () => {
-    it("should return true if the prices covers the stack", () => {
-      const liquidityCheck = checkLiquidity(resources, [price1, price2]);
-      expect(liquidityCheck.success).to.be.true;
-      expect(liquidityCheck.value).to.be.true;
+        expect(playerData.items[id]).to.be.eq(1);
+        const result = addItem(id, playerData);
+        expect(playerData.items[id]).to.be.eq(2);
+        expect(result.success).to.be.true;
+      });
     });
-    it("should return an ResourceNotFoundError if the one of the resources is unknown", () => {
-      const liquidityCheck = checkLiquidity(resources, [price1, price2X]);
-      expect(liquidityCheck.success).to.be.false;
-      expect(liquidityCheck.value).to.be.an.instanceof(Array);
-    });
-  });
 
-  describe("buyItem", () => {
-    it("should mutate the player resource", () => {
-      const {
-        price: [
-          { resourceId: resourceId1, amount: amount1 },
-          { resourceId: resourceId2, amount: amount2 },
-        ],
-      } = item1;
+    describe("removeItem", () => {
+      it("should remove an item if the item amount is 1", () => {
+        const { id } = item1;
+        playerData.items[id] = 1;
 
-      const oldAmount1 = resources[resourceId1];
-      const newAmount1 = oldAmount1 - amount1;
-      expect(playerData.resources[resourceId1]).to.be.eq(oldAmount1);
+        removeItem(id, playerData);
+        expect(playerData.items[id]).to.be.undefined;
+      });
 
-      const oldAmount2 = resources[resourceId2];
-      const newAmount2 = oldAmount2 - amount2;
-      expect(playerData.resources[resourceId2]).to.be.eq(oldAmount2);
+      it("should decrease an item if the item amount is above 1", () => {
+        const { id } = item1;
+        const oldAmount = 2;
+        const expectedAmount = oldAmount - 1;
+        playerData.items[id] = oldAmount;
 
-      buyItem(item1, playerData);
-      expect(playerData.resources[resourceId1]).to.be.eq(newAmount1);
-      expect(playerData.resources[resourceId2]).to.be.eq(newAmount2);
+        removeItem(id, playerData);
+        expect(playerData.items[id]).to.be.eq(expectedAmount);
+      });
+
+      it("should return an error if the item does not exist", () => {
+        const { id } = item1;
+
+        const removeItemResult = removeItem(id, playerData);
+        expect(removeItemResult).to.be.not.undefined;
+        expect(removeItemResult.success).to.be.false;
+        expect(removeItemResult.value).to.be.instanceOf(ItemNotFoundError);
+      });
     });
   });
 
-  describe("addItem", () => {
-    it("should add a new item id to the stack", () => {
-      const { id } = item1;
-      expect(playerData.items[id]).to.be.undefined;
-      const result = addItem(id, playerData);
-      expect(playerData.items[id]).to.be.eq(1);
-      expect(result.success).to.be.true;
+  describe("Internal", () => {
+    describe("findItemConfig", () => {
+      it("should return the right definition if the given id is in the list", () => {
+        const itemDefinition = findItemConfig(1);
+        expect(itemDefinition.value).to.be.eq(item1);
+      });
+      it("should return an ItemNotFoundError if the given id is not in the list", () => {
+        const itemDefinition = findItemConfig(2);
+        expect(itemDefinition.value).not.to.be.undefined;
+        expect(itemDefinition.value).to.be.an.instanceof(
+          ItemConfigNotFoundError
+        );
+      });
     });
 
-    it("should increase the item stack", () => {
-      const { id } = item1;
-      playerData.items[id] = 1;
+    describe("checkResourceAmount", () => {
+      it("should return true if the price covers the stack", () => {
+        const amountCheck = checkResourceAmount(resources, price1);
+        expect(amountCheck.value).to.be.true;
+      });
+      it("should return an ResourceNotFoundError if the resource is unknown", () => {
+        const amountCheck = checkResourceAmount(resources, price9999X);
+        expect(amountCheck.value).to.be.an.instanceof(ResourceNotFoundError);
+      });
+      it("should return an ResourceNotEnoughAmountError if the price don't covers the stack", () => {
+        const amountCheck = checkResourceAmount(resources, price2X);
+        expect(amountCheck.value).to.be.an.instanceof(
+          ResourceNotEnoughAmountError
+        );
+      });
+    });
 
-      expect(playerData.items[id]).to.be.eq(1);
-      const result = addItem(id, playerData);
-      expect(playerData.items[id]).to.be.eq(2);
-      expect(result.success).to.be.true;
+    describe("checkLiquidity", () => {
+      it("should return true if the prices covers the stack", () => {
+        const liquidityCheck = checkLiquidity(resources, [price1, price2]);
+        expect(liquidityCheck.success).to.be.true;
+        expect(liquidityCheck.value).to.be.true;
+      });
+      it("should return an ResourceNotFoundError if the one of the resources is unknown", () => {
+        const liquidityCheck = checkLiquidity(resources, [price1, price2X]);
+        expect(liquidityCheck.success).to.be.false;
+        expect(liquidityCheck.value).to.be.an.instanceof(Array);
+      });
     });
   });
 });
