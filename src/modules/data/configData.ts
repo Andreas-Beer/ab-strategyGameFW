@@ -1,74 +1,76 @@
 const config: ConfigData = {
-  buildingsBuildParallel: 2,
-  buildings: [
-    {
-      id: 4,
-      requirements: {
-        1: [
-          { type: "playerLevel", level: 2 },
-          { type: "building", buildingId: 13, level: 5 },
-        ],
-        10: [{ type: "item", itemId: 29 }],
-      },
-      price: {
-        1: [
-          { resourceId: 2, amount: 300 },
-          { resourceId: 1, amount: 100 },
-        ],
-      },
-      duration: { 1: "10s", 2: "20s" },
-      // abilities: [{ type: "create/units", kinds: "all" }],
-      controller: {
-        name: "#Barrack",
-        config: {
-          slots: {
-            1: 2,
-            2: "+4",
-            3: "+6",
+  buildings: {
+    buildingsBuildParallel: 2,
+    buildings: [
+      {
+        id: 4,
+        requirements: {
+          1: [
+            { type: "playerLevel", level: 2 },
+            { type: "building", buildingId: 13, level: 5 },
+          ],
+          10: [{ type: "item", itemId: 29 }],
+        },
+        price: {
+          1: [
+            { resourceId: 2, amount: 300 },
+            { resourceId: 1, amount: 100 },
+          ],
+        },
+        duration: { 1: "10s", 2: "20s" },
+        // abilities: [{ type: "create/units", kinds: "all" }],
+        controller: {
+          name: "#Barrack",
+          config: {
+            slots: {
+              1: 2,
+              2: "+4",
+              3: "+6",
+            },
           },
         },
       },
-    },
-    {
-      id: 2,
-      price: { 1: [{ resourceId: 1, amount: 100 }] },
-      duration: { 1: "30s" },
-      requirements: [],
-      effects: {
-        1: [
-          {
-            type: "modify/resource/2",
-            amount: +200,
-            repeat: "5s",
-          },
-          {
-            type: "modify/capacity/2",
-            amount: +2000,
-          },
-          {
-            type: "modify/xp",
-            amount: +500,
-          },
-        ],
+      {
+        id: 2,
+        price: { 1: [{ resourceId: 1, amount: 100 }] },
+        duration: { 1: "30s" },
+        requirements: [],
+        effects: {
+          1: [
+            {
+              type: "modify/resource/2",
+              amount: +200,
+              repeat: "5s",
+            },
+            {
+              type: "modify/capacity/2",
+              amount: +2000,
+            },
+            {
+              type: "modify/xp",
+              amount: +500,
+            },
+          ],
+        },
       },
-    },
-    {
-      id: 3,
-      price: {
-        1: [
-          { resourceId: 1, amount: 720 },
-          { resourceId: 2, amount: 2000 },
-        ],
+      {
+        id: 3,
+        price: {
+          1: [
+            { resourceId: 1, amount: 720 },
+            { resourceId: 2, amount: 2000 },
+          ],
+        },
+        duration: { 1: "20s" },
+        requirements: {
+          1: [{ type: "not-building", buildingId: 3 }],
+        },
+        controller: {
+          name: "#CommandCenter",
+        },
       },
-      duration: { 1: "20s" },
-      requirements: {
-        1: [{ type: "not-building", buildingId: 3 }],
-      },
-      controller: {
-        name: "#CommandCenter",
-      },
-    },
-  ],
+    ],
+  },
   units: [
     {
       id: 2,

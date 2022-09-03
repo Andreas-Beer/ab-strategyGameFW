@@ -1,6 +1,9 @@
 type ConfigData = {
-  buildingsBuildParallel: number;
-  buildings: BuildingConfig[];
+  buildings: {
+    buildingsBuildParallel: number;
+    buildings: BuildingConfig[];
+  };
+
   items: ItemConfig[];
   units: UnitConfig[];
 };

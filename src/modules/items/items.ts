@@ -12,46 +12,54 @@ class ResourceNotFoundError extends Error {
   public type = "RESOURCE_NOT_FOUND_ERROR";
   public category = "CRITICAL";
 }
-
 class ResourceNotEnoughAmountError extends Error {
   public type = "RESOURCE_NOT_ENOUGH_AMOUNT";
   public category = "NORMAL";
 }
 
-function addItem(id: number, playerData: PlayerData): Result {
-  if (!playerData.items[id]) {
-    playerData.items[id] = 1;
+function addItem(playerData: PlayerData, itemId: number): Result {
+  if (!playerData.items[itemId]) {
+    playerData.items[itemId] = 1;
   } else {
-    playerData.items[id] += 1;
+    playerData.items[itemId] += 1;
   }
 
   return { success: true, value: true };
 }
 
-function buyItem(itemConfig: ItemConfig, playerData: PlayerData) {
-  const { price, id } = itemConfig;
+function buyItem(playerData: PlayerData, itemId: number): Result {
+  const itemConfig = findItemConfig(itemId);
+  if (!itemConfig.success) {
+    return itemConfig;
+  }
 
+  const price = itemConfig.value.price;
   for (const p of price) {
     const { resourceId, amount } = p;
     playerData.resources[resourceId] -= amount;
   }
 
-  addItem(id, playerData);
+  addItem(playerData, itemId);
+  return { success: true, value: true };
 }
 
-function useItem(id: number) {}
+function useItem(playerData: PlayerData, itemId: number) {
+  return removeItem(itemId, playerData);
+}
 
-function removeItem(id: number, playerData: PlayerData): Result {
-  if (!playerData.items[id]) {
+function removeItem(playerData: PlayerData, itemId: number): Result {
+  if (!playerData.items[itemId]) {
     return {
       success: false,
-      value: new ItemNotFoundError(`the item with the id ${id} was not found`),
+      value: new ItemNotFoundError(
+        `the item with the id ${itemId} was not found`
+      ),
     };
   }
 
-  playerData.items[id] -= 1;
-  if (playerData.items[id] === 0) {
-    delete playerData.items[id];
+  playerData.items[itemId] -= 1;
+  if (playerData.items[itemId] === 0) {
+    delete playerData.items[itemId];
   }
 
   return { success: true, value: true };
