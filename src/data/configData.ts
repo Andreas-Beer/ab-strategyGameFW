@@ -182,7 +182,7 @@ const config: ConfigData = {
 };
 
 function getConfig() {
-  return config;
+  return Object.freeze(config);
 }
 
 export { getConfig };
