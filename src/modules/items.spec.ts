@@ -27,7 +27,7 @@ const price2X: Price = { resourceId: 2, amount: 1000 };
 const item1: ItemConfig = { id: 1, price: [price1, price2] } as ItemConfig;
 const item2: ItemConfig = { id: 2, price: [price1] } as ItemConfig;
 
-describe("items", () => {
+describe("modules/items.ts", () => {
   beforeEach(() => {
     playerData = {
       resources: { 1: 100, 2: 200 } as ResourceData,

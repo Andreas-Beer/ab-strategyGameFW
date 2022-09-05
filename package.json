@@ -7,7 +7,7 @@
     "start": "ts-node .",
     "build": "rimraf dist && tsc",
     "dev": "nodemon",
-    "test": "ts-mocha src/**/*spec.ts",
+    "test": "ts-mocha src/**/*spec.ts --parallel --timeout 10000 --slow 1000",
     "test:watch": "npm run test -- -w --watch-files 'src/**/*.ts'"
   },
   "repository": {

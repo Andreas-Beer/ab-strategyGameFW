@@ -1,3 +1,5 @@
+import { getData, setData } from "../helpers/nestedGetSet";
+
 const playerData: PlayerData = {
   id: 1234,
   email: "bob@me.net",
@@ -57,29 +59,6 @@ const playerData: PlayerData = {
     },
   ],
 };
-
-function getData(data: any, selector: NestedSelector<typeof data>) {
-  const firstDot = selector.indexOf(".");
-  const nextSelector = selector.slice(0, firstDot);
-  const restSelectors = selector.slice(firstDot + 1);
-
-  if (firstDot === -1) {
-    return data[restSelectors];
-  }
-  return getData(data[nextSelector], restSelectors);
-}
-
-function setData(
-  data: any,
-  selector: NestedSelector<typeof data>,
-  newValue: any
-) {
-  const LastDot = selector.lastIndexOf(".");
-  const firstSelectors = selector.slice(0, LastDot);
-  const restSelector = selector.slice(LastDot + 1);
-  const context = LastDot === -1 ? data : getData(data, firstSelectors);
-  context[restSelector] = newValue;
-}
 
 function fetchPlayerData(playerId: number) {
   return new Promise((resolve) => {
