@@ -7,8 +7,8 @@ function createTimestamp() {
   return `[${stamp}:${ms}]`;
 }
 
-export default class Logger {
+export const logger = {
   log(...args) {
     console.log(createTimestamp(), ...args);
-  }
-}
+  },
+};

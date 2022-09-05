@@ -44,7 +44,7 @@ function buyItem(playerData: PlayerData, itemId: number): Result {
 }
 
 function useItem(playerData: PlayerData, itemId: number) {
-  return removeItem(itemId, playerData);
+  return removeItem(playerData, itemId);
 }
 
 function removeItem(playerData: PlayerData, itemId: number): Result {

@@ -20,7 +20,7 @@ describe("helpers/nestedGetSet.ts", () => {
     });
     it("should get deep array data", () => {
       expect(getData<typeof data>(data, "b.arr.0.a1")).to.be.eq(
-        data.b.arr.at(0)?.a1
+        data.b.arr[0].a1
       );
     });
   });

@@ -60,11 +60,15 @@ const playerData: PlayerData = {
   ],
 };
 
-function fetchPlayerData(playerId: number) {
+function fetchPlayerData(playerId: number): Promise<PlayerData> {
   return new Promise((resolve) => {
     setTimeout(() => resolve(playerData), 10);
   });
 }
+
+export const test = {
+  fetchPlayerData,
+};
 
 export async function getPlayerData(playerId: number, data?: any) {
   data = data || (await fetchPlayerData(playerId));

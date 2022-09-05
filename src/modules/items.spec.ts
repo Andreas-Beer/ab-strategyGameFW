@@ -6,6 +6,7 @@ import {
   internal as itemInternals,
   buyItem,
   addItem,
+  useItem,
 } from "./items";
 
 const { checkLiquidity, checkResourceAmount, findItemConfig, removeItem } =
@@ -21,11 +22,12 @@ let playerData: PlayerData;
 
 const price1: Price = { resourceId: 1, amount: 10 };
 const price2: Price = { resourceId: 2, amount: 10 };
-const price999999X: Price = { resourceId: 9999, amount: 1000 };
+const price999999X: Price = { resourceId: 999999, amount: 1000 };
 const price2X: Price = { resourceId: 2, amount: 1000 };
 
 const item1: ItemConfig = { id: 1, price: [price1, price2] } as ItemConfig;
 const item2: ItemConfig = { id: 2, price: [price1] } as ItemConfig;
+const itemId999999X = 999999;
 
 describe("modules/items.ts", () => {
   beforeEach(() => {
@@ -44,7 +46,7 @@ describe("modules/items.ts", () => {
   });
 
   describe("API", () => {
-    describe("addItem", () => {
+    describe("addItem()", () => {
       it("should add a new item id to the stack if the item is not in the stack", () => {
         const { id: itemId } = item1;
         expect(playerData.items[itemId]).to.be.undefined;
@@ -64,7 +66,7 @@ describe("modules/items.ts", () => {
       });
     });
 
-    describe("removeItem", () => {
+    describe("removeItem()", () => {
       it("should remove an item if the item amount is 1", () => {
         const { id: itemId } = item1;
         playerData.items[itemId] = 1;
@@ -93,7 +95,7 @@ describe("modules/items.ts", () => {
       });
     });
 
-    describe("buyItem", () => {
+    describe("buyItem()", () => {
       it("should remove the resource and add the item to the data", () => {
         const {
           id: itemId,
@@ -111,6 +113,22 @@ describe("modules/items.ts", () => {
         buyItem(playerData, itemId);
         expect(playerData.resources[resourceId]).to.be.eq(resourcesExpected);
         expect(playerData.items[itemId]).to.be.eq(itemAmountExpected);
+      });
+
+      it("should return the error if there is one", () => {
+        const result = buyItem(playerData, itemId999999X);
+        expect(result.success).to.be.false;
+        expect(result.value).to.be.an.instanceof(ItemConfigNotFoundError);
+      });
+    });
+
+    describe("useItem()", () => {
+      it("should remove the used item", () => {
+        const { id: itemId } = item1;
+        playerData.items[itemId] = 1;
+
+        useItem(playerData, itemId);
+        expect(playerData.items[itemId]).to.be.undefined;
       });
     });
   });
