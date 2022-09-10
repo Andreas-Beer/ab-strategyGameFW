@@ -7,9 +7,9 @@
     "start": "ts-node .",
     "build": "rimraf dist && tsc",
     "dev": "nodemon",
-    "test": "ts-mocha src/**/*spec.ts --parallel --timeout 10000 --slow 1000",
+    "test": "ts-mocha src/**/*spec.ts",
     "test:watch": "npm run test -- -w --watch-files 'src/**/*.ts'",
-    "test:cov": "nyc --reporter=lcov --reporter=text npm run test -- --reporter min"
+    "test:coverage": "rm -rf ./coverage && nyc npm run test -- --reporter min"
   },
   "repository": {
     "type": "git",
