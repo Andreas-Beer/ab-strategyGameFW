@@ -1,1 +1,1 @@
-type Duration = `${number}${"ms" | "s" | "min" | "h" | "d" | "w"}`;
+type Duration = `${number}${'ms' | 's' | 'min' | 'h' | 'd' | 'w'}`;

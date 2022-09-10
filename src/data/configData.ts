@@ -6,10 +6,10 @@ const config: ConfigData = {
         id: 4,
         requirements: {
           1: [
-            { type: "playerLevel", level: 2 },
-            { type: "building", buildingId: 13, level: 5 },
+            { type: 'playerLevel', level: 2 },
+            { type: 'building', buildingId: 13, level: 5 },
           ],
-          10: [{ type: "item", itemId: 29 }],
+          10: [{ type: 'item', itemId: 29 }],
         },
         price: {
           1: [
@@ -17,15 +17,15 @@ const config: ConfigData = {
             { resourceId: 1, amount: 100 },
           ],
         },
-        duration: { 1: "10s", 2: "20s" },
+        duration: { 1: '10s', 2: '20s' },
         // abilities: [{ type: "create/units", kinds: "all" }],
         controller: {
-          name: "#Barrack",
+          name: '#Barrack',
           config: {
             slots: {
               1: 2,
-              2: "+4",
-              3: "+6",
+              2: '+4',
+              3: '+6',
             },
           },
         },
@@ -33,21 +33,21 @@ const config: ConfigData = {
       {
         id: 2,
         price: { 1: [{ resourceId: 1, amount: 100 }] },
-        duration: { 1: "30s" },
+        duration: { 1: '30s' },
         requirements: [],
         effects: {
           1: [
             {
-              type: "modify/resource/2",
+              type: 'modify/resource/2',
               amount: +200,
-              repeat: "5s",
+              repeat: '5s',
             },
             {
-              type: "modify/capacity/2",
+              type: 'modify/capacity/2',
               amount: +2000,
             },
             {
-              type: "modify/xp",
+              type: 'modify/xp',
               amount: +500,
             },
           ],
@@ -61,12 +61,12 @@ const config: ConfigData = {
             { resourceId: 2, amount: 2000 },
           ],
         },
-        duration: { 1: "20s" },
+        duration: { 1: '20s' },
         requirements: {
-          1: [{ type: "not-building", buildingId: 3 }],
+          1: [{ type: 'not-building', buildingId: 3 }],
         },
         controller: {
-          name: "#CommandCenter",
+          name: '#CommandCenter',
         },
       },
     ],
@@ -83,16 +83,16 @@ const config: ConfigData = {
         speed: 500,
         maintenance: 200,
       },
-      duration: "500ms",
+      duration: '500ms',
       price: [
         { resourceId: 2, amount: 300 },
         { resourceId: 1, amount: 100 },
       ],
       requirements: [
-        { type: "playerLevel", level: 6 },
-        { type: "building", buildingId: 5, level: 3 },
+        { type: 'playerLevel', level: 6 },
+        { type: 'building', buildingId: 5, level: 3 },
       ],
-      effects: [{ resourceId: 3, amount: 30, repeat: "1h" }],
+      effects: [{ resourceId: 3, amount: 30, repeat: '1h' }],
     },
   ],
   items: [
@@ -102,8 +102,8 @@ const config: ConfigData = {
       price: [{ resourceId: 0, amount: 300 }],
       effects: [
         {
-          type: "townBuff/peace",
-          expire: "10d",
+          type: 'townBuff/peace',
+          expire: '10d',
         },
       ],
     },
@@ -116,7 +116,7 @@ const config: ConfigData = {
       ],
       effects: [
         {
-          type: "modify/resource/2",
+          type: 'modify/resource/2',
           amount: 20,
         },
       ],
@@ -127,8 +127,8 @@ const config: ConfigData = {
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
-          type: "buff/buildParallel",
-          expire: "10d",
+          type: 'buff/buildParallel',
+          expire: '10d',
         },
       ],
     },
@@ -139,8 +139,8 @@ const config: ConfigData = {
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
-          type: "speedup/building",
-          amount: "2h",
+          type: 'speedup/building',
+          amount: '2h',
         },
       ],
       chances: {
@@ -156,7 +156,7 @@ const config: ConfigData = {
       price: [{ resourceId: 0, amount: 250 }],
       effects: [
         {
-          type: "package/items",
+          type: 'package/items',
           items: [
             { itemId: 2, amount: 3 },
             { itemId: 1, amount: 10 },
@@ -172,9 +172,9 @@ const config: ConfigData = {
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
         {
-          type: "townBuff/resource/2",
-          amount: "+40%",
-          expire: "10d",
+          type: 'townBuff/resource/2',
+          amount: '+40%',
+          expire: '10d',
         },
       ],
     },

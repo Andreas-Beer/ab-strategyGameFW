@@ -3,5 +3,6 @@
     "all": true,
     "include": ["src/**"],
     "reporter": ["lcov", "text"],
-    "check-coverage": false
+    "check-coverage": false,
+    "exclude": ["**/*.spec.*"]
 }

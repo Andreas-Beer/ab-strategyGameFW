@@ -5,6 +5,6 @@ type ItemConfig = {
   effects: EffectConfig[];
 
   // Feels not right here.
-  chances?: Record<"gambling" | "battle" | "scavenging", number>;
+  chances?: Record<'gambling' | 'battle' | 'scavenging', number>;
   isUnusableInInventory?: boolean;
 };

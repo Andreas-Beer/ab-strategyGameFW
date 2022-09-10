@@ -1,9 +1,9 @@
-import { getData, setData } from "../helpers/nestedGetSet";
+import { getData, setData } from '../helpers/nestedGetSet';
 
 const playerData: PlayerData = {
   id: 1234,
-  email: "bob@me.net",
-  name: "Bob",
+  email: 'bob@me.net',
+  name: 'Bob',
   level: 4,
   avatarId: 6,
   groupId: 5397,
@@ -18,7 +18,7 @@ const playerData: PlayerData = {
   towns: [
     {
       id: 1,
-      name: "Funky Town",
+      name: 'Funky Town',
       location: [1682, 2864],
       buildings: [
         {
@@ -40,11 +40,11 @@ const playerData: PlayerData = {
       effects: [
         {
           effectId: 1,
-          expire: "3d",
+          expire: '3d',
         },
         {
           effectId: 2,
-          expire: "17h",
+          expire: '17h',
         },
       ],
       units: {

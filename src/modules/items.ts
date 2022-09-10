@@ -1,20 +1,20 @@
-import { getConfig } from "../data/configData";
+import { getConfig } from '../data/configData';
 
 class ItemConfigNotFoundError extends Error {
-  public type = "ITEM_CONFIG_NOT_FOUND_ERROR";
-  public category = "CRITICAL";
+  public type = 'ITEM_CONFIG_NOT_FOUND_ERROR';
+  public category = 'CRITICAL';
 }
 class ItemNotFoundError extends Error {
-  public type = "ITEM_NOT_FOUND_ERROR";
-  public category = "CRITICAL";
+  public type = 'ITEM_NOT_FOUND_ERROR';
+  public category = 'CRITICAL';
 }
 class ResourceNotFoundError extends Error {
-  public type = "RESOURCE_NOT_FOUND_ERROR";
-  public category = "CRITICAL";
+  public type = 'RESOURCE_NOT_FOUND_ERROR';
+  public category = 'CRITICAL';
 }
 class ResourceNotEnoughAmountError extends Error {
-  public type = "RESOURCE_NOT_ENOUGH_AMOUNT";
-  public category = "NORMAL";
+  public type = 'RESOURCE_NOT_ENOUGH_AMOUNT';
+  public category = 'NORMAL';
 }
 
 function addItem(playerData: PlayerData, itemId: number): Result {
@@ -52,7 +52,7 @@ function removeItem(playerData: PlayerData, itemId: number): Result {
     return {
       success: false,
       value: new ItemNotFoundError(
-        `the item with the id ${itemId} was not found`
+        `the item with the id ${itemId} was not found`,
       ),
     };
   }
@@ -85,7 +85,7 @@ function checkResourceAmount(resources: ResourceData, price: Price): Result {
     return {
       success: false,
       value: new ResourceNotFoundError(
-        `The id ${resourceId} is not an valid resource`
+        `The id ${resourceId} is not an valid resource`,
       ),
     };
   }
@@ -95,7 +95,7 @@ function checkResourceAmount(resources: ResourceData, price: Price): Result {
     return {
       success: false,
       value: new ResourceNotEnoughAmountError(
-        `The resource ${resourceId}:${resource} is not enough for ${amount}`
+        `The resource ${resourceId}:${resource} is not enough for ${amount}`,
       ),
     };
   }
