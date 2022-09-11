@@ -77,6 +77,36 @@ describe('observer.ts', () => {
     });
   });
   describe('API', () => {
-    describe('createObservable()', () => {});
+    describe('createObservable()', () => {
+      it('should create an observable', () => {
+        const observable = createObservable();
+        expect(observable).to.be.an('object');
+        expect(observable).to.have.property('add').is.a('function');
+        expect(observable).to.have.property('remove').is.a('function');
+        expect(observable).to.have.property('notify').is.a('function');
+      });
+      it('should work', () => {
+        const observable = createObservable();
+        const spy1 = Sinon.spy();
+        const spy2 = Sinon.spy();
+        observable.add(spy1);
+        observable.add(spy2);
+
+        observable.notify();
+        expect(spy1).to.be.called;
+        expect(spy2).to.be.called;
+
+        observable.notify('foo');
+        expect(spy1).to.be.calledWith('foo');
+        expect(spy2).to.be.calledWith('foo');
+
+        observable.remove(spy1);
+        observable.remove(spy2);
+        observable.notify();
+
+        expect(spy1).to.be.calledTwice;
+        expect(spy2).to.be.calledTwice;
+      });
+    });
   });
 });

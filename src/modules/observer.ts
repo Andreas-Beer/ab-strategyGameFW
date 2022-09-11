@@ -1,5 +1,3 @@
-let id = 0;
-
 type Observer = Function;
 
 function addObserver(list: Observer[], cb: Observer) {
@@ -17,7 +15,21 @@ function notifyObservers(list: Observer[], data?: unknown) {
   list.forEach((item) => item(data));
 }
 
-function createObservable() {}
+function createObservable() {
+  let observersList: Observer[] = [];
+
+  return {
+    add: (observer: Observer) => {
+      observersList = addObserver(observersList, observer);
+    },
+    remove: (observer: Observer) => {
+      observersList = removeObserver(observersList, observer);
+    },
+    notify: (data: unknown) => {
+      notifyObservers(observersList, data);
+    },
+  };
+}
 
 const _test = {
   addObserver,
