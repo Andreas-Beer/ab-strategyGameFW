@@ -25,7 +25,7 @@ function createObservable() {
     remove: (observer: Observer) => {
       observersList = removeObserver(observersList, observer);
     },
-    notify: (data: unknown) => {
+    notify: (data?: unknown) => {
       notifyObservers(observersList, data);
     },
   };
