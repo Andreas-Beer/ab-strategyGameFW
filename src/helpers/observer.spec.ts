@@ -7,7 +7,7 @@ import { _test, createObservable } from './observer';
 
 const { addObserver, removeObserver, notifyObservers } = _test;
 
-describe('observer.ts', () => {
+describe('helpers/observer.ts', () => {
   describe('internal', () => {
     describe('addObserver()', () => {
       const list = [() => {}, () => {}];
