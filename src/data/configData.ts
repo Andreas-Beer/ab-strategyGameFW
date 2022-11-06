@@ -4,20 +4,29 @@ const config: ConfigData = {
     buildings: [
       {
         id: 4,
-        requirements: {
-          1: [
-            { type: 'playerLevel', level: 2 },
-            { type: 'building', buildingId: 13, level: 5 },
-          ],
-          10: [{ type: 'item', itemId: 29 }],
+        levels: {
+          1: {
+            requirements: [
+              { type: 'playerLevel', level: 2 },
+              { type: 'building', buildingId: 13, level: 5 },
+            ],
+            price: [
+              { resourceId: 2, amount: 300 },
+              { resourceId: 1, amount: 100 },
+            ],
+            duration: '10s',
+            effects: [],
+          },
+          10: {
+            requirements: [{ type: 'item', itemId: 29 }],
+            effects: [],
+            price: [
+              { resourceId: 2, amount: 300 },
+              { resourceId: 1, amount: 100 },
+            ],
+            duration: '20s',
+          },
         },
-        price: {
-          1: [
-            { resourceId: 2, amount: 300 },
-            { resourceId: 1, amount: 100 },
-          ],
-        },
-        duration: { 1: '10s', 2: '20s' },
         // abilities: [{ type: "create/units", kinds: "all" }],
         controller: {
           name: '#Barrack',
@@ -32,38 +41,41 @@ const config: ConfigData = {
       },
       {
         id: 2,
-        price: { 1: [{ resourceId: 1, amount: 100 }] },
-        duration: { 1: '30s' },
-        requirements: [],
-        effects: {
-          1: [
-            {
-              type: 'modify/resource/2',
-              amount: +200,
-              repeat: '5s',
-            },
-            {
-              type: 'modify/capacity/2',
-              amount: +2000,
-            },
-            {
-              type: 'modify/xp',
-              amount: +500,
-            },
-          ],
+        levels: {
+          1: {
+            price: [{ resourceId: 1, amount: 100 }],
+            duration: '30s',
+            effects: [
+              {
+                type: 'modify/resource/2',
+                amount: +200,
+                repeat: '5s',
+              },
+              {
+                type: 'modify/capacity/2',
+                amount: +2000,
+              },
+              {
+                type: 'modify/xp',
+                amount: +500,
+              },
+            ],
+            requirements: [],
+          },
         },
       },
       {
         id: 3,
-        price: {
-          1: [
-            { resourceId: 1, amount: 720 },
-            { resourceId: 2, amount: 2000 },
-          ],
-        },
-        duration: { 1: '20s' },
-        requirements: {
-          1: [{ type: 'not-building', buildingId: 3 }],
+        levels: {
+          1: {
+            price: [
+              { resourceId: 1, amount: 720 },
+              { resourceId: 2, amount: 2000 },
+            ],
+            duration: '20s',
+            requirements: [{ type: 'not-building', buildingId: 3 }],
+            effects: [],
+          },
         },
         controller: {
           name: '#CommandCenter',

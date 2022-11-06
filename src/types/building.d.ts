@@ -1,9 +1,15 @@
+type BuildingLevelConfig = {
+  price: Price[];
+  requirements: Requirement[];
+  duration: Duration;
+  effects: EffectConfig[];
+};
+
 type BuildingConfig = {
   id: number;
-  price: { [key: number]: Price[] };
-  requirements: { [key: number]: Requirement[] };
-  duration: { [key: number]: Duration };
-  effects?: { [key: number]: EffectConfig[] };
+  levels: {
+    [key: number]: BuildingLevelConfig;
+  };
   controller?: { name: string; config?: any };
 };
 

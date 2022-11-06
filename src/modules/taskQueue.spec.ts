@@ -52,12 +52,13 @@ describe('modules/taskQueue.ts', () => {
         callExpiredTasks(taskList, 25);
         expect(taskList).to.have.a.lengthOf(3);
       });
-      it('should call all Tasks that has a duration less or equal than the given time', () => {
-        callExpiredTasks(taskList, 25);
-        expect(task1.onFinish).to.be.called;
-        expect(task2.onFinish).to.be.called;
-        expect(task3.onFinish).not.to.be.called;
+      it('should call all Tasks that has a duration less or equal than the given time with the given data', () => {
+        callExpiredTasks(taskList, 25, 'foo');
+        expect(task1.onFinish).to.be.calledWith('foo');
+        expect(task2.onFinish).to.be.calledWith('foo');
+        expect(task3.onFinish).not.to.be.calledWith('foo');
       });
     });
   });
+  describe('API', () => {});
 });

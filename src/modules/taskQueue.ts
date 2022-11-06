@@ -40,4 +40,12 @@ const _test = {
   callExpiredTasks,
 };
 
-export { _test, Task };
+function createTaskQueue() {
+  let queue;
+  return {
+    add() {},
+    check() {},
+  };
+}
+
+export { _test, Task, createTaskQueue };
