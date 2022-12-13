@@ -9,7 +9,8 @@
     "dev": "nodemon",
     "test": "ts-mocha src/**/*spec.ts",
     "test:watch": "npm run test -- -w --watch-files 'src/**/*.ts'",
-    "test:coverage": "rm -rf ./coverage && nyc npm run test -- --reporter min"
+    "test:coverage": "rm -rf ./coverage && nyc npm run test -- --reporter min",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
     "@types/sinon": "^10.0.13",
     "@types/sinon-chai": "^3.2.8",
     "chai": "^4.3.6",
+    "husky": "^8.0.2",
     "mocha": "^10.0.0",
     "nodemon": "^2.0.19",
     "nyc": "^15.1.0",
