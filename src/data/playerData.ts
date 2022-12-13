@@ -66,11 +66,11 @@ function fetchPlayerData(playerId: number): Promise<PlayerData> {
   });
 }
 
-export const test = {
+const _test = {
   fetchPlayerData,
 };
 
-export async function getPlayerData(playerId: number, data?: any) {
+async function getPlayerData(playerId: number, data?: any) {
   data = data || (await fetchPlayerData(playerId));
 
   return {
@@ -82,3 +82,5 @@ export async function getPlayerData(playerId: number, data?: any) {
     },
   };
 }
+
+export { _test, getPlayerData };

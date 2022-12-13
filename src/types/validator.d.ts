@@ -1,3 +1,3 @@
-type Result =
-  | { success: false; value: Error | Error[] }
-  | { success: true; value: any };
+type Result<S, E extends Error | Error[] = Error> =
+  | { success: false; value: E }
+  | { success: true; value: S };

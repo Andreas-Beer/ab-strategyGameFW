@@ -1,4 +1,5 @@
 import { getConfig } from '../data/configData';
+import { checkLiquidity } from './resources';
 
 class ItemConfigNotFoundError extends Error {
   public type = 'ITEM_CONFIG_NOT_FOUND_ERROR';
@@ -8,126 +9,82 @@ class ItemNotFoundError extends Error {
   public type = 'ITEM_NOT_FOUND_ERROR';
   public category = 'CRITICAL';
 }
-class ResourceNotFoundError extends Error {
-  public type = 'RESOURCE_NOT_FOUND_ERROR';
-  public category = 'CRITICAL';
-}
-class ResourceNotEnoughAmountError extends Error {
-  public type = 'RESOURCE_NOT_ENOUGH_AMOUNT';
-  public category = 'NORMAL';
-}
 
-function addItem(playerData: PlayerData, itemId: number): Result {
-  if (!playerData.items[itemId]) {
-    playerData.items[itemId] = 1;
-  } else {
-    playerData.items[itemId] += 1;
-  }
-
-  return { success: true, value: true };
-}
-
-function buyItem(playerData: PlayerData, itemId: number): Result {
-  const itemConfig = findItemConfig(itemId);
-  if (!itemConfig.success) {
-    return itemConfig;
-  }
-
-  const price = itemConfig.value.price;
-  for (const p of price) {
-    const { resourceId, amount } = p;
-    playerData.resources[resourceId] -= amount;
-  }
-
-  addItem(playerData, itemId);
-  return { success: true, value: true };
-}
-
-function useItem(playerData: PlayerData, itemId: number) {
-  return removeItem(playerData, itemId);
-}
-
-function removeItem(playerData: PlayerData, itemId: number): Result {
-  if (!playerData.items[itemId]) {
+function removeItem(
+  playerData: PlayerData,
+  itemTypeId: number,
+): Result<boolean, ItemNotFoundError> {
+  if (!playerData.items[itemTypeId]) {
     return {
       success: false,
       value: new ItemNotFoundError(
-        `the item with the id ${itemId} was not found`,
+        `the item with the id ${itemTypeId} was not found`,
       ),
     };
   }
 
-  playerData.items[itemId] -= 1;
-  if (playerData.items[itemId] === 0) {
-    delete playerData.items[itemId];
+  playerData.items[itemTypeId] -= 1;
+  if (playerData.items[itemTypeId] === 0) {
+    delete playerData.items[itemTypeId];
   }
 
   return { success: true, value: true };
 }
 
-function findItemConfig(itemId: number): Result {
+function findItemConfig(
+  itemTypeId: number,
+): Result<ItemConfig, ItemConfigNotFoundError> {
   const itemConfigs = getConfig().items;
-  const foundDefinition = itemConfigs.find((def) => def.id === itemId);
+  const foundDefinition = itemConfigs.find((def) => def.id === itemTypeId);
   if (!foundDefinition) {
     return {
       success: false,
-      value: new ItemConfigNotFoundError(`The id ${itemId} is not an item`),
+      value: new ItemConfigNotFoundError(`The id ${itemTypeId} is not an item`),
     };
   }
   return { success: true, value: foundDefinition };
 }
 
-function checkResourceAmount(resources: ResourceData, price: Price): Result {
-  const { amount, resourceId } = price;
-  const resource = resources[resourceId];
-
-  if (!resource) {
-    return {
-      success: false,
-      value: new ResourceNotFoundError(
-        `The id ${resourceId} is not an valid resource`,
-      ),
-    };
-  }
-
-  const isLiquid = resource >= amount;
-  if (!isLiquid) {
-    return {
-      success: false,
-      value: new ResourceNotEnoughAmountError(
-        `The resource ${resourceId}:${resource} is not enough for ${amount}`,
-      ),
-    };
+function addItem(playerData: PlayerData, itemTypeId: number): Result<boolean> {
+  if (!playerData.items[itemTypeId]) {
+    playerData.items[itemTypeId] = 1;
+  } else {
+    playerData.items[itemTypeId] += 1;
   }
 
   return { success: true, value: true };
 }
 
-function checkLiquidity(resources: ResourceData, prices: Price[]): Result {
-  const errors = prices
-    .map((price) => checkResourceAmount(resources, price))
-    .filter((result) => !result.success)
-    .map((result) => result.value.type);
+function buyItem(playerData: PlayerData, itemTypeId: number): Result<boolean> {
+  const itemConfig = findItemConfig(itemTypeId);
+  if (!itemConfig.success) {
+    return itemConfig;
+  }
+  const price = itemConfig.value.price;
 
-  if (errors.length === 0) {
-    return { success: true, value: true };
+  const isLiquid = checkLiquidity(playerData.resources, price);
+
+  for (const p of price) {
+    const { resourceId, amount } = p;
+    playerData.resources[resourceId] -= amount;
   }
 
-  return { success: false, value: errors };
+  addItem(playerData, itemTypeId);
+  return { success: true, value: true };
+}
+
+function useItem(playerData: PlayerData, itemTypeId: number) {
+  return removeItem(playerData, itemTypeId);
 }
 
 const internal = {
   removeItem,
-  checkResourceAmount,
   findItemConfig,
-  checkLiquidity,
 };
 
 const errors = {
   ItemConfigNotFoundError,
   ItemNotFoundError,
-  ResourceNotFoundError,
-  ResourceNotEnoughAmountError,
 };
 
 export { internal, errors, addItem, buyItem, useItem };

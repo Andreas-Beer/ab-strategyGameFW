@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { getPlayerData, test } from './playerData';
+import { getPlayerData, _test } from './playerData';
 
 const data = { id: 1, email: '1@1.test' };
 
@@ -29,7 +29,7 @@ describe('data/playerData.ts', () => {
   });
   describe('test/fetchPlayerData', () => {
     it('could be modified values', () => {
-      return test.fetchPlayerData(1).then((playerData: PlayerData) => {
+      return _test.fetchPlayerData(1).then((playerData: PlayerData) => {
         expect(playerData)
           .to.be.an('object')
           .include.keys(

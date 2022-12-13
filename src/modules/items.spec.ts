@@ -9,14 +9,8 @@ import {
   useItem,
 } from './items';
 
-const { checkLiquidity, checkResourceAmount, findItemConfig, removeItem } =
-  itemInternals;
-const {
-  ItemConfigNotFoundError,
-  ItemNotFoundError,
-  ResourceNotEnoughAmountError,
-  ResourceNotFoundError,
-} = itemErrors;
+const { findItemConfig, removeItem } = itemInternals;
+const { ItemConfigNotFoundError, ItemNotFoundError } = itemErrors;
 
 let playerData: PlayerData;
 
@@ -115,7 +109,7 @@ describe('modules/items.ts', () => {
         expect(playerData.items[itemId]).to.be.eq(itemAmountExpected);
       });
 
-      it('should return the error if there is one', () => {
+      it('should return the error if there is no item with the given typeId', () => {
         const result = buyItem(playerData, itemId999999X);
         expect(result.success).to.be.false;
         expect(result.value).to.be.an.instanceof(ItemConfigNotFoundError);
@@ -145,45 +139,6 @@ describe('modules/items.ts', () => {
         expect(itemDefinition.value).to.be.an.instanceof(
           ItemConfigNotFoundError,
         );
-      });
-    });
-
-    describe('checkResourceAmount', () => {
-      it('should return true if the price covers the stack', () => {
-        const amountCheck = checkResourceAmount(playerData.resources, price1);
-        expect(amountCheck.value).to.be.true;
-      });
-      it('should return an ResourceNotFoundError if the resource is unknown', () => {
-        const amountCheck = checkResourceAmount(
-          playerData.resources,
-          price999999X,
-        );
-        expect(amountCheck.value).to.be.an.instanceof(ResourceNotFoundError);
-      });
-      it("should return an ResourceNotEnoughAmountError if the price don't covers the stack", () => {
-        const amountCheck = checkResourceAmount(playerData.resources, price2X);
-        expect(amountCheck.value).to.be.an.instanceof(
-          ResourceNotEnoughAmountError,
-        );
-      });
-    });
-
-    describe('checkLiquidity', () => {
-      it('should return true if the prices covers the stack', () => {
-        const liquidityCheck = checkLiquidity(playerData.resources, [
-          price1,
-          price2,
-        ]);
-        expect(liquidityCheck.success).to.be.true;
-        expect(liquidityCheck.value).to.be.true;
-      });
-      it('should return an ResourceNotFoundError if the one of the resources is unknown', () => {
-        const liquidityCheck = checkLiquidity(playerData.resources, [
-          price1,
-          price2X,
-        ]);
-        expect(liquidityCheck.success).to.be.false;
-        expect(liquidityCheck.value).to.be.an.instanceof(Array);
       });
     });
   });
