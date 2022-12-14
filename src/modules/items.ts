@@ -1,5 +1,5 @@
 import { getConfig } from '../data/configData';
-import { checkLiquidity } from './resources';
+import { checkLiquidity, decreaseResourceAmount } from './resources';
 
 class ItemConfigNotFoundError extends Error {
   public type = 'ITEM_CONFIG_NOT_FOUND_ERROR';
@@ -62,11 +62,10 @@ function buyItem(playerData: PlayerData, itemTypeId: number): Result<boolean> {
   }
   const price = itemConfig.value.price;
 
-  const isLiquid = checkLiquidity(playerData.resources, price);
+  const isLiquid = checkLiquidity(playerData, price);
 
   for (const p of price) {
-    const { resourceId, amount } = p;
-    playerData.resources[resourceId] -= amount;
+    decreaseResourceAmount(playerData, p);
   }
 
   addItem(playerData, itemTypeId);

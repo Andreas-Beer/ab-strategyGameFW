@@ -3,13 +3,17 @@ type Amount = number | `${AmountOperator}${number}${'%' | ''}`;
 
 type EffectConfig =
   | {
-      type: `modify/resource/${number}`;
+      type: `modify/resource/${ResourceId}`;
       amount: Amount;
       repeat?: Duration;
     }
-  | { type: `modify/capacity/${number}`; amount: Amount }
+  | { type: `modify/capacity/${ResourceId}`; amount: Amount }
   | { type: 'modify/xp'; amount: number }
-  | { type: `townBuff/resource/${number}`; expire: Duration; amount: Amount }
+  | {
+      type: `townBuff/resource/${ResourceId}`;
+      expire: Duration;
+      amount: Amount;
+    }
   | { type: 'townBuff/peace'; expire: Duration }
   | { type: 'buff/buildParallel'; expire: Duration }
   | { type: 'speedup/building'; amount: Duration }

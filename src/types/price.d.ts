@@ -1,1 +1,1 @@
-type Price = { resourceId: number; amount: number };
+type Price = { resourceId: ResourceId; amount: number };

@@ -8,27 +8,27 @@ class ResourceNotEnoughAmountError extends Error {
 }
 
 function checkResourceAmount(
-  resources: ResourceData,
+  playerData: PlayerData,
   price: Price,
 ): Result<boolean, ResourceNotFoundError | ResourceNotEnoughAmountError> {
-  const { amount, resourceId } = price;
-  const resource = resources[resourceId];
+  const { amount, resourceId: resourceIdToCheck } = price;
+  const currentResourceAmount = playerData.resources[resourceIdToCheck];
 
-  if (!resource) {
+  if (!currentResourceAmount) {
     return {
       success: false,
       value: new ResourceNotFoundError(
-        `The id ${resourceId} is not an valid resource`,
+        `The id ${resourceIdToCheck} is not an valid resource`,
       ),
     };
   }
 
-  const isLiquid = resource >= amount;
+  const isLiquid = currentResourceAmount >= amount;
   if (!isLiquid) {
     return {
       success: false,
       value: new ResourceNotEnoughAmountError(
-        `The resource ${resourceId}:${resource} is not enough for ${amount}`,
+        `The resource ${resourceIdToCheck}:${currentResourceAmount} is not enough for ${amount}`,
       ),
     };
   }
@@ -37,11 +37,11 @@ function checkResourceAmount(
 }
 
 function checkLiquidity(
-  resources: ResourceData,
+  playerData: PlayerData,
   prices: Price[],
 ): Result<boolean, (ResourceNotFoundError | ResourceNotEnoughAmountError)[]> {
   const errors = prices
-    .map((price) => checkResourceAmount(resources, price))
+    .map((price) => checkResourceAmount(playerData, price))
     .filter((result) => !result.success)
     .map((result) => result.value);
 
@@ -55,9 +55,28 @@ function checkLiquidity(
   };
 }
 
+function decreaseResourceAmount(
+  playerData: PlayerData,
+  price: Price,
+): Result<boolean, ResourceNotFoundError> {
+  const { amount: resourceAmount, resourceId } = price;
+  const checkResourceAmountResult = checkResourceAmount(playerData, price);
+
+  if (!checkResourceAmountResult.success) {
+    return checkResourceAmountResult;
+  }
+
+  playerData.resources[resourceId] -= resourceAmount;
+  return { success: true, value: true };
+}
+
 const errors = {
   ResourceNotFoundError,
   ResourceNotEnoughAmountError,
 };
 
-export { errors, checkLiquidity, checkResourceAmount };
+const _test = {
+  checkResourceAmount,
+};
+
+export { _test, errors, checkLiquidity, decreaseResourceAmount };

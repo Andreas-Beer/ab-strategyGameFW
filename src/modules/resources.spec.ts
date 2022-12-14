@@ -2,12 +2,14 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as configModule from '../data/configData';
 import {
+  _test as internals,
   errors as resourcesErrors,
   checkLiquidity,
-  checkResourceAmount,
+  decreaseResourceAmount,
 } from './resources';
 
 const { ResourceNotEnoughAmountError, ResourceNotFoundError } = resourcesErrors;
+const { checkResourceAmount } = internals;
 
 let playerData: PlayerData;
 
@@ -37,42 +39,63 @@ describe('modules/resources.ts', () => {
   });
 
   describe('API', () => {
-    describe('checkResourceAmount', () => {
-      it('should return true if the price covers the stack', () => {
-        const amountCheck = checkResourceAmount(playerData.resources, price1);
-        expect(amountCheck.value).to.be.true;
+    describe('decreaseResourceAmount', () => {
+      it('should decrease the amount of the given resource id in the given player data', () => {
+        const resId = 1;
+        const resAmount = 10;
+        const oldAmount = playerData.resources[resId];
+
+        const result = decreaseResourceAmount(playerData, {
+          resourceId: resId,
+          amount: resAmount,
+        });
+
+        expect(result.success).to.be.true;
+        expect(playerData.resources[resId]).to.be.eq(oldAmount - resAmount);
       });
-      it('should return an ResourceNotFoundError if the resource is unknown', () => {
-        const amountCheck = checkResourceAmount(
-          playerData.resources,
-          price999999X,
-        );
-        expect(amountCheck.value).to.be.an.instanceof(ResourceNotFoundError);
+      it('should return an ResourceNotFoundError if the resourceID is not in the playerData', () => {
+        const result = decreaseResourceAmount(playerData, price999999X);
+
+        expect(result.success).to.be.false;
+        expect(result.value).to.be.instanceOf(ResourceNotFoundError);
       });
-      it("should return an ResourceNotEnoughAmountError if the price don't covers the stack", () => {
-        const amountCheck = checkResourceAmount(playerData.resources, price2X);
-        expect(amountCheck.value).to.be.an.instanceof(
-          ResourceNotEnoughAmountError,
-        );
+      it('should return an ResourceNotEnoughAmountError if the price is too high', () => {
+        const result = decreaseResourceAmount(playerData, price2X);
+
+        expect(result.success).to.be.false;
+        expect(result.value).to.be.instanceOf(ResourceNotEnoughAmountError);
       });
     });
 
     describe('checkLiquidity', () => {
       it('should return true if the prices covers the stack', () => {
-        const liquidityCheck = checkLiquidity(playerData.resources, [
-          price1,
-          price2,
-        ]);
+        const liquidityCheck = checkLiquidity(playerData, [price1, price2]);
         expect(liquidityCheck.success).to.be.true;
         expect(liquidityCheck.value).to.be.true;
       });
       it('should return an ResourceNotFoundError if the one of the resources is unknown', () => {
-        const liquidityCheck = checkLiquidity(playerData.resources, [
-          price1,
-          price2X,
-        ]);
+        const liquidityCheck = checkLiquidity(playerData, [price1, price2X]);
         expect(liquidityCheck.success).to.be.false;
         expect(liquidityCheck.value).to.be.an.instanceof(Array);
+      });
+    });
+  });
+
+  describe('internal', () => {
+    describe('checkResourceAmount', () => {
+      it('should return true if the price covers the stack', () => {
+        const amountCheck = checkResourceAmount(playerData, price1);
+        expect(amountCheck.value).to.be.true;
+      });
+      it('should return an ResourceNotFoundError if the resource is unknown', () => {
+        const amountCheck = checkResourceAmount(playerData, price999999X);
+        expect(amountCheck.value).to.be.an.instanceof(ResourceNotFoundError);
+      });
+      it("should return an ResourceNotEnoughAmountError if the price don't covers the stack", () => {
+        const amountCheck = checkResourceAmount(playerData, price2X);
+        expect(amountCheck.value).to.be.an.instanceof(
+          ResourceNotEnoughAmountError,
+        );
       });
     });
   });

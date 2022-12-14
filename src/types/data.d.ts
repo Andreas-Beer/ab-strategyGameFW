@@ -1,4 +1,4 @@
-type ResourceData = Record<number, number>;
+type ResourceData = Record<number, ResourceId>;
 
 type TownData = {
   id: number;
