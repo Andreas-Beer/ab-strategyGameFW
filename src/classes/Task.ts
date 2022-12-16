@@ -1,4 +1,4 @@
-export class Task {
+class Task {
   constructor(private _durationMs: number, private _onFinish: Function) {}
 
   get durationMs() {
@@ -9,3 +9,5 @@ export class Task {
     return this._onFinish;
   }
 }
+
+export { Task };

@@ -7,13 +7,21 @@ import { TaskQueue, _test } from './TaskQueue';
 import { Task } from './Task';
 const { addTask, checkTaskDuration, callExpiredTasks } = _test;
 
-const task1: Task = { onFinish: Sinon.spy(), durationMs: 10 };
-const task2: Task = { onFinish: Sinon.spy(), durationMs: 20 };
-const task3: Task = { onFinish: Sinon.spy(), durationMs: 30 };
-const task4: Task = { onFinish: Sinon.spy(), durationMs: 40 };
-const task5: Task = { onFinish: Sinon.spy(), durationMs: 50 };
+let task1: Task;
+let task2: Task;
+let task3: Task;
+let task4: Task;
+let task5: Task;
 
 describe('classes/TaskQueue.ts', () => {
+  beforeEach(() => {
+    task1 = { onFinish: Sinon.spy(), durationMs: 10 };
+    task2 = { onFinish: Sinon.spy(), durationMs: 20 };
+    task3 = { onFinish: Sinon.spy(), durationMs: 30 };
+    task4 = { onFinish: Sinon.spy(), durationMs: 40 };
+    task5 = { onFinish: Sinon.spy(), durationMs: 50 };
+  });
+
   describe('internal', () => {
     describe('addTask', () => {
       it('should not modify the given queue', () => {
@@ -68,6 +76,26 @@ describe('classes/TaskQueue.ts', () => {
         expect(queue._queue).to.be.not.undefined;
         expect(queue.addTask).to.be.not.undefined;
         expect(queue.callExpiredTasks).to.be.not.undefined;
+      });
+
+      it('should add a task', () => {
+        const queue = new TaskQueue();
+        queue.addTask(task1);
+        expect(queue._queue).to.have.members([task1]);
+      });
+
+      it('should call the expired Tasks a task', () => {
+        const queue = new TaskQueue();
+        queue.addTask(task1);
+        queue.callExpiredTasks(task1.durationMs + 10);
+        expect(task1.onFinish).to.be.calledOnce;
+      });
+
+      it('should not call the unexpired Tasks a task', () => {
+        const queue = new TaskQueue();
+        queue.addTask(task1);
+        queue.callExpiredTasks(task1.durationMs - 10);
+        expect(task1.onFinish).to.be.not.called;
       });
     });
   });

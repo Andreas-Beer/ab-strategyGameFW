@@ -44,7 +44,7 @@ class TaskQueue {
   _queue: Task[] = [];
 
   addTask(task: Task): void {
-    _addTask(this._queue, task);
+    this._queue = _addTask(this._queue, task);
   }
 
   callExpiredTasks(duration: number, data?: unknown): void {
@@ -52,4 +52,4 @@ class TaskQueue {
   }
 }
 
-export { _test, Task, TaskQueue };
+export { _test, TaskQueue };
