@@ -1,9 +1,5 @@
 import { ASC } from '../helpers/sorting';
-
-type Task = {
-  durationMs: number;
-  onFinish: Function;
-};
+import { Task } from './Task';
 
 function sortTasks(taskA: Task, taskB: Task) {
   return ASC(taskA.durationMs, taskB.durationMs);
@@ -16,7 +12,11 @@ function checkTaskDuration(duration: number, task: Task) {
   return true;
 }
 
-function callExpiredTasks(taskQueue: Task[], duration: number, data?: unknown) {
+function _callExpiredTasks(
+  taskQueue: Task[],
+  duration: number,
+  data?: unknown,
+) {
   for (let i = 0; i < taskQueue.length; i++) {
     const nextTask = taskQueue[i];
 
@@ -30,22 +30,26 @@ function callExpiredTasks(taskQueue: Task[], duration: number, data?: unknown) {
   }
 }
 
-function addTask(taskQueue: Task[], task: Task) {
+function _addTask(taskQueue: Task[], task: Task) {
   return [...taskQueue, task].sort(sortTasks);
 }
 
 const _test = {
-  addTask,
+  addTask: _addTask,
   checkTaskDuration,
-  callExpiredTasks,
+  callExpiredTasks: _callExpiredTasks,
 };
 
-function createTaskQueue() {
-  let queue;
-  return {
-    add() {},
-    check() {},
-  };
+class TaskQueue {
+  _queue: Task[] = [];
+
+  addTask(task: Task): void {
+    _addTask(this._queue, task);
+  }
+
+  callExpiredTasks(duration: number, data?: unknown): void {
+    _callExpiredTasks(this._queue, duration, data);
+  }
 }
 
-export { _test, Task, createTaskQueue };
+export { _test, Task, TaskQueue };

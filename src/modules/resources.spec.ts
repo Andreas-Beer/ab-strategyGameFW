@@ -18,8 +18,8 @@ const price2: Price = { resourceId: 2, amount: 10 };
 const price999999X: Price = { resourceId: 999999, amount: 1000 };
 const price2X: Price = { resourceId: 2, amount: 1000 };
 
-const item1: ItemConfig = { id: 1, price: [price1, price2] } as ItemConfig;
-const item2: ItemConfig = { id: 2, price: [price1] } as ItemConfig;
+const item1 = { id: 1, price: [price1, price2] } as ItemConfig;
+const item2 = { id: 2, price: [price1] } as ItemConfig;
 const itemId999999X = 999999;
 
 describe('modules/resources.ts', () => {

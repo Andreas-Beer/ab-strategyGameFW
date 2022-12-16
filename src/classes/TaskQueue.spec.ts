@@ -3,7 +3,8 @@ import Sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 use(sinonChai);
 
-import { Task, _test } from './taskQueue';
+import { TaskQueue, _test } from './TaskQueue';
+import { Task } from './Task';
 const { addTask, checkTaskDuration, callExpiredTasks } = _test;
 
 const task1: Task = { onFinish: Sinon.spy(), durationMs: 10 };
@@ -12,7 +13,7 @@ const task3: Task = { onFinish: Sinon.spy(), durationMs: 30 };
 const task4: Task = { onFinish: Sinon.spy(), durationMs: 40 };
 const task5: Task = { onFinish: Sinon.spy(), durationMs: 50 };
 
-describe('modules/taskQueue.ts', () => {
+describe('classes/TaskQueue.ts', () => {
   describe('internal', () => {
     describe('addTask', () => {
       it('should not modify the given queue', () => {
@@ -60,5 +61,14 @@ describe('modules/taskQueue.ts', () => {
       });
     });
   });
-  describe('API', () => {});
+  describe('API', () => {
+    describe('createTaskQueue', () => {
+      it('should create a taskQueue', () => {
+        const queue = new TaskQueue();
+        expect(queue._queue).to.be.not.undefined;
+        expect(queue.addTask).to.be.not.undefined;
+        expect(queue.callExpiredTasks).to.be.not.undefined;
+      });
+    });
+  });
 });
