@@ -1,5 +1,10 @@
+import { convertDurationIntoMs } from '../helpers/duration';
 class Task {
-  constructor(private _durationMs: number, private _onFinish: Function) {}
+  private _durationMs!: number;
+
+  constructor(durationMs: Duration, private _onFinish: Function) {
+    this._durationMs = convertDurationIntoMs(durationMs);
+  }
 
   get durationMs() {
     return this._durationMs;

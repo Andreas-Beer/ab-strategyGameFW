@@ -1,5 +1,7 @@
+type ItemTypeId = number;
+
 type ItemConfig = {
-  id: number;
+  typeId: ItemTypeId;
   category: number;
   price: Price[];
   effects: EffectConfig[];

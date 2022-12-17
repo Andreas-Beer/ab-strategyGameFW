@@ -1,5 +1,5 @@
 type Requirement =
   | { type: 'playerLevel'; level: number }
-  | { type: 'item'; itemId: number; amount?: number }
-  | { type: 'building'; buildingId: number; level: number }
-  | { type: 'not-building'; buildingId: number };
+  | { type: 'item'; itemTypeId: ItemTypeId; amount?: number }
+  | { type: 'building'; buildingTypeId: BuildingTypeId; level: number }
+  | { type: 'not-building'; buildingTypeId: BuildingTypeId };

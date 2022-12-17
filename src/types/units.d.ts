@@ -1,3 +1,4 @@
+const UnitTypeId = number;
 namespace UnitConfig {
   export type Stats = {
     damage: number;
@@ -11,7 +12,7 @@ namespace UnitConfig {
 }
 
 type UnitConfig = {
-  id: number;
+  typeId: UnitTypeId;
   stats: UnitConfig.Stats;
   duration: Duration;
   price: Price[];

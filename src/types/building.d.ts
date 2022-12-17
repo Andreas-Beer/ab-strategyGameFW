@@ -1,3 +1,5 @@
+type BuildingTypeId = number;
+
 type BuildingLevelConfig = {
   price: Price[];
   requirements: Requirement[];
@@ -6,7 +8,7 @@ type BuildingLevelConfig = {
 };
 
 type BuildingConfig = {
-  id: number;
+  typeId: BuildingTypeId;
   levels: {
     [key: number]: BuildingLevelConfig;
   };
@@ -15,7 +17,7 @@ type BuildingConfig = {
 
 type BuildingData = {
   id: number;
-  buildingTypeId: number;
+  buildingTypeId: BuildingTypeId;
   level: number;
   location: number;
   constructionProgress: number;

@@ -3,12 +3,12 @@ const config: ConfigData = {
     buildingsBuildParallel: 2,
     buildings: [
       {
-        id: 4,
+        typeId: 4,
         levels: {
           1: {
             requirements: [
               { type: 'playerLevel', level: 2 },
-              { type: 'building', buildingId: 13, level: 5 },
+              { type: 'building', buildingTypeId: 13, level: 5 },
             ],
             price: [
               { resourceId: 2, amount: 300 },
@@ -18,7 +18,7 @@ const config: ConfigData = {
             effects: [],
           },
           10: {
-            requirements: [{ type: 'item', itemId: 29 }],
+            requirements: [{ type: 'item', itemTypeId: 29 }],
             effects: [],
             price: [
               { resourceId: 2, amount: 300 },
@@ -40,7 +40,7 @@ const config: ConfigData = {
         },
       },
       {
-        id: 2,
+        typeId: 2,
         levels: {
           1: {
             price: [{ resourceId: 1, amount: 100 }],
@@ -73,7 +73,7 @@ const config: ConfigData = {
               { resourceId: 2, amount: 2000 },
             ],
             duration: '20s',
-            requirements: [{ type: 'not-building', buildingId: 3 }],
+            requirements: [{ type: 'not-building', buildingTypeId: 3 }],
             effects: [],
           },
         },
@@ -85,7 +85,7 @@ const config: ConfigData = {
   },
   units: [
     {
-      id: 2,
+      typeId: 2,
       stats: {
         damage: 200,
         range: 20,
@@ -102,14 +102,14 @@ const config: ConfigData = {
       ],
       requirements: [
         { type: 'playerLevel', level: 6 },
-        { type: 'building', buildingId: 5, level: 3 },
+        { type: 'building', buildingTypeId: 5, level: 3 },
       ],
       effects: [{ resourceId: 3, amount: 30, repeat: '1h' }],
     },
   ],
   items: [
     {
-      id: 0,
+      typeId: 0,
       category: 1,
       price: [{ resourceId: 0, amount: 300 }],
       effects: [
@@ -120,7 +120,7 @@ const config: ConfigData = {
       ],
     },
     {
-      id: 1,
+      typeId: 1,
       category: 3,
       price: [
         { resourceId: 0, amount: 10 },
@@ -134,7 +134,7 @@ const config: ConfigData = {
       ],
     },
     {
-      id: 2,
+      typeId: 2,
       category: 5,
       price: [{ resourceId: 0, amount: 10 }],
       effects: [
@@ -145,7 +145,7 @@ const config: ConfigData = {
       ],
     },
     {
-      id: 3,
+      typeId: 3,
       category: 8,
       isUnusableInInventory: true,
       price: [{ resourceId: 0, amount: 10 }],
@@ -162,7 +162,7 @@ const config: ConfigData = {
       },
     },
     {
-      id: 4,
+      typeId: 4,
       category: 3,
       isUnusableInInventory: true,
       price: [{ resourceId: 0, amount: 250 }],
@@ -178,7 +178,7 @@ const config: ConfigData = {
       ],
     },
     {
-      id: 5,
+      typeId: 5,
       category: 5,
       isUnusableInInventory: true,
       price: [{ resourceId: 0, amount: 10 }],

@@ -17,6 +17,6 @@ type EffectConfig =
   | { type: 'townBuff/peace'; expire: Duration }
   | { type: 'buff/buildParallel'; expire: Duration }
   | { type: 'speedup/building'; amount: Duration }
-  | { type: 'package/items'; items: { itemId: number; amount: number }[] };
+  | { type: 'package/items'; items: { itemId: ItemTypeId; amount: number }[] };
 
 type EffectData = { effectId: number; expire?: Duration };
