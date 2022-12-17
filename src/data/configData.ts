@@ -65,7 +65,7 @@ const config: ConfigData = {
         },
       },
       {
-        id: 3,
+        typeId: 3,
         levels: {
           1: {
             price: [

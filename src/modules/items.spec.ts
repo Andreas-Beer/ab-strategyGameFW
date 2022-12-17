@@ -19,8 +19,8 @@ const price2: Price = { resourceId: 2, amount: 10 };
 const price999999X: Price = { resourceId: 999999, amount: 1000 };
 const price2X: Price = { resourceId: 2, amount: 1000 };
 
-const item1: ItemConfig = { id: 1, price: [price1, price2] } as ItemConfig;
-const item2: ItemConfig = { id: 2, price: [price1] } as ItemConfig;
+const item1: ItemConfig = { typeId: 1, price: [price1, price2] } as ItemConfig;
+const item2: ItemConfig = { typeId: 2, price: [price1] } as ItemConfig;
 const itemId999999X = 999999;
 
 describe('modules/items.ts', () => {
@@ -42,7 +42,7 @@ describe('modules/items.ts', () => {
   describe('API', () => {
     describe('addItem()', () => {
       it('should add a new item id to the stack if the item is not in the stack', () => {
-        const { id: itemId } = item1;
+        const { typeId: itemId } = item1;
         expect(playerData.items[itemId]).to.be.undefined;
         const result = addItem(playerData, itemId);
         expect(playerData.items[itemId]).to.be.eq(1);
@@ -50,7 +50,7 @@ describe('modules/items.ts', () => {
       });
 
       it('should increase the item stack if the resource is already in the stack', () => {
-        const { id: itemId } = item1;
+        const { typeId: itemId } = item1;
         playerData.items[itemId] = 1;
 
         expect(playerData.items[itemId]).to.be.eq(1);
@@ -62,7 +62,7 @@ describe('modules/items.ts', () => {
 
     describe('removeItem()', () => {
       it('should remove an item if the item amount is 1', () => {
-        const { id: itemId } = item1;
+        const { typeId: itemId } = item1;
         playerData.items[itemId] = 1;
 
         removeItem(playerData, itemId);
@@ -70,7 +70,7 @@ describe('modules/items.ts', () => {
       });
 
       it('should decrease an item if the item amount is above 1', () => {
-        const { id: itemId } = item1;
+        const { typeId: itemId } = item1;
         const oldAmount = 2;
         const expectedAmount = oldAmount - 1;
         playerData.items[itemId] = oldAmount;
@@ -80,7 +80,7 @@ describe('modules/items.ts', () => {
       });
 
       it('should return an error if the item does not exist', () => {
-        const { id: itemId } = item1;
+        const { typeId: itemId } = item1;
 
         const removeItemResult = removeItem(playerData, itemId);
         expect(removeItemResult).to.be.not.undefined;
@@ -92,7 +92,7 @@ describe('modules/items.ts', () => {
     describe('buyItem()', () => {
       it('should remove the resource and add the item to the data', () => {
         const {
-          id: itemId,
+          typeId: itemId,
           price: [{ resourceId, amount }],
         } = item2;
 
@@ -118,7 +118,7 @@ describe('modules/items.ts', () => {
 
     describe('useItem()', () => {
       it('should remove the used item', () => {
-        const { id: itemId } = item1;
+        const { typeId: itemId } = item1;
         playerData.items[itemId] = 1;
 
         useItem(playerData, itemId);

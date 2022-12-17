@@ -1,5 +1,6 @@
-const UnitTypeId = number;
+type UnitTypeId = number;
 namespace UnitConfig {
+  export type typeId = number;
   export type Stats = {
     damage: number;
     range: number;

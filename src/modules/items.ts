@@ -35,7 +35,7 @@ function findItemConfig(
   itemTypeId: number,
 ): Result<ItemConfig, ItemConfigNotFoundError> {
   const itemConfigs = getConfig().items;
-  const foundDefinition = itemConfigs.find((def) => def.id === itemTypeId);
+  const foundDefinition = itemConfigs.find((def) => def.typeId === itemTypeId);
   if (!foundDefinition) {
     return {
       success: false,
