@@ -1,4 +1,8 @@
 import { getConfig } from '../data/configData';
+import { PlayerData } from '../types/data.types';
+import { ItemConfig } from '../types/item.types';
+import { Result } from '../types/validator.types';
+
 import { checkLiquidity, decreaseResourceAmount } from './resources';
 
 class ItemConfigNotFoundError extends Error {

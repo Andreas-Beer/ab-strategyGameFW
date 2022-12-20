@@ -1,6 +1,6 @@
-type ResourceData = Record<number, ResourceId>;
+export type ResourceData = Record<number, ResourceId>;
 
-type TownData = {
+export type TownData = {
   id: number;
   name: string;
   location: [number, number];
@@ -11,7 +11,7 @@ type TownData = {
   capacity: ResourceData;
 };
 
-type PlayerData = {
+export type PlayerData = {
   id: number;
   email: string;
   name: string;

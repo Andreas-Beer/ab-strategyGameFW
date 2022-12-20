@@ -1,3 +1,8 @@
+import { ConfigData } from '../types/config.types';
+import { BuildingConfig } from '../types/building.types';
+import { ItemConfig } from '../types/item.types';
+import { UnitConfig } from '../types/units.types';
+
 import { expect, use } from 'chai';
 import { Config, ConfigNotFoundError } from './Config';
 import * as configData from '../data/configData';

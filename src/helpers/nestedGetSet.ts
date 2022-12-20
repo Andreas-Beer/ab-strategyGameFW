@@ -1,3 +1,5 @@
+import { NestedSelector } from '../types/nestedSelector.types';
+
 export function getData<T>(data: any, selector: NestedSelector<T>) {
   const firstDot = selector.indexOf('.');
   const nextSelector = selector.slice(0, firstDot);

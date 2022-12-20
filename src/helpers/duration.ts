@@ -1,4 +1,4 @@
-export function convertDurationIntoMs(duration) {
+export function convertDurationIntoMs(duration: any) {
   if (typeof duration === 'number') {
     return duration;
   }

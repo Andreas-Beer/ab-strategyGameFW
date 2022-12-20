@@ -1,3 +1,4 @@
+import { Duration } from '../types/time.types';
 import { convertDurationIntoMs } from '../helpers/duration';
 class Task {
   private _durationMs!: number;

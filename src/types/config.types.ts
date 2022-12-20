@@ -1,4 +1,4 @@
-type ConfigData = {
+export type ConfigData = {
   buildings: {
     buildingsBuildParallel: number;
     buildings: BuildingConfig[];

@@ -1,6 +1,9 @@
-type ItemTypeId = number;
+import { EffectConfig } from './effect.types';
+import { Price } from './price.types';
 
-type ItemConfig = {
+export type ItemTypeId = number;
+
+export type ItemConfig = {
   typeId: ItemTypeId;
   category: number;
   price: Price[];

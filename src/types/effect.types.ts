@@ -1,7 +1,7 @@
-type AmountOperator = '+' | '-' | '*' | '/' | '';
-type Amount = number | `${AmountOperator}${number}${'%' | ''}`;
+export type AmountOperator = '+' | '-' | '*' | '/' | '';
+export type Amount = number | `${AmountOperator}${number}${'%' | ''}`;
 
-type EffectConfig =
+export type EffectConfig =
   | {
       type: `modify/resource/${ResourceId}`;
       amount: Amount;
@@ -19,4 +19,4 @@ type EffectConfig =
   | { type: 'speedup/building'; amount: Duration }
   | { type: 'package/items'; items: { itemId: ItemTypeId; amount: number }[] };
 
-type EffectData = { effectId: number; expire?: Duration };
+export type EffectData = { effectId: number; expire?: Duration };

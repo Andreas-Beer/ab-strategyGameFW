@@ -1,13 +1,18 @@
-type BuildingTypeId = number;
+import { EffectConfig } from './effect.types';
+import { Price } from './price.types';
+import { Requirement } from './requirement.types';
+import { Duration } from './time.types';
 
-type BuildingLevelConfig = {
+export type BuildingTypeId = number;
+
+export type BuildingLevelConfig = {
   price: Price[];
   requirements: Requirement[];
   duration: Duration;
   effects: EffectConfig[];
 };
 
-type BuildingConfig = {
+export type BuildingConfig = {
   typeId: BuildingTypeId;
   levels: {
     [key: number]: BuildingLevelConfig;
@@ -15,9 +20,9 @@ type BuildingConfig = {
   controller?: { name: string; config?: any };
 };
 
-type BuildingData = {
+export type BuildingData = {
   id: number;
-  buildingTypeId: BuildingTypeId;
+  typeId: BuildingTypeId;
   level: number;
   location: number;
   constructionProgress: number;

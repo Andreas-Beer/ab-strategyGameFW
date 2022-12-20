@@ -1,3 +1,5 @@
+import { ConfigData } from '../types/config.types';
+
 const config: ConfigData = {
   buildings: {
     buildingsBuildParallel: 2,

@@ -1,3 +1,6 @@
+import { PlayerData } from '../types/data.types';
+import { NestedSelector } from '../types/nestedSelector.types';
+
 import { getData, setData } from '../helpers/nestedGetSet';
 
 const playerData: PlayerData = {

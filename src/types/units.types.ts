@@ -1,5 +1,5 @@
-type UnitTypeId = number;
-namespace UnitConfig {
+export type UnitTypeId = number;
+export namespace UnitConfig {
   export type typeId = number;
   export type Stats = {
     damage: number;
@@ -12,11 +12,11 @@ namespace UnitConfig {
   };
 }
 
-type UnitConfig = {
+export type UnitConfig = {
   typeId: UnitTypeId;
   stats: UnitConfig.Stats;
   duration: Duration;
   price: Price[];
   requirements: Requirement[];
-  effects: Effect[];
+  effects: EffectConfig[];
 };
