@@ -2,13 +2,13 @@
   "name": "ab-strategyGameFW",
   "version": "1.0.0",
   "description": "",
-  "main": "./main.ts",
+  "main": "./src/main.ts",
   "scripts": {
     "start": "ts-node .",
     "build": "rimraf dist && tsc",
     "dev": "nodemon",
     "test": "ts-mocha {src,test}/**/*[spec,test].ts",
-    "test:watch": "npm run test -- --watch --watch-files '[src,test]/**/*.ts'",
+    "test:watch": "npm run test -- --watch --watch-files 'src/**/*.ts'",
     "test:coverage": "rm -rf ./coverage && nyc npm run test -- --reporter min",
     "prepare": "husky install"
   },

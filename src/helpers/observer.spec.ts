@@ -3,7 +3,7 @@ import Sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 use(sinonChai);
 
-import { _test, createObservable } from './observer';
+import { _test, Observable } from './observer';
 
 const { addObserver, removeObserver, notifyObservers } = _test;
 
@@ -79,14 +79,14 @@ describe('helpers/observer.ts', () => {
   describe('API', () => {
     describe('createObservable()', () => {
       it('should create an observable', () => {
-        const observable = createObservable();
+        const observable = new Observable();
         expect(observable).to.be.an('object');
         expect(observable).to.have.property('add').is.a('function');
         expect(observable).to.have.property('remove').is.a('function');
         expect(observable).to.have.property('notify').is.a('function');
       });
       it('should work', () => {
-        const observable = createObservable();
+        const observable = new Observable();
         const spy1 = Sinon.spy();
         const spy2 = Sinon.spy();
         observable.add(spy1);

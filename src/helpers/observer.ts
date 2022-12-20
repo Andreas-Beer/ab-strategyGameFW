@@ -1,4 +1,4 @@
-type Observer = Function;
+export type Observer = Function;
 
 function addObserver(list: Observer[], cb: Observer) {
   if (typeof cb !== 'function') {
@@ -15,20 +15,18 @@ function notifyObservers(list: Observer[], data?: unknown) {
   list.forEach((item) => item(data));
 }
 
-function createObservable() {
-  let observersList: Observer[] = [];
+class Observable {
+  private observersList: Function[] = [];
 
-  return {
-    add: (observer: Observer) => {
-      observersList = addObserver(observersList, observer);
-    },
-    remove: (observer: Observer) => {
-      observersList = removeObserver(observersList, observer);
-    },
-    notify: (data?: unknown) => {
-      notifyObservers(observersList, data);
-    },
-  };
+  add(observer: Observer) {
+    this.observersList = addObserver(this.observersList, observer);
+  }
+  remove(observer: Observer) {
+    this.observersList = removeObserver(this.observersList, observer);
+  }
+  notify(data?: unknown) {
+    notifyObservers(this.observersList, data);
+  }
 }
 
 const _test = {
@@ -37,4 +35,4 @@ const _test = {
   notifyObservers,
 };
 
-export { _test, createObservable };
+export { _test, Observable };
