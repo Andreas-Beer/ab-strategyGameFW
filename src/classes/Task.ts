@@ -4,7 +4,9 @@ class Task {
   private _durationMs!: number;
 
   constructor(durationMs: Duration, private _onFinish: Function) {
-    this._durationMs = convertDurationIntoMs(durationMs);
+    const now = Date.now();
+    const durationInMs = convertDurationIntoMs(durationMs);
+    this._durationMs = durationInMs + now;
   }
 
   get durationMs() {

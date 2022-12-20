@@ -1,4 +1,4 @@
-import { createObservable, Observable } from '../helpers/observer';
+import { Observable } from '../helpers/observer';
 
 type TickerEvents = 'error' | 'tick';
 
@@ -8,42 +8,40 @@ let lastTick = Date.now();
 let gameDuration = 0;
 let expected = Date.now() + TICK_DURATION;
 
-function tick() {
-  const now = Date.now();
-  const duration = now - lastTick;
-  const drift = now - expected; // the drift (positive for overshooting)
-  const nextTick = Math.max(0, TICK_DURATION - drift);
-  lastTick = now;
-
-  console.log('tick!');
-
-  if (drift > TICK_DURATION && drift - TICK_DURATION > TICK_DRIFT_THRESHOLD) {
-    // something really bad happened. Maybe the browser (tab) was inactive?
-    // possibly special handling to avoid futile "catch up" run
-    console.log('Ticker.js - drift too high! - OH no !', { drift: drift });
-    return;
-  }
-
-  gameDuration += duration;
-  expected += TICK_DURATION;
-
-  setTimeout(tick, nextTick);
-}
-
 class Ticker {
-  private listeners: Record<TickerEvents, Observable[]> = {
-    error: [],
-    tick: [],
+  private listeners: Record<TickerEvents, Observable> = {
+    error: new Observable(),
+    tick: new Observable(),
   };
 
-  private observable = createObservable();
-
   constructor() {
-    tick();
+    this.tick();
   }
 
   on(eventName: TickerEvents, eventHandler: (time: number) => void) {
-    this.observable.add();
+    this.listeners[eventName].add(eventHandler);
+  }
+
+  private tick() {
+    const now = Date.now();
+    const duration = now - lastTick;
+    const drift = now - expected; // the drift (positive for overshooting)
+    const nextTick = Math.max(0, TICK_DURATION - drift);
+    lastTick = now;
+
+    this.listeners.tick.notify(now);
+
+    if (drift > TICK_DURATION && drift - TICK_DURATION > TICK_DRIFT_THRESHOLD) {
+      // something really bad happened. Maybe the browser (tab) was inactive?
+      // possibly special handling to avoid futile "catch up" run
+      console.log('Ticker.js - drift too high! - OH no !', { drift: drift });
+      this.listeners.error.notify({ time: now, gameDuration, drift });
+    }
+
+    gameDuration += duration;
+    expected += TICK_DURATION;
+
+    setTimeout(() => this.tick(), nextTick);
   }
 }
 
