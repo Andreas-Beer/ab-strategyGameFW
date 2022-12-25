@@ -1,13 +1,11 @@
-import { ConfigData } from '../types/config.types';
-import { BuildingConfig } from '../types/building.types';
-import { ItemConfig } from '../types/item.types';
-import { UnitConfig } from '../types/units.types';
+import { BuildingConfig } from '../../types/building.types';
+import { ConfigData } from '../../types/config.types';
+import { ItemConfig } from '../../types/item.types';
+import { UnitConfig } from '../../types/units.types';
 
 import { expect, use } from 'chai';
-import { Config, ConfigNotFoundError } from './Config';
-import * as configData from '../data/configData';
-import Sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import { ConfigNotFoundError } from './ConfigDataFacade';
 use(sinonChai);
 
 const buildingIdSuccess = 1;
@@ -25,16 +23,10 @@ const fakeConfig: ConfigData = {
 };
 
 describe('classes/Config.ts', () => {
-  let config = new Config(fakeConfig);
+  let config = new ConfigFacade(fakeConfig);
   describe('constructor', () => {
     it('should create a config wrapper', () => {
       expect(config).to.be.not.undefined;
-    });
-    it('should create a config wrapper arround the global config if no config was provided', () => {
-      Sinon.stub(configData, 'getConfig');
-      new Config();
-      expect(configData.getConfig).to.be.calledOnce;
-      Sinon.restore();
     });
   });
   describe('findBuildingByTypeId', () => {

@@ -1,6 +1,6 @@
-import { PlayerData } from '../types/data.types';
-import { Price } from '../types/price.types';
-import { Result } from '../types/validator.types';
+import { PlayerData } from '../../types/data.types';
+import { Price } from '../../types/price.types';
+import { Result } from '../../types/validator.types';
 
 class ResourceNotFoundError extends Error {
   public type = 'RESOURCE_NOT_FOUND_ERROR';

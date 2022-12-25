@@ -1,6 +1,6 @@
 import Koa, { HttpError } from 'koa';
 import Router from '@koa/router';
-import { Config, ConfigNotFoundError } from '../classes/Config';
+import { ConfigFacade, ConfigNotFoundError } from '../data/ConfigDataFacade';
 import { getConfig } from '../data/configData';
 
 const router = new Router();
@@ -19,7 +19,7 @@ router.get('/config/buildings', (ctx, next) => {
   ctx.body = config.buildings.buildings;
 });
 router.get('/config/buildings/:id', (ctx, next) => {
-  const config = new Config();
+  const config = new ConfigFacade();
   const { id } = ctx.params;
 
   try {
@@ -39,7 +39,7 @@ router.get('/config/items', (ctx, next) => {
   ctx.body = config.items;
 });
 router.get('/config/items/:id', (ctx, next) => {
-  const config = new Config();
+  const config = new ConfigFacade();
   const { id } = ctx.params;
   ctx.body = config.findItemConfigByTypeId(Number(id));
 });

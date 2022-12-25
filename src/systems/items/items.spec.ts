@@ -1,6 +1,10 @@
+import { ConfigData } from '../../types/config.types';
+import { PlayerData, ResourceData } from '../../types/data.types';
+import { ItemConfig } from '../../types/item.types';
+import { Price } from '../../types/price.types';
+
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as configModule from '../data/configData';
 import {
   errors as itemErrors,
   internal as itemInternals,

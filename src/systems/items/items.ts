@@ -1,9 +1,10 @@
+import { ConfigFacade } from '../data/ConfigDataFacade';
 import { getConfig } from '../data/configData';
-import { PlayerData } from '../types/data.types';
-import { ItemConfig } from '../types/item.types';
-import { Result } from '../types/validator.types';
+import { PlayerData } from '../../types/data.types';
+import { ItemConfig } from '../../types/item.types';
+import { Result } from '../../types/validator.types';
 
-import { checkLiquidity, decreaseResourceAmount } from './resources';
+import { checkLiquidity, decreaseResourceAmount } from '../resources/resources';
 
 class ItemConfigNotFoundError extends Error {
   public type = 'ITEM_CONFIG_NOT_FOUND_ERROR';
@@ -60,13 +61,16 @@ function addItem(playerData: PlayerData, itemTypeId: number): Result<boolean> {
 }
 
 function buyItem(playerData: PlayerData, itemTypeId: number): Result<boolean> {
-  const itemConfig = findItemConfig(itemTypeId);
-  if (!itemConfig.success) {
-    return itemConfig;
-  }
-  const price = itemConfig.value.price;
+  const config = getConfig();
+  const itemConfig = new ConfigFacade(config).findItemConfigByTypeId(
+    itemTypeId,
+  );
+  const price = itemConfig.price;
 
-  const isLiquid = checkLiquidity(playerData, price);
+  const checkLiquidityResult = checkLiquidity(playerData, price);
+  if (!checkLiquidityResult.success) {
+    throw checkLiquidityResult.value;
+  }
 
   for (const p of price) {
     decreaseResourceAmount(playerData, p);

@@ -24,7 +24,10 @@ function _callExpiredTasks(
       return;
     }
 
-    nextTask.onFinish(data);
+    queueMicrotask(() => {
+      nextTask.onFinish(data);
+    });
+
     taskQueue.shift();
     i--;
   }

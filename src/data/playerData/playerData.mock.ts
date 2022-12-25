@@ -1,9 +1,6 @@
-import { PlayerData } from '../types/data.types';
-import { NestedSelector } from '../types/nestedSelector.types';
+import { PlayerData } from '../../types/data.types';
 
-import { getData, setData } from '../helpers/nestedGetSet';
-
-const playerData: PlayerData = {
+export const playerDataMock: PlayerData = {
   id: 1234,
   email: 'bob@me.net',
   name: 'Bob',
@@ -62,28 +59,3 @@ const playerData: PlayerData = {
     },
   ],
 };
-
-function fetchPlayerData(playerId: number): Promise<PlayerData> {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(playerData), 10);
-  });
-}
-
-const _test = {
-  fetchPlayerData,
-};
-
-async function getPlayerData(playerId: number, data?: any) {
-  data = data || (await fetchPlayerData(playerId));
-
-  return {
-    get(selector: NestedSelector<PlayerData>) {
-      return getData(data, selector);
-    },
-    set(selector: NestedSelector<PlayerData>, value: any) {
-      setData(data, selector, value);
-    },
-  };
-}
-
-export { _test, getPlayerData };

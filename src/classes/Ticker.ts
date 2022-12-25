@@ -14,6 +14,10 @@ class Ticker {
     tick: new Observable(),
   };
 
+  getTickDuration() {
+    return TICK_DURATION;
+  }
+
   constructor() {
     this.tick();
   }
@@ -29,7 +33,7 @@ class Ticker {
     const nextTick = Math.max(0, TICK_DURATION - drift);
     lastTick = now;
 
-    this.listeners.tick.notify(now);
+    this.listeners.tick.notify(gameDuration);
 
     if (drift > TICK_DURATION && drift - TICK_DURATION > TICK_DRIFT_THRESHOLD) {
       // something really bad happened. Maybe the browser (tab) was inactive?

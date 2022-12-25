@@ -1,7 +1,12 @@
+import { BuildingData } from './building.types';
+import { EffectData } from './effect.types';
+import { ResourceId } from './resources.types';
+
 export type ResourceData = Record<number, ResourceId>;
+export type PlayerId = number;
 
 export type TownData = {
-  id: number;
+  id: PlayerId;
   name: string;
   location: [number, number];
   buildings: BuildingData[];
@@ -12,7 +17,7 @@ export type TownData = {
 };
 
 export type PlayerData = {
-  id: number;
+  id: PlayerId;
   email: string;
   name: string;
   level: number;

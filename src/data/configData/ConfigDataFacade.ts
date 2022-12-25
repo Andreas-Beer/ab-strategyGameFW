@@ -2,16 +2,13 @@ import { ConfigData } from '../types/config.types';
 import { BuildingTypeId, BuildingConfig } from '../types/building.types';
 import { ItemTypeId, ItemConfig } from '../types/item.types';
 import { UnitTypeId, UnitConfig } from '../types/units.types';
-
-import { getConfig } from '../data/configData';
-
 class ConfigNotFoundError extends Error {
   public name = 'CONFIG_NOT_FOUND_ERROR';
   public category = 'CRITICAL';
 }
 
-class Config {
-  constructor(private configData: ConfigData = getConfig()) {}
+class ConfigDataFacade {
+  constructor(private configData: ConfigData) {}
 
   findBuildingConfigByTypeId(buildingTypeId: BuildingTypeId): BuildingConfig {
     const buildingConfig = this.configData.buildings.buildings.find(
@@ -56,4 +53,4 @@ class Config {
   }
 }
 
-export { Config, ConfigNotFoundError };
+export { ConfigDataFacade, ConfigNotFoundError };

@@ -1,6 +1,6 @@
-import { ConfigData } from '../types/config.types';
+import { ConfigData } from '../../types/config.types';
 
-const config: ConfigData = {
+export const configDataMock: ConfigData = {
   buildings: {
     buildingsBuildParallel: 2,
     buildings: [
@@ -194,9 +194,3 @@ const config: ConfigData = {
     },
   ],
 };
-
-function getConfig() {
-  return Object.freeze(config);
-}
-
-export { getConfig };
