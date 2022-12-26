@@ -23,7 +23,7 @@ export const playerDataMock: PlayerData = {
       buildings: [
         {
           id: 15,
-          buildingTypeId: 4,
+          typeId: 4,
           level: 3,
           location: 25,
           content: { unitsInCreation: [{ id: 1 }] },
@@ -32,7 +32,7 @@ export const playerDataMock: PlayerData = {
         {
           id: 8,
           level: 0,
-          buildingTypeId: 6,
+          typeId: 6,
           location: 11,
           constructionProgress: 60,
         },

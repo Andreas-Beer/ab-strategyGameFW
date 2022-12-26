@@ -8,7 +8,7 @@ import * as sinon from 'sinon';
 import {
   errors as itemErrors,
   internal as itemInternals,
-  buyItem,
+  // buyItem,
   addItem,
   useItem,
 } from './items';

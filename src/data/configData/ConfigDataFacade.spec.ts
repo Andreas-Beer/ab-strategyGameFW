@@ -5,7 +5,7 @@ import { UnitConfig } from '../../types/units.types';
 
 import { expect, use } from 'chai';
 import sinonChai from 'sinon-chai';
-import { ConfigNotFoundError } from './ConfigDataFacade';
+import { ConfigDataFacade, ConfigNotFoundError } from './ConfigDataFacade';
 use(sinonChai);
 
 const buildingIdSuccess = 1;
@@ -23,7 +23,7 @@ const fakeConfig: ConfigData = {
 };
 
 describe('classes/Config.ts', () => {
-  let config = new ConfigFacade(fakeConfig);
+  let config = new ConfigDataFacade(fakeConfig);
   describe('constructor', () => {
     it('should create a config wrapper', () => {
       expect(config).to.be.not.undefined;

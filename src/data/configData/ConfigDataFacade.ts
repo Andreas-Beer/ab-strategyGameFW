@@ -1,18 +1,20 @@
-import { ConfigData } from '../types/config.types';
-import { BuildingTypeId, BuildingConfig } from '../types/building.types';
-import { ItemTypeId, ItemConfig } from '../types/item.types';
-import { UnitTypeId, UnitConfig } from '../types/units.types';
+import { BuildingTypeId, BuildingConfig } from '../../types/building.types';
+import { ConfigData } from '../../types/config.types';
+import { ItemTypeId, ItemConfig } from '../../types/item.types';
+import { UnitTypeId, UnitConfig } from '../../types/units.types';
+
 class ConfigNotFoundError extends Error {
   public name = 'CONFIG_NOT_FOUND_ERROR';
   public category = 'CRITICAL';
 }
 
 class ConfigDataFacade {
-  constructor(private configData: ConfigData) {}
+  constructor(public configData: ConfigData) {}
 
   findBuildingConfigByTypeId(buildingTypeId: BuildingTypeId): BuildingConfig {
     const buildingConfig = this.configData.buildings.buildings.find(
-      (buildingConfig) => buildingConfig.typeId === buildingTypeId,
+      (buildingConfig: BuildingConfig) =>
+        buildingConfig.typeId === buildingTypeId,
     );
 
     if (!buildingConfig) {
@@ -26,7 +28,7 @@ class ConfigDataFacade {
 
   findItemConfigByTypeId(itemTypeId: ItemTypeId): ItemConfig {
     const itemConfig = this.configData.items.find(
-      (itemConfig) => itemConfig.typeId === itemTypeId,
+      (itemConfig: ItemConfig) => itemConfig.typeId === itemTypeId,
     );
 
     if (!itemConfig) {
@@ -40,7 +42,7 @@ class ConfigDataFacade {
 
   findUnitConfigByTypeId(unitTypeId: UnitTypeId): UnitConfig {
     const unitConfig = this.configData.units.find(
-      (itemConfig) => itemConfig.typeId === unitTypeId,
+      (unitConfig: UnitConfig) => unitConfig.typeId === unitTypeId,
     );
 
     if (!unitConfig) {

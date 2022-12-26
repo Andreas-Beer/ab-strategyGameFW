@@ -5,6 +5,11 @@ import { Duration } from './time.types';
 
 export type BuildingTypeId = number;
 
+export type BuildingsConfig = {
+  buildingsBuildParallel: number;
+  buildings: BuildingConfig[];
+};
+
 export type BuildingLevelConfig = {
   price: Price[];
   requirements: Requirement[];

@@ -1,10 +1,12 @@
-import { ConfigFacade } from '../data/ConfigDataFacade';
-import { getConfig } from '../data/configData';
+import { getConfigData } from '../../data/configData/configData';
 import { PlayerData } from '../../types/data.types';
 import { ItemConfig } from '../../types/item.types';
 import { Result } from '../../types/validator.types';
 
-import { checkLiquidity, decreaseResourceAmount } from '../resources/resources';
+import {
+  checkLiquidity,
+  decreaseResourceAmount,
+} from '../resources/resources.helper';
 
 class ItemConfigNotFoundError extends Error {
   public type = 'ITEM_CONFIG_NOT_FOUND_ERROR';
@@ -36,19 +38,19 @@ function removeItem(
   return { success: true, value: true };
 }
 
-function findItemConfig(
-  itemTypeId: number,
-): Result<ItemConfig, ItemConfigNotFoundError> {
-  const itemConfigs = getConfig().items;
-  const foundDefinition = itemConfigs.find((def) => def.typeId === itemTypeId);
-  if (!foundDefinition) {
-    return {
-      success: false,
-      value: new ItemConfigNotFoundError(`The id ${itemTypeId} is not an item`),
-    };
-  }
-  return { success: true, value: foundDefinition };
-}
+// function findItemConfig(
+//   itemTypeId: number,
+// ): Result<ItemConfig, ItemConfigNotFoundError> {
+//   const itemConfigs = getConfigData().items;
+//   const foundDefinition = itemConfigs.find((def) => def.typeId === itemTypeId);
+//   if (!foundDefinition) {
+//     return {
+//       success: false,
+//       value: new ItemConfigNotFoundError(`The id ${itemTypeId} is not an item`),
+//     };
+//   }
+//   return { success: true, value: foundDefinition };
+// }
 
 function addItem(playerData: PlayerData, itemTypeId: number): Result<boolean> {
   if (!playerData.items[itemTypeId]) {
@@ -60,33 +62,13 @@ function addItem(playerData: PlayerData, itemTypeId: number): Result<boolean> {
   return { success: true, value: true };
 }
 
-function buyItem(playerData: PlayerData, itemTypeId: number): Result<boolean> {
-  const config = getConfig();
-  const itemConfig = new ConfigFacade(config).findItemConfigByTypeId(
-    itemTypeId,
-  );
-  const price = itemConfig.price;
-
-  const checkLiquidityResult = checkLiquidity(playerData, price);
-  if (!checkLiquidityResult.success) {
-    throw checkLiquidityResult.value;
-  }
-
-  for (const p of price) {
-    decreaseResourceAmount(playerData, p);
-  }
-
-  addItem(playerData, itemTypeId);
-  return { success: true, value: true };
-}
-
 function useItem(playerData: PlayerData, itemTypeId: number) {
   return removeItem(playerData, itemTypeId);
 }
 
 const internal = {
   removeItem,
-  findItemConfig,
+  // findItemConfig,
 };
 
 const errors = {
@@ -94,4 +76,4 @@ const errors = {
   ItemNotFoundError,
 };
 
-export { internal, errors, addItem, buyItem, useItem };
+export { internal, errors, addItem, useItem };

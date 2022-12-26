@@ -1,52 +1,16 @@
-import Koa, { HttpError } from 'koa';
+import Koa from 'koa';
+import Application from 'koa';
 import Router from '@koa/router';
-import { ConfigFacade, ConfigNotFoundError } from '../data/ConfigDataFacade';
-import { getConfig } from '../data/configData';
 
-const router = new Router();
-
-router.get('/', (ctx, next) => {
-  ctx.body = 'I AM ROOOOT';
-});
-
-router.get('/config', (ctx, next) => {
-  const config = getConfig();
-  ctx.body = config;
-});
-
-router.get('/config/buildings', (ctx, next) => {
-  const config = getConfig();
-  ctx.body = config.buildings.buildings;
-});
-router.get('/config/buildings/:id', (ctx, next) => {
-  const config = new ConfigFacade();
-  const { id } = ctx.params;
-
-  try {
-    ctx.body = config.findBuildingConfigByTypeId(Number(id));
-  } catch (err) {
-    if (err instanceof ConfigNotFoundError) {
-      ctx.status = 404;
-      ctx.body = err.message;
-    } else {
-      ctx.body = err;
-    }
-  }
-});
-
-router.get('/config/items', (ctx, next) => {
-  const config = getConfig();
-  ctx.body = config.items;
-});
-router.get('/config/items/:id', (ctx, next) => {
-  const config = new ConfigFacade();
-  const { id } = ctx.params;
-  ctx.body = config.findItemConfigByTypeId(Number(id));
-});
-
-function createApi() {
+function createApi(
+  routesList: Router<Application.DefaultState, Application.DefaultContext>[],
+) {
   const app = new Koa();
-  app.use(router.routes()).use(router.allowedMethods());
+
+  for (const route of routesList) {
+    app.use(route.routes()).use(route.allowedMethods());
+  }
+
   app.listen(3000);
 }
 

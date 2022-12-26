@@ -1,5 +1,5 @@
-import { PlayerData } from '../types/data.types';
+import { PlayerData } from '../../types/data.types';
 
 export class PlayerDataFacade {
-  constructor(private playerData: PlayerData) {}
+  constructor(public _playerData: PlayerData) {}
 }
