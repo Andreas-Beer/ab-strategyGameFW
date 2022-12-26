@@ -1,18 +1,16 @@
 import { expect } from 'chai';
+import { PlayerData } from '../../types/playerData.types';
 import { getPlayerData, _test } from './playerData';
 
 const data = { id: 1, email: '1@1.test' };
 
-type PlayerDataRet = Awaited<ReturnType<typeof getPlayerData>>;
-
 describe('data/playerData.ts', () => {
-  let playerData: PlayerDataRet;
-
   beforeEach(() => {
-    return getPlayerData(1, data).then((d) => {
+    return getPlayerData(1).then((d) => {
       playerData = d;
     });
   });
+
   describe('set', () => {
     it('could be modified values', () => {
       const emailNew = 'nix@da.net';
@@ -22,7 +20,7 @@ describe('data/playerData.ts', () => {
   });
   describe('getPlayerData', () => {
     it('could be modified values', () => {
-      return getPlayerData(1).then((playerData: PlayerDataRet) => {
+      return getPlayerData(1).then((playerData: PlayerData) => {
         expect(playerData).to.be.an('object').include.keys('get', 'set');
       });
     });

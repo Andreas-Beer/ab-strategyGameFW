@@ -1,15 +1,13 @@
 import { clamp } from '../../helpers/clamp';
-import { ResourceData } from '../../types/data.types';
+import { ResourceData } from '../../types/playerData.types';
 import { ResourceId, ResourceLimits } from './resource.types';
-
-// TODO: Check if the limit is reached and should be respected.
 
 class ResourceNotFoundError extends Error {
   public type = 'RESOURCE_NOT_FOUND_ERROR';
   public category = 'CRITICAL';
 }
 
-function checkIfResourceExists(data: ResourceData, resourceId: ResourceId) {
+function guardResourceExists(data: ResourceData, resourceId: ResourceId) {
   const resourceExists = typeof data[resourceId] !== 'undefined';
   if (!resourceExists) {
     throw new ResourceNotFoundError(
@@ -24,7 +22,7 @@ function increaseResourceAmount(
   amount: number,
   max?: number,
 ) {
-  checkIfResourceExists(data, resourceId);
+  guardResourceExists(data, resourceId);
 
   const newAmount = data[resourceId] + amount;
   const clampedAmount = clamp(newAmount, { max });
@@ -37,7 +35,7 @@ function decreaseResourceAmount(
   amount: number,
   min?: number,
 ) {
-  checkIfResourceExists(data, resourceId);
+  guardResourceExists(data, resourceId);
 
   const newAmount = data[resourceId] - amount;
   const clampedAmount = clamp(newAmount, { min });

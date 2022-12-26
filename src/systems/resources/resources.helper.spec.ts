@@ -1,4 +1,4 @@
-import { ResourceData } from '../../types/data.types';
+import { ResourceData } from '../../types/playerData.types';
 
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -33,17 +33,17 @@ describe('systems/resources/resources.helper.ts', () => {
       expect(amountAfter).to.be.eq(amountBefore + amount);
     });
 
-    it('should throw if the resource did not exists', () => {
-      const fn = () =>
-        increaseResourceAmount(resourceDataMock, resourceId999999X, amount);
-      expect(fn).to.throw(ResourceNotFoundError);
-    });
-
     it('should increase the amount only to the limit', () => {
       increaseResourceAmount(resourceDataMock, resId, amount, resLimits.max);
 
       const amountAfter = resourceDataMock[resId];
       expect(amountAfter).to.be.eq(resLimits.max);
+    });
+
+    it('should throw if the resource did not exists', () => {
+      const fn = () =>
+        increaseResourceAmount(resourceDataMock, resourceId999999X, amount);
+      expect(fn).to.throw(ResourceNotFoundError);
     });
   });
 
@@ -54,30 +54,19 @@ describe('systems/resources/resources.helper.ts', () => {
       const amountAfter = resourceDataMock[resId];
       expect(amountAfter).to.be.eq(amountBefore - amount);
     });
-    it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
-      const fn = () =>
-        decreaseResourceAmount(resourceDataMock, resourceId999999X, amount);
 
-      expect(fn).to.throw(ResourceNotFoundError);
-    });
     it('should decrease the amount of the given resource id in oly to the limit', () => {
       decreaseResourceAmount(resourceDataMock, resId, amount, resLimits.min);
 
       const amountAfter = resourceDataMock[resId];
       expect(amountAfter).to.be.eq(resLimits.min);
     });
-  });
 
-  // describe('checkLiquidity', () => {
-  //   it('should return true if the prices covers the stack', () => {
-  //     const liquidityCheck = checkLiquidity(playerData, [price1, price2]);
-  //     expect(liquidityCheck.success).to.be.true;
-  //     expect(liquidityCheck.value).to.be.true;
-  //   });
-  //   it('should return an ResourceNotFoundError if the one of the resources is unknown', () => {
-  //     const liquidityCheck = checkLiquidity(playerData, [price1, price2X]);
-  //     expect(liquidityCheck.success).to.be.false;
-  //     expect(liquidityCheck.value).to.be.an.instanceof(Array);
-  //   });
-  // });
+    it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
+      const fn = () =>
+        decreaseResourceAmount(resourceDataMock, resourceId999999X, amount);
+
+      expect(fn).to.throw(ResourceNotFoundError);
+    });
+  });
 });

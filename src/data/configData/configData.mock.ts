@@ -1,4 +1,4 @@
-import { ConfigData } from '../../types/config.types';
+import { ConfigData } from './config.types';
 
 export const configDataMock: ConfigData = {
   buildings: {

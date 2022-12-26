@@ -1,4 +1,4 @@
-import { ConfigData, ConfigDataId } from '../../types/config.types';
+import { ConfigData, ConfigDataId } from './config.types';
 import { configDataMock } from './configData.mock';
 import { ConfigDataFacade } from './ConfigDataFacade';
 

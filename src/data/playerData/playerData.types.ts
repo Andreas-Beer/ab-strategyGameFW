@@ -1,6 +1,6 @@
-import { BuildingData } from './building.types';
-import { EffectData } from './effect.types';
-import { ResourceId } from './resources.types';
+import { ResourceId } from '../../systems/resources/resource.types';
+import { BuildingData } from '../../types/building.types';
+import { EffectData } from '../../types/effect.types';
 
 export type ResourceData = Record<number, ResourceId>;
 export type PlayerId = number;

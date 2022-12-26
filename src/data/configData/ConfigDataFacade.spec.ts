@@ -1,5 +1,5 @@
 import { BuildingConfig } from '../../types/building.types';
-import { ConfigData } from '../../types/config.types';
+import { ConfigData } from './config.types';
 import { ItemConfig } from '../../types/item.types';
 import { UnitConfig } from '../../types/units.types';
 
@@ -22,7 +22,7 @@ const fakeConfig: ConfigData = {
   units: [{ typeId: unitIdSuccess } as UnitConfig],
 };
 
-describe('classes/Config.ts', () => {
+describe('data/Config.ts', () => {
   let config = new ConfigDataFacade(fakeConfig);
   describe('constructor', () => {
     it('should create a config wrapper', () => {

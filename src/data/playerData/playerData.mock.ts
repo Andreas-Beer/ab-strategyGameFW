@@ -1,4 +1,4 @@
-import { PlayerData } from '../../types/data.types';
+import { PlayerData } from './playerData.types';
 
 export const playerDataMock: PlayerData = {
   id: 1234,

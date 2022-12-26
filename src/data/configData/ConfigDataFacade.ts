@@ -1,5 +1,5 @@
 import { BuildingTypeId, BuildingConfig } from '../../types/building.types';
-import { ConfigData } from '../../types/config.types';
+import { ConfigData } from './config.types';
 import { ItemTypeId, ItemConfig } from '../../types/item.types';
 import { UnitTypeId, UnitConfig } from '../../types/units.types';
 

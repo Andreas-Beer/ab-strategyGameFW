@@ -1,4 +1,5 @@
-import { PlayerData, PlayerId } from '../../types/data.types';
+import { PlayerId, PlayerData } from './playerData.types';
+
 import { playerDataMock } from './playerData.mock';
 import { PlayerDataFacade } from './PlayerDataFacade';
 
