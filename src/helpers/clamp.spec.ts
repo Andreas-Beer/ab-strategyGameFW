@@ -3,7 +3,7 @@ import { clamp } from './clamp';
 
 console.clear();
 
-describe.only('helpers/clamp.ts', () => {
+describe('helpers/clamp.ts', () => {
   it('should return the original value if no max or min is passed', () => {
     expect(clamp(50)).to.be.eq(50);
     expect(clamp(-10)).to.be.eq(-10);
