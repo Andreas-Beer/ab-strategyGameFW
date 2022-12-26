@@ -3,14 +3,11 @@ import { getConfigData } from '../../data/configData/configData';
 import { getPlayerData } from '../../data/playerData/playerData';
 import { ResourcesSystem } from './ResourcesSystem';
 
-describe.only('systems/resources.test', () => {
+describe('systems/resources.test', () => {
   describe('increase', () => {
     it('should increase the amount of the given resource id by the given amount', async () => {
       const configData = await getConfigData(1);
       const playerData = await getPlayerData(1);
-
-      console.log('configData', configData);
-      console.log('playerData', playerData);
 
       const resId = 1;
       const resAmount = 10;
