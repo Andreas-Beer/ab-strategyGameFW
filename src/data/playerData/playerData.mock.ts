@@ -53,7 +53,7 @@ export const playerDataMock: PlayerData = {
         20: 12,
       },
       resources: {
-        1: 20,
+        1: 200,
       },
       capacity: {},
     },

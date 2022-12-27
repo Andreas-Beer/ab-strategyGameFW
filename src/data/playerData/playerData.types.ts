@@ -4,9 +4,10 @@ import { EffectData } from '../../types/effect.types';
 
 export type ResourceData = Record<number, ResourceId>;
 export type PlayerId = number;
+export type TownId = number;
 
 export type TownData = {
-  id: PlayerId;
+  id: TownId;
   name: string;
   location: [number, number];
   buildings: BuildingData[];

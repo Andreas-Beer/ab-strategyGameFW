@@ -1,3 +1,7 @@
+import { ResourceId } from '../systems/resources/resource.types';
+import { ItemTypeId } from './item.types';
+import { Duration } from './time.types';
+
 export type AmountOperator = '+' | '-' | '*' | '/' | '';
 export type Amount = number | `${AmountOperator}${number}${'%' | ''}`;
 

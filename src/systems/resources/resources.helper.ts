@@ -16,14 +16,14 @@ function guardResourceExists(data: ResourceData, resourceId: ResourceId) {
   }
 }
 
-type increaseAmountDTO = {
+type increaseAmountArgs = {
   resourceData: ResourceData;
   resourceId: ResourceId;
   amount: number;
   max?: number;
 };
 
-type decreaseAmountDTO = {
+type decreaseAmountArgs = {
   resourceData: ResourceData;
   resourceId: ResourceId;
   amount: number;
@@ -35,7 +35,7 @@ function increaseResourceAmount({
   resourceId,
   amount,
   max,
-}: increaseAmountDTO) {
+}: increaseAmountArgs) {
   guardResourceExists(resourceData, resourceId);
 
   const newAmount = resourceData[resourceId] + amount;
@@ -48,7 +48,7 @@ function decreaseResourceAmount({
   resourceId,
   amount,
   min,
-}: decreaseAmountDTO) {
+}: decreaseAmountArgs) {
   guardResourceExists(resourceData, resourceId);
 
   const newAmount = resourceData[resourceId] - amount;
