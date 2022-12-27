@@ -1,11 +1,7 @@
 import Router from '@koa/router';
-import { getConfigData } from '../../data/configData/configData';
 
-const buildingsRouter = new Router();
+const buildingsRoutes = new Router();
 
-buildingsRouter.get('/buildings', async (ctx, next) => {
-  const config = await getConfigData();
-  ctx.body = config.configData.buildings;
-});
+buildingsRoutes.get('/buildings', async (ctx, next) => {});
 
-export { buildingsRouter };
+export { buildingsRoutes };

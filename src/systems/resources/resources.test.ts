@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { getConfigData } from '../../data/configData/configData';
-import { getPlayerData } from '../../data/playerData/playerData';
+import { getPlayerData } from '../../data/playerData/playerData.helper';
 import { ResourcesSystem } from './ResourcesSystem';
 
 describe('systems/resources.test', () => {

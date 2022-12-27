@@ -1,5 +1,5 @@
+import { ResourceData } from '../../data/playerData/playerData.types';
 import { clamp } from '../../helpers/clamp';
-import { ResourceData } from '../../types/playerData.types';
 import { ResourceId, ResourceLimits } from './resource.types';
 
 class ResourceNotFoundError extends Error {
@@ -16,30 +16,44 @@ function guardResourceExists(data: ResourceData, resourceId: ResourceId) {
   }
 }
 
-function increaseResourceAmount(
-  data: ResourceData,
-  resourceId: ResourceId,
-  amount: number,
-  max?: number,
-) {
-  guardResourceExists(data, resourceId);
+type increaseAmountDTO = {
+  resourceData: ResourceData;
+  resourceId: ResourceId;
+  amount: number;
+  max?: number;
+};
 
-  const newAmount = data[resourceId] + amount;
+type decreaseAmountDTO = {
+  resourceData: ResourceData;
+  resourceId: ResourceId;
+  amount: number;
+  min?: number;
+};
+
+function increaseResourceAmount({
+  resourceData,
+  resourceId,
+  amount,
+  max,
+}: increaseAmountDTO) {
+  guardResourceExists(resourceData, resourceId);
+
+  const newAmount = resourceData[resourceId] + amount;
   const clampedAmount = clamp(newAmount, { max });
-  data[resourceId] = clampedAmount;
+  resourceData[resourceId] = clampedAmount;
 }
 
-function decreaseResourceAmount(
-  data: ResourceData,
-  resourceId: ResourceId,
-  amount: number,
-  min?: number,
-) {
-  guardResourceExists(data, resourceId);
+function decreaseResourceAmount({
+  resourceData,
+  resourceId,
+  amount,
+  min,
+}: decreaseAmountDTO) {
+  guardResourceExists(resourceData, resourceId);
 
-  const newAmount = data[resourceId] - amount;
+  const newAmount = resourceData[resourceId] - amount;
   const clampedAmount = clamp(newAmount, { min });
-  data[resourceId] = clampedAmount;
+  resourceData[resourceId] = clampedAmount;
 }
 
 export {

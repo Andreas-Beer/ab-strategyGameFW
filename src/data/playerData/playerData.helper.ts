@@ -13,8 +13,8 @@ async function getPlayerData(playerId: PlayerId): Promise<PlayerDataFacade> {
   return new PlayerDataFacade(data);
 }
 
-const _test = {
+const _internal = {
   fetchPlayerData,
 };
 
-export { _test, getPlayerData };
+export { _internal, getPlayerData };

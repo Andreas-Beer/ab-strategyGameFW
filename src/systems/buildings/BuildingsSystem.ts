@@ -1,20 +1,14 @@
-import Router from '@koa/router';
-import Application from 'koa';
-
 import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
 import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
-import { BaseSystem, withKoaRouter } from '../base';
+import { BaseSystem } from '../base';
 import { ResourcesSystem } from '../resources';
-import { buildingsRouter } from './buildings.routes';
 
-export class BuildingsSystem extends BaseSystem implements withKoaRouter {
+export class BuildingsSystem extends BaseSystem {
   constructor(
     configData: ConfigDataFacade,
+    playerData: PlayerDataFacade,
     private resourcesSystem: ResourcesSystem,
   ) {
-    super(configData);
-  }
-  get routes(): Router<Application.DefaultState, Application.DefaultContext> {
-    return buildingsRouter;
+    super(configData, playerData);
   }
 }

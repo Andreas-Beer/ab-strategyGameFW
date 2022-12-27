@@ -1,5 +1,5 @@
 import { ResourceId } from '../../systems/resources/resource.types';
-import { BuildingData } from '../../types/building.types';
+import { BuildingData } from '../../systems/buildings/building.types';
 import { EffectData } from '../../types/effect.types';
 
 export type ResourceData = Record<number, ResourceId>;

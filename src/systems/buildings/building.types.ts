@@ -1,7 +1,7 @@
-import { EffectConfig } from './effect.types';
-import { Price } from './price.types';
-import { Requirement } from './requirement.types';
-import { Duration } from './time.types';
+import { EffectConfig } from '../../types/effect.types';
+import { Price } from '../../types/price.types';
+import { Requirement } from '../../types/requirement.types';
+import { Duration } from '../../types/time.types';
 
 export type BuildingTypeId = number;
 

@@ -61,11 +61,14 @@ describe('classes/TaskQueue.ts', () => {
         callExpiredTasks(taskList, 25);
         expect(taskList).to.have.a.lengthOf(3);
       });
-      it('should call all Tasks that has a duration less or equal than the given time with the given data', () => {
+      it('should called all Tasks that has a duration less or equal than the given time with the given data after the next micro task', () => {
         callExpiredTasks(taskList, 25, 'foo');
-        expect(task1.onFinish).to.be.calledWith('foo');
-        expect(task2.onFinish).to.be.calledWith('foo');
-        expect(task3.onFinish).not.to.be.calledWith('foo');
+
+        queueMicrotask(() => {
+          expect(task1.onFinish).to.be.calledWith('foo');
+          expect(task2.onFinish).to.be.calledWith('foo');
+          expect(task3.onFinish).not.to.be.calledWith('foo');
+        });
       });
     });
   });
@@ -84,18 +87,22 @@ describe('classes/TaskQueue.ts', () => {
         expect(queue._queue).to.have.members([task1]);
       });
 
-      it('should call the expired Tasks a task', () => {
+      it('should called the expired Tasks after the next micro Task', () => {
         const queue = new TaskQueue();
         queue.addTask(task1);
         queue.callExpiredTasks(task1.durationMs + 10);
-        expect(task1.onFinish).to.be.calledOnce;
+        queueMicrotask(() => {
+          expect(task1.onFinish).to.be.calledOnce;
+        });
       });
 
-      it('should not call the unexpired Tasks a task', () => {
+      it('should not called the unexpired Tasks after the next micro Task', () => {
         const queue = new TaskQueue();
         queue.addTask(task1);
         queue.callExpiredTasks(task1.durationMs - 10);
-        expect(task1.onFinish).to.be.not.called;
+        queueMicrotask(() => {
+          expect(task1.onFinish).to.be.not.called;
+        });
       });
     });
   });
