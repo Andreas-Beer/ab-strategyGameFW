@@ -1,6 +1,5 @@
 import { TownId } from '../../data/playerData/playerData.types';
 import { BaseSystem } from '../base';
-import { getTownById } from '../towns/towns.helper';
 import { ResourceId } from './resource.types';
 import {
   decreaseResourceAmount,
@@ -25,8 +24,8 @@ export class ResourcesSystem extends BaseSystem {
   ) {
     const resourceData =
       typeof townId !== 'undefined'
-        ? getTownById(this.playerData, townId).resources
-        : this.playerData._playerData.resources;
+        ? this.playerData.findTownById(townId).resources
+        : this.playerData.getGlobalResources();
 
     increaseResourceAmount({
       resourceData,
@@ -42,8 +41,8 @@ export class ResourcesSystem extends BaseSystem {
   ) {
     const resourceData =
       typeof townId !== 'undefined'
-        ? getTownById(this.playerData, townId).resources
-        : this.playerData._playerData.resources;
+        ? this.playerData.findTownById(townId).resources
+        : this.playerData.getGlobalResources();
 
     decreaseResourceAmount({
       resourceData,
