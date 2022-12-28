@@ -3,8 +3,6 @@ import { getConfigData } from '../../data/configData/configData';
 import { getPlayerData } from '../../data/playerData/playerData.helper';
 import { ResourcesSystem } from './ResourcesSystem';
 
-import { getTownById } from '../towns/towns.helper';
-
 describe('systems/resources.test', () => {
   describe('increase', () => {
     it('should increase the amount of the given resource id by the given amount', async () => {

@@ -6,29 +6,29 @@ import {
   increaseResourceAmount,
 } from './resources.helper';
 
-type increaseResourceAmountOptions = {
+type ChangeResourceAmountOptions = {
   townId?: TownId;
-  max?: number;
+  useLimit?: boolean;
 };
-
-type decreaseResourceAmountOptions = {
-  townId?: TownId;
-  min?: number;
-};
-
 export class ResourcesSystem extends BaseSystem {
   increase(
     resourceId: ResourceId,
     amount: number,
-    { townId, max }: increaseResourceAmountOptions = {},
+    { townId, useLimit }: ChangeResourceAmountOptions = {},
   ) {
     const resourceData =
       typeof townId !== 'undefined'
         ? this.playerData.findTownById(townId).resources
         : this.playerData.getGlobalResources();
 
+    const max =
+      (useLimit &&
+        townId &&
+        this.playerData.findTownById(townId).resources[resourceId].max) ||
+      undefined;
+
     increaseResourceAmount({
-      resourceData,
+      resourcesData: resourceData,
       resourceId,
       amount,
       max,
@@ -37,7 +37,7 @@ export class ResourcesSystem extends BaseSystem {
   decrease(
     resourceId: ResourceId,
     amount: number,
-    { min, townId }: decreaseResourceAmountOptions = {},
+    { townId, useLimit }: ChangeResourceAmountOptions = {},
   ) {
     const resourceData =
       typeof townId !== 'undefined'
@@ -45,10 +45,10 @@ export class ResourcesSystem extends BaseSystem {
         : this.playerData.getGlobalResources();
 
     decreaseResourceAmount({
-      resourceData,
+      resourcesData: resourceData,
       resourceId,
       amount,
-      min,
+      min: 0,
     });
   }
 }

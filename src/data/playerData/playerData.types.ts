@@ -1,8 +1,11 @@
-import { ResourceId } from '../../systems/resources/resource.types';
+import {
+  ResourcesData,
+  ResourceId,
+} from '../../systems/resources/resource.types';
 import { BuildingData } from '../../systems/buildings/building.types';
 import { EffectData } from '../../types/effect.types';
 
-export type ResourceData = Record<number, ResourceId>;
+export type stackData = Record<number, ResourceId>;
 export type PlayerId = number;
 export type TownId = number;
 
@@ -12,9 +15,8 @@ export type TownData = {
   location: [number, number];
   buildings: BuildingData[];
   effects: EffectData[];
-  units: ResourceData;
-  resources: ResourceData;
-  capacity: ResourceData;
+  units: stackData;
+  resources: ResourcesData;
 };
 
 export type PlayerData = {
@@ -26,8 +28,8 @@ export type PlayerData = {
   groupId?: number;
   xp: number;
   prestige: number;
-  items: ResourceData;
-  resources: ResourceData;
+  items: stackData;
+  resources: ResourcesData;
   effects: EffectData[];
   towns: TownData[];
 };

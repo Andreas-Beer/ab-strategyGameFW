@@ -1,6 +1,6 @@
 import { ConfigData } from '../../data/configData/config.types';
 import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
-import { PlayerData } from '../../data/playerData/playerData.types';
+import { PlayerData, TownData } from '../../data/playerData/playerData.types';
 import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
 import { ResourcesSystem } from '../resources';
 import { BuildingConfig } from './building.types';
@@ -28,25 +28,34 @@ const configData: ConfigData = {
 describe('system/buildings.test', () => {
   describe('build', () => {
     it.skip('should add a building with a unique id to the playerData into the correct town.', () => {
-      // const playerData: PlayerData = {
-      //   towns: [{ id: 1, resources: { 1: 200 }, buildings: [] }],
-      // } satisfies PlayerData;
-      // const configDataFacade = new ConfigDataFacade(configData);
-      // const playerDataFacade = new PlayerDataFacade({});
-      // const resourceSystem = new ResourcesSystem(
-      //   configDataFacade,
-      //   playerDataFacade,
-      // );
-      // const buildingsSystem = new BuildingsSystem(
-      //   configDataFacade,
-      //   playerDataFacade,
-      //   resourceSystem,
-      // );
-      // buildingsSystem.build({
-      //   buildingTypeId: buildingConfig1.typeId,
-      //   townId: 1,
-      //   position: 1,
-      // });
+      const townData: TownData = {
+        name: '',
+        capacity: {},
+        units: [],
+        location: [0, 0],
+        effects: [],
+        id: 1,
+        resources: { 1: 200 },
+        buildings: [],
+      };
+      const configDataFacade = new ConfigDataFacade(configData);
+      const playerDataFacade = new PlayerDataFacade({
+        towns: [townData],
+      } as PlayerData);
+      const resourceSystem = new ResourcesSystem(
+        configDataFacade,
+        playerDataFacade,
+      );
+      const buildingsSystem = new BuildingsSystem(
+        configDataFacade,
+        playerDataFacade,
+        resourceSystem,
+      );
+      buildingsSystem.build({
+        buildingTypeId: buildingConfig1.typeId,
+        townId: 1,
+        position: 1,
+      });
     });
     it.skip('should add a building finish task into the global task queue.', () => {});
     it.skip('should remove the necessary resources from the playerData.', () => {});

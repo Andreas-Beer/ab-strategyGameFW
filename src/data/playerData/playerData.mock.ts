@@ -12,8 +12,8 @@ export const playerDataMock: PlayerData = {
   effects: [{ effectId: 2 }],
   items: { 1: 3 },
   resources: {
-    0: 20,
-    1: 100,
+    0: { amount: 20 },
+    1: { amount: 100 },
   },
   towns: [
     {
@@ -53,9 +53,8 @@ export const playerDataMock: PlayerData = {
         20: 12,
       },
       resources: {
-        1: 200,
+        1: { amount: 200, max: 202 },
       },
-      capacity: {},
     },
   ],
 };

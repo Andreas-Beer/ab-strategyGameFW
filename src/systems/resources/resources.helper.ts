@@ -1,13 +1,12 @@
-import { ResourceData } from '../../data/playerData/playerData.types';
 import { clamp } from '../../helpers/clamp';
-import { ResourceId, ResourceLimits } from './resource.types';
+import { ResourcesData, ResourceId, ResourceLimits } from './resource.types';
 
 class ResourceNotFoundError extends Error {
   public type = 'RESOURCE_NOT_FOUND_ERROR';
   public category = 'CRITICAL';
 }
 
-function guardResourceExists(data: ResourceData, resourceId: ResourceId) {
+function guardResourceExists(data: ResourcesData, resourceId: ResourceId) {
   const resourceExists = typeof data[resourceId] !== 'undefined';
   if (!resourceExists) {
     throw new ResourceNotFoundError(
@@ -17,43 +16,45 @@ function guardResourceExists(data: ResourceData, resourceId: ResourceId) {
 }
 
 type increaseAmountArgs = {
-  resourceData: ResourceData;
+  resourcesData: ResourcesData;
   resourceId: ResourceId;
   amount: number;
   max?: number;
 };
 
 type decreaseAmountArgs = {
-  resourceData: ResourceData;
+  resourcesData: ResourcesData;
   resourceId: ResourceId;
   amount: number;
   min?: number;
 };
 
 function increaseResourceAmount({
-  resourceData,
+  resourcesData,
   resourceId,
   amount,
-  max,
 }: increaseAmountArgs) {
-  guardResourceExists(resourceData, resourceId);
+  guardResourceExists(resourcesData, resourceId);
 
-  const newAmount = resourceData[resourceId] + amount;
-  const clampedAmount = clamp(newAmount, { max });
-  resourceData[resourceId] = clampedAmount;
+  const newAmount = resourcesData[resourceId].amount + amount;
+  const clampedAmount = clamp(newAmount, {
+    max: resourcesData[resourceId].max,
+  });
+  resourcesData[resourceId].amount = clampedAmount;
 }
 
 function decreaseResourceAmount({
-  resourceData,
+  resourcesData,
   resourceId,
   amount,
-  min,
 }: decreaseAmountArgs) {
-  guardResourceExists(resourceData, resourceId);
+  guardResourceExists(resourcesData, resourceId);
 
-  const newAmount = resourceData[resourceId] - amount;
-  const clampedAmount = clamp(newAmount, { min });
-  resourceData[resourceId] = clampedAmount;
+  const newAmount = resourcesData[resourceId].amount - amount;
+  const clampedAmount = clamp(newAmount, {
+    min: resourcesData[resourceId].min,
+  });
+  resourcesData[resourceId].amount = clampedAmount;
 }
 
 export {
