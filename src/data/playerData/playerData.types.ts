@@ -1,7 +1,7 @@
 import {
   ResourcesData,
   ResourceId,
-} from '../../systems/resources/resource.types';
+} from '../../systems/resources/resources.types';
 import { BuildingData } from '../../systems/buildings/building.types';
 import { EffectData } from '../../types/effect.types';
 

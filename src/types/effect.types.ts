@@ -1,4 +1,4 @@
-import { ResourceId } from '../systems/resources/resource.types';
+import { ResourceId } from '../systems/resources/resources.types';
 import { ItemTypeId } from './item.types';
 import { Duration } from './time.types';
 

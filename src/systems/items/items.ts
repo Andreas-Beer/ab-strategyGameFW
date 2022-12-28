@@ -3,7 +3,7 @@ import { PlayerData } from '../../data/playerData/playerData.types';
 import { ItemConfig } from '../../types/item.types';
 import { Result } from '../../types/validator.types';
 
-import { decreaseResourceAmount } from '../resources/resources.helper';
+import { decreaseResourceAmount } from '../resources/resources.module';
 
 class ItemConfigNotFoundError extends Error {
   public type = 'ITEM_CONFIG_NOT_FOUND_ERROR';

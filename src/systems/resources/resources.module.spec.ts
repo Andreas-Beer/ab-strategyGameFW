@@ -3,16 +3,17 @@ import { expect } from 'chai';
 import {
   decreaseResourceAmount,
   decreaseResourceMaxLimit,
+  findResource,
   increaseResourceAmount,
   increaseResourceMaxLimit,
   ResourceNotFoundError,
-} from './resources.helper';
-import { ResourcesData, ResourceLimits } from './resource.types';
+} from './resources.module';
+import { ResourcesData, ResourceLimits } from './resources.types';
 
 const resourceId1 = 1;
 const resourceId999999X = 999999;
 
-describe.only('systems/resources/resources.helper.ts', () => {
+describe('systems/resources/resources.module.ts', () => {
   let resourceDataMock: ResourcesData;
   let resourceDataMockMax: ResourcesData;
   let resourceDataMockMin: ResourcesData;
@@ -162,6 +163,25 @@ describe.only('systems/resources/resources.helper.ts', () => {
           resourcesData: resourceDataMock,
           resourceId: resourceId999999X,
           amount,
+        });
+
+      expect(fn).to.throw(ResourceNotFoundError);
+    });
+  });
+
+  describe('FindResource', () => {
+    it('should return the correct Resource', () => {
+      const searchedResource = findResource({
+        resourcesData: resourceDataMock,
+        resourceId: resId,
+      });
+      expect(searchedResource).to.be.eq(resourceDataMock[resId]);
+    });
+    it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
+      const fn = () =>
+        findResource({
+          resourcesData: resourceDataMock,
+          resourceId: resourceId999999X,
         });
 
       expect(fn).to.throw(ResourceNotFoundError);

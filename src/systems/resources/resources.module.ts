@@ -1,5 +1,10 @@
 import { clamp } from '../../helpers/clamp';
-import { ResourcesData, ResourceId, ResourceLimits } from './resource.types';
+import {
+  ResourcesData,
+  ResourceId,
+  ResourceLimits,
+  ResourceData,
+} from './resources.types';
 
 class ResourceNotFoundError extends Error {
   public type = 'RESOURCE_NOT_FOUND_ERROR';
@@ -15,6 +20,11 @@ function guardResourceExists(data: ResourcesData, resourceId: ResourceId) {
   }
 }
 
+type FindResourceArgs = {
+  resourcesData: ResourcesData;
+  resourceId: ResourceId;
+};
+
 type ChangeAmountArgs = {
   resourcesData: ResourcesData;
   resourceId: ResourceId;
@@ -26,8 +36,15 @@ type ChangeLimitArgs = {
   resourcesData: ResourcesData;
   resourceId: ResourceId;
   amount: number;
-  options?: { shouldIgnoreLimit?: boolean };
 };
+
+function findResource({
+  resourcesData,
+  resourceId,
+}: FindResourceArgs): ResourceData {
+  guardResourceExists(resourcesData, resourceId);
+  return resourcesData[resourceId];
+}
 
 function increaseResourceAmount({
   resourcesData,
@@ -35,15 +52,12 @@ function increaseResourceAmount({
   amount,
   options: { shouldIgnoreLimit } = {},
 }: ChangeAmountArgs) {
-  guardResourceExists(resourcesData, resourceId);
-
-  const newAmount = resourcesData[resourceId].amount + amount;
+  const resource = findResource({ resourcesData, resourceId });
+  const newAmount = resource.amount + amount;
   const clampedAmount = clamp(newAmount, {
-    max: resourcesData[resourceId].max,
+    max: resource.max,
   });
-  resourcesData[resourceId].amount = shouldIgnoreLimit
-    ? newAmount
-    : clampedAmount;
+  resource.amount = shouldIgnoreLimit ? newAmount : clampedAmount;
 }
 
 function decreaseResourceAmount({
@@ -52,15 +66,12 @@ function decreaseResourceAmount({
   amount,
   options: { shouldIgnoreLimit } = {},
 }: ChangeAmountArgs) {
-  guardResourceExists(resourcesData, resourceId);
-
-  const newAmount = resourcesData[resourceId].amount - amount;
+  const resource = findResource({ resourcesData, resourceId });
+  const newAmount = resource.amount - amount;
   const clampedAmount = clamp(newAmount, {
-    min: resourcesData[resourceId].min,
+    min: resource.min,
   });
-  resourcesData[resourceId].amount = shouldIgnoreLimit
-    ? newAmount
-    : clampedAmount;
+  resource.amount = shouldIgnoreLimit ? newAmount : clampedAmount;
 }
 
 function increaseResourceMaxLimit({
@@ -68,10 +79,9 @@ function increaseResourceMaxLimit({
   resourceId,
   amount,
 }: ChangeLimitArgs) {
-  guardResourceExists(resourcesData, resourceId);
-
-  const newAmount = (resourcesData[resourceId].max || 0) + amount;
-  resourcesData[resourceId].max = newAmount;
+  const resource = findResource({ resourcesData, resourceId });
+  const newAmount = (resource.max || 0) + amount;
+  resource.max = newAmount;
 }
 
 function decreaseResourceMaxLimit({
@@ -79,14 +89,14 @@ function decreaseResourceMaxLimit({
   resourceId,
   amount,
 }: ChangeLimitArgs) {
-  guardResourceExists(resourcesData, resourceId);
-
-  const newAmount = (resourcesData[resourceId].max || 0) - amount;
-  resourcesData[resourceId].max = newAmount;
+  const resource = findResource({ resourcesData, resourceId });
+  const newAmount = (resource.max || 0) - amount;
+  resource.max = newAmount;
 }
 
 export {
   ResourceNotFoundError,
+  findResource,
   increaseResourceAmount,
   decreaseResourceAmount,
   increaseResourceMaxLimit,
