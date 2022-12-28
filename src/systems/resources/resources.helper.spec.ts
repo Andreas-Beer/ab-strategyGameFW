@@ -10,7 +10,7 @@ import { ResourcesData, ResourceLimits } from './resource.types';
 const resourceId1 = 1;
 const resourceId999999X = 999999;
 
-describe.only('systems/resources/resources.helper.ts', () => {
+describe('systems/resources/resources.helper.ts', () => {
   let resourceDataMock: ResourcesData;
   let resourceDataMockMax: ResourcesData;
   let resourceDataMockMin: ResourcesData;
@@ -48,6 +48,18 @@ describe.only('systems/resources/resources.helper.ts', () => {
       expect(amountAfter).to.be.eq(resourceDataMockMax[resId].max);
     });
 
+    it('should increase the amount above the limit if the shouldIgnoreLimit flag is set', () => {
+      increaseResourceAmount({
+        resourcesData: resourceDataMockMax,
+        resourceId: resId,
+        amount,
+        options: { shouldIgnoreLimit: true },
+      });
+
+      const amountAfter = resourceDataMockMax[resId].amount;
+      expect(amountAfter).to.be.eq(amountBefore + amount);
+    });
+
     it('should throw if the resource did not exists', () => {
       const fn = () =>
         increaseResourceAmount({
@@ -71,7 +83,7 @@ describe.only('systems/resources/resources.helper.ts', () => {
       expect(amountAfter).to.be.eq(amountBefore - amount);
     });
 
-    it('should decrease the amount of the given resource id in oly to the limit', () => {
+    it('should decrease the amount of the given resource id in only to the limit', () => {
       decreaseResourceAmount({
         resourcesData: resourceDataMockMin,
         resourceId: resId,
@@ -80,6 +92,18 @@ describe.only('systems/resources/resources.helper.ts', () => {
 
       const amountAfter = resourceDataMockMin[resId].amount;
       expect(amountAfter).to.be.eq(resourceDataMockMin[resId].min);
+    });
+
+    it('should decrease the amount beneath the limit if the shouldIgnoreLimit flag is set', () => {
+      decreaseResourceAmount({
+        resourcesData: resourceDataMockMin,
+        resourceId: resId,
+        amount,
+        options: { shouldIgnoreLimit: true },
+      });
+
+      const amountAfter = resourceDataMockMin[resId].amount;
+      expect(amountAfter).to.be.eq(amountBefore - amount);
     });
 
     it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {

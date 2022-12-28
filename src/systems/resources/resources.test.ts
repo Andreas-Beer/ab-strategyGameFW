@@ -11,14 +11,12 @@ describe('systems/resources.test', () => {
 
       const resId = 1;
       const resAmount = 10;
-
-      const resAmountBefore = playerData.getGlobalResources()[resId];
+      const resAmountBefore = playerData.getGlobalResources()[resId].amount;
 
       const resourcesSystem = new ResourcesSystem(configData, playerData);
       resourcesSystem.increase(resId, resAmount);
 
-      const resAmountAfter = playerData.getGlobalResources()[resId];
-
+      const resAmountAfter = playerData.getGlobalResources()[resId].amount;
       expect(resAmountAfter).to.be.eq(resAmountBefore + resAmount);
     });
     it('should increase the amount of the given resource id by the given amount in the given town', async () => {
@@ -27,16 +25,23 @@ describe('systems/resources.test', () => {
 
       const townId = 1;
       const resId = 1;
-      const resAmount = 10;
+      const resAmount = 100;
 
-      const resAmountBefore = playerData.findTownById(townId).resources[resId];
+      const resAmountBefore =
+        playerData.findTownById(townId).resources[resId].amount;
 
       const resourcesSystem = new ResourcesSystem(configData, playerData);
       resourcesSystem.increase(resId, resAmount, { townId });
 
-      const resAmountAfter = playerData.findTownById(townId).resources[resId];
+      const resAmountAfter =
+        playerData.findTownById(townId).resources[resId].amount;
 
-      expect(resAmountAfter).to.be.eq(resAmountBefore + resAmount);
+      const increasedAmount = resAmountBefore + resAmount;
+      const clampedAmount =
+        playerData.findTownById(townId).resources[resId].max ?? increasedAmount;
+      const expectedAmount = Math.min(increasedAmount, clampedAmount);
+
+      expect(resAmountAfter).to.be.eq(expectedAmount);
     });
   });
   describe('decrease', () => {
@@ -47,13 +52,13 @@ describe('systems/resources.test', () => {
       const resId = 1;
       const resAmount = 10;
 
-      const resAmountBefore = playerData.getGlobalResources()[resId];
+      const resAmountBefore = playerData.getGlobalResources()[resId].amount;
       expect(resAmountBefore).to.be.above(10);
 
       const resourcesSystem = new ResourcesSystem(configData, playerData);
       resourcesSystem.decrease(resId, resAmount);
 
-      const resAmountAfter = playerData.getGlobalResources()[resId];
+      const resAmountAfter = playerData.getGlobalResources()[resId].amount;
 
       expect(resAmountAfter).to.be.eq(resAmountBefore - resAmount);
     });
@@ -65,12 +70,14 @@ describe('systems/resources.test', () => {
       const resId = 1;
       const resAmount = 10;
 
-      const resAmountBefore = playerData.findTownById(townId).resources[resId];
+      const resAmountBefore =
+        playerData.findTownById(townId).resources[resId].amount;
 
       const resourcesSystem = new ResourcesSystem(configData, playerData);
       resourcesSystem.decrease(resId, resAmount, { townId });
 
-      const resAmountAfter = playerData.findTownById(townId).resources[resId];
+      const resAmountAfter =
+        playerData.findTownById(townId).resources[resId].amount;
 
       expect(resAmountAfter).to.be.eq(resAmountBefore - resAmount);
     });

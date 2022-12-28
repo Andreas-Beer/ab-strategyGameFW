@@ -15,46 +15,45 @@ function guardResourceExists(data: ResourcesData, resourceId: ResourceId) {
   }
 }
 
-type increaseAmountArgs = {
+type changeAmountArgs = {
   resourcesData: ResourcesData;
   resourceId: ResourceId;
   amount: number;
-  max?: number;
-};
-
-type decreaseAmountArgs = {
-  resourcesData: ResourcesData;
-  resourceId: ResourceId;
-  amount: number;
-  min?: number;
+  options?: { shouldIgnoreLimit?: boolean };
 };
 
 function increaseResourceAmount({
   resourcesData,
   resourceId,
   amount,
-}: increaseAmountArgs) {
+  options: { shouldIgnoreLimit } = {},
+}: changeAmountArgs) {
   guardResourceExists(resourcesData, resourceId);
 
   const newAmount = resourcesData[resourceId].amount + amount;
   const clampedAmount = clamp(newAmount, {
     max: resourcesData[resourceId].max,
   });
-  resourcesData[resourceId].amount = clampedAmount;
+  resourcesData[resourceId].amount = shouldIgnoreLimit
+    ? newAmount
+    : clampedAmount;
 }
 
 function decreaseResourceAmount({
   resourcesData,
   resourceId,
   amount,
-}: decreaseAmountArgs) {
+  options: { shouldIgnoreLimit } = {},
+}: changeAmountArgs) {
   guardResourceExists(resourcesData, resourceId);
 
   const newAmount = resourcesData[resourceId].amount - amount;
   const clampedAmount = clamp(newAmount, {
     min: resourcesData[resourceId].min,
   });
-  resourcesData[resourceId].amount = clampedAmount;
+  resourcesData[resourceId].amount = shouldIgnoreLimit
+    ? newAmount
+    : clampedAmount;
 }
 
 export {
