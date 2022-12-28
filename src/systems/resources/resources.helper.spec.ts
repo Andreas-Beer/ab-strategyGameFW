@@ -2,7 +2,9 @@ import { expect } from 'chai';
 
 import {
   decreaseResourceAmount,
+  decreaseResourceMaxLimit,
   increaseResourceAmount,
+  increaseResourceMaxLimit,
   ResourceNotFoundError,
 } from './resources.helper';
 import { ResourcesData, ResourceLimits } from './resource.types';
@@ -10,11 +12,12 @@ import { ResourcesData, ResourceLimits } from './resource.types';
 const resourceId1 = 1;
 const resourceId999999X = 999999;
 
-describe('systems/resources/resources.helper.ts', () => {
+describe.only('systems/resources/resources.helper.ts', () => {
   let resourceDataMock: ResourcesData;
   let resourceDataMockMax: ResourcesData;
   let resourceDataMockMin: ResourcesData;
   let amountBefore: number;
+  let maxLimitBefore: number;
   const resId = resourceId1;
   const amount = 20;
 
@@ -23,6 +26,7 @@ describe('systems/resources/resources.helper.ts', () => {
     resourceDataMockMax = { [resId]: { amount: 10, max: 15 } };
     resourceDataMockMin = { [resId]: { amount: 10, min: 0 } };
     amountBefore = resourceDataMock[resId].amount;
+    maxLimitBefore = resourceDataMockMax[resId].max!;
   });
 
   describe('increaseResourceAmount', () => {
@@ -109,6 +113,52 @@ describe('systems/resources/resources.helper.ts', () => {
     it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
       const fn = () =>
         decreaseResourceAmount({
+          resourcesData: resourceDataMock,
+          resourceId: resourceId999999X,
+          amount,
+        });
+
+      expect(fn).to.throw(ResourceNotFoundError);
+    });
+  });
+
+  describe('increaseMaxLimit', () => {
+    it('should increase the max limit by the given ', () => {
+      increaseResourceMaxLimit({
+        resourcesData: resourceDataMockMax,
+        resourceId: resId,
+        amount,
+      });
+
+      const limitAfter = resourceDataMockMax[resId].max;
+      expect(limitAfter).to.be.eq(maxLimitBefore + amount);
+    });
+    it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
+      const fn = () =>
+        increaseResourceMaxLimit({
+          resourcesData: resourceDataMock,
+          resourceId: resourceId999999X,
+          amount,
+        });
+
+      expect(fn).to.throw(ResourceNotFoundError);
+    });
+  });
+
+  describe('decreaseResourceMaxLimit', () => {
+    it('should decrease the max limit by the given ', () => {
+      decreaseResourceMaxLimit({
+        resourcesData: resourceDataMockMax,
+        resourceId: resId,
+        amount,
+      });
+
+      const limitAfter = resourceDataMockMax[resId].max;
+      expect(limitAfter).to.be.eq(maxLimitBefore - amount);
+    });
+    it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
+      const fn = () =>
+        decreaseResourceMaxLimit({
           resourcesData: resourceDataMock,
           resourceId: resourceId999999X,
           amount,

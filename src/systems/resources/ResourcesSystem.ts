@@ -10,8 +10,12 @@ type ChangeResourceAmountOptions = {
   townId?: TownId;
   shouldIgnoreLimit?: boolean;
 };
+
+type ChangeLimitAmountOptions = {
+  townId?: TownId;
+};
 export class ResourcesSystem extends BaseSystem {
-  increase(
+  increaseAmount(
     resourceId: ResourceId,
     amount: number,
     { townId, shouldIgnoreLimit }: ChangeResourceAmountOptions = {},
@@ -28,7 +32,8 @@ export class ResourcesSystem extends BaseSystem {
       options: { shouldIgnoreLimit },
     });
   }
-  decrease(
+
+  decreaseAmount(
     resourceId: ResourceId,
     amount: number,
     { townId, shouldIgnoreLimit }: ChangeResourceAmountOptions = {},
@@ -45,4 +50,10 @@ export class ResourcesSystem extends BaseSystem {
       options: { shouldIgnoreLimit },
     });
   }
+
+  increaseMaxLimit(
+    resourceId: ResourceId,
+    amount: number,
+    { townId }: ChangeLimitAmountOptions,
+  ) {}
 }
