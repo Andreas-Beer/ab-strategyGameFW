@@ -13,7 +13,7 @@ export const playerDataMock: PlayerData = {
   items: { 1: 3 },
   resources: {
     0: { amount: 20 },
-    1: { amount: 100 },
+    1: { amount: 100, max: 1000 },
   },
   towns: [
     {

@@ -3,7 +3,7 @@ import { getConfigData } from '../../data/configData/configData';
 import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
 import { getPlayerData } from '../../data/playerData/playerData.helper';
 import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
-import { ResourcesSystem } from './Resources.system';
+import { ResourcesSystem } from './ResourcesSystem';
 
 const resId = 1;
 const townId = 1;
@@ -90,6 +90,15 @@ describe('systems/resources.test', () => {
     it('should increase the max limit of a resource', () => {
       const limitAmount = 10;
 
+      const resMaxLimitBefore = resourcesSystem.find(resId).max;
+      resourcesSystem.increaseMaxLimit(resId, limitAmount);
+      const resMaxLimitAfter = resourcesSystem.find(resId).max;
+
+      expect(resMaxLimitAfter).to.be.eq(resMaxLimitBefore! + limitAmount);
+    });
+    it('should increase the max limit of a resource of the correct town', () => {
+      const limitAmount = 10;
+
       const resMaxLimitBefore = resourcesSystem.find(resId, { townId }).max;
       resourcesSystem.increaseMaxLimit(resId, limitAmount, { townId });
       const resMaxLimitAfter = resourcesSystem.find(resId, { townId }).max;
@@ -100,6 +109,15 @@ describe('systems/resources.test', () => {
 
   describe('decreaseMaxLimit', () => {
     it('should decrease the max limit of a resource', () => {
+      const limitAmount = 10;
+
+      const resMaxLimitBefore = resourcesSystem.find(resId).max;
+      resourcesSystem.decreaseMaxLimit(resId, limitAmount);
+      const resMaxLimitAfter = resourcesSystem.find(resId).max;
+
+      expect(resMaxLimitAfter).to.be.eq(resMaxLimitBefore! - limitAmount);
+    });
+    it('should decrease the max limit of a resource of the correct town', () => {
       const limitAmount = 10;
 
       const resMaxLimitBefore = resourcesSystem.find(resId, { townId }).max;

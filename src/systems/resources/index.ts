@@ -1,1 +1,1 @@
-export { ResourcesSystem } from './Resources.system';
+export { ResourcesSystem } from './ResourcesSystem';
