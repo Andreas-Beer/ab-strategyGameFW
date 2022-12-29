@@ -7,11 +7,11 @@ import { decreaseResourceAmount } from '../resources/resources.module';
 
 class ItemConfigNotFoundError extends Error {
   public type = 'ITEM_CONFIG_NOT_FOUND_ERROR';
-  public category = 'CRITICAL';
+  public level = 'CRITICAL';
 }
 class ItemNotFoundError extends Error {
   public type = 'ITEM_NOT_FOUND_ERROR';
-  public category = 'CRITICAL';
+  public level = 'CRITICAL';
 }
 
 function removeItem(

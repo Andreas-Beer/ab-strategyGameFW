@@ -2,7 +2,7 @@ import { PlayerData, TownId } from './playerData.types';
 
 class TownNotFoundError extends Error {
   public name = 'TOWN_NOT_FOUND_ERROR';
-  public category = 'CRITICAL';
+  public level = 'CRITICAL';
 
   constructor(townId: TownId) {
     super(`The town with the id: "${townId}" was not found`);

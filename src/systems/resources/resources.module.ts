@@ -60,6 +60,11 @@ function checkPriceAgainstResources({
 }: CheckPriceArgs): boolean {
   for (const { resourceId, amount } of prices) {
     const resourceInStock = resourcesData[resourceId];
+
+    if (!resourceInStock) {
+      throw new ResourceNotFoundError(resourceId);
+    }
+
     const resourceAmountInStock = resourceInStock.amount;
     if (resourceAmountInStock < amount) {
       return false;

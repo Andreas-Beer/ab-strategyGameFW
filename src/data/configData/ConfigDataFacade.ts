@@ -8,7 +8,7 @@ import { UnitTypeId, UnitConfig } from '../../types/units.types';
 
 class ConfigNotFoundError extends Error {
   public name = 'CONFIG_NOT_FOUND_ERROR';
-  public category = 'CRITICAL';
+  public level = 'CRITICAL';
 }
 
 class ConfigDataFacade {
