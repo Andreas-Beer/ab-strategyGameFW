@@ -1,7 +1,7 @@
 import {
   BuildingTypeId,
-  BuildingConfig,
-} from '../../systems/buildings/building.types';
+  BuildingConfigData,
+} from '../../systems/buildings/buildings.types';
 import { ConfigData } from './config.types';
 import { ItemTypeId, ItemConfig } from '../../types/item.types';
 import { UnitTypeId, UnitConfig } from '../../types/units.types';
@@ -14,9 +14,11 @@ class ConfigNotFoundError extends Error {
 class ConfigDataFacade {
   constructor(public configData: ConfigData) {}
 
-  findBuildingConfigByTypeId(buildingTypeId: BuildingTypeId): BuildingConfig {
+  findBuildingConfigByTypeId(
+    buildingTypeId: BuildingTypeId,
+  ): BuildingConfigData {
     const buildingConfig = this.configData.buildings.buildings.find(
-      (buildingConfig: BuildingConfig) =>
+      (buildingConfig: BuildingConfigData) =>
         buildingConfig.typeId === buildingTypeId,
     );
 

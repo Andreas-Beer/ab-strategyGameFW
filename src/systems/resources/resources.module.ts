@@ -1,28 +1,36 @@
 import { clamp } from '../../helpers/clamp';
+import { Prices } from '../../types/price.types';
 import {
-  ResourcesData,
-  ResourceId,
-  ResourceLimits,
-  ResourceData,
-} from './resources.types';
-
-class ResourceNotFoundError extends Error {
-  public type = 'RESOURCE_NOT_FOUND_ERROR';
-  public category = 'CRITICAL';
-}
+  ResourceDataNotFoundError,
+  ResourceNotFoundError,
+} from './resources.errors';
+import { ResourcesData, ResourceId, ResourceData } from './resources.types';
 
 function guardResourceExists(data: ResourcesData, resourceId: ResourceId) {
+  if (!data) {
+    throw new ResourceDataNotFoundError();
+  }
+
   const resourceExists = typeof data[resourceId] !== 'undefined';
   if (!resourceExists) {
-    throw new ResourceNotFoundError(
-      `Resource with the ID ${resourceId} does not exist.`,
-    );
+    throw new ResourceNotFoundError(resourceId);
+  }
+}
+
+function guardResourceIsAboveZero(newResourceAmount: number) {
+  if (newResourceAmount < 0) {
+    throw new Error('resource beneath zero');
   }
 }
 
 type FindResourceArgs = {
   resourcesData: ResourcesData;
   resourceId: ResourceId;
+};
+
+type CheckPriceArgs = {
+  resourcesData: ResourcesData;
+  prices: Prices;
 };
 
 type ChangeAmountArgs = {
@@ -46,12 +54,27 @@ function findResource({
   return resourcesData[resourceId];
 }
 
+function checkPriceAgainstResources({
+  resourcesData,
+  prices,
+}: CheckPriceArgs): boolean {
+  for (const { resourceId, amount } of prices) {
+    const resourceInStock = resourcesData[resourceId];
+    const resourceAmountInStock = resourceInStock.amount;
+    if (resourceAmountInStock < amount) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function increaseResourceAmount({
   resourcesData,
   resourceId,
   amount,
   options: { shouldIgnoreLimit } = {},
-}: ChangeAmountArgs) {
+}: ChangeAmountArgs): void {
   const resource = findResource({ resourcesData, resourceId });
   const newAmount = resource.amount + amount;
   const clampedAmount = clamp(newAmount, {
@@ -65,7 +88,7 @@ function decreaseResourceAmount({
   resourceId,
   amount,
   options: { shouldIgnoreLimit } = {},
-}: ChangeAmountArgs) {
+}: ChangeAmountArgs): void {
   const resource = findResource({ resourcesData, resourceId });
   const newAmount = resource.amount - amount;
   const clampedAmount = clamp(newAmount, {
@@ -78,7 +101,7 @@ function increaseResourceMaxLimit({
   resourcesData,
   resourceId,
   amount,
-}: ChangeLimitArgs) {
+}: ChangeLimitArgs): void {
   const resource = findResource({ resourcesData, resourceId });
   const newAmount = (resource.max || 0) + amount;
   resource.max = newAmount;
@@ -88,7 +111,7 @@ function decreaseResourceMaxLimit({
   resourcesData,
   resourceId,
   amount,
-}: ChangeLimitArgs) {
+}: ChangeLimitArgs): void {
   const resource = findResource({ resourcesData, resourceId });
   const newAmount = (resource.max || 0) - amount;
   resource.max = newAmount;
@@ -96,6 +119,7 @@ function decreaseResourceMaxLimit({
 
 export {
   ResourceNotFoundError,
+  checkPriceAgainstResources,
   findResource,
   increaseResourceAmount,
   decreaseResourceAmount,

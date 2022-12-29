@@ -2,7 +2,7 @@ import {
   ResourcesData,
   ResourceId,
 } from '../../systems/resources/resources.types';
-import { BuildingData } from '../../systems/buildings/building.types';
+import { BuildingPlayerData } from '../../systems/buildings/buildings.types';
 import { EffectData } from '../../types/effect.types';
 
 export type stackData = Record<number, ResourceId>;
@@ -13,7 +13,7 @@ export type TownData = {
   id: TownId;
   name: string;
   location: [number, number];
-  buildings: BuildingData[];
+  buildings: BuildingPlayerData[];
   effects: EffectData[];
   units: stackData;
   resources: ResourcesData;

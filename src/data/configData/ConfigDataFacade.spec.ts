@@ -1,4 +1,4 @@
-import { BuildingConfig } from '../../systems/buildings/building.types';
+import { BuildingConfigData } from '../../systems/buildings/buildings.types';
 import { ConfigData } from './config.types';
 import { ItemConfig } from '../../types/item.types';
 import { UnitConfig } from '../../types/units.types';
@@ -16,7 +16,7 @@ const idFail = 999;
 const fakeConfig: ConfigData = {
   buildings: {
     buildingsBuildParallel: 1,
-    buildings: [{ typeId: buildingIdSuccess } as BuildingConfig],
+    buildings: [{ typeId: buildingIdSuccess } as BuildingConfigData],
   },
   items: [{ typeId: itemIdSuccess } as ItemConfig],
   units: [{ typeId: unitIdSuccess } as UnitConfig],

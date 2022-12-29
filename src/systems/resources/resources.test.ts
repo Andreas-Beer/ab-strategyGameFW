@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { getConfigData } from '../../data/configData/configData';
+import { ConfigData } from '../../data/configData/config.types';
 import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
-import { getPlayerData } from '../../data/playerData/playerData.helper';
 import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
 import { ResourcesSystem } from './ResourcesSystem';
 
@@ -14,8 +13,20 @@ let resourcesSystem: ResourcesSystem;
 
 describe('systems/resources.test', () => {
   beforeEach(async () => {
-    configData = await getConfigData(1);
-    playerData = await getPlayerData(1);
+    configData = new ConfigDataFacade({} as ConfigData);
+    playerData = new PlayerDataFacade({
+      resources: {
+        1: { amount: 100, max: 1000 },
+      },
+      towns: [
+        {
+          id: 1,
+          resources: {
+            1: { amount: 200, max: 202 },
+          },
+        },
+      ],
+    });
     resourcesSystem = new ResourcesSystem(configData, playerData);
   });
 

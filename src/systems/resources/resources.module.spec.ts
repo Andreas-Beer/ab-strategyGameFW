@@ -1,6 +1,8 @@
 import { expect } from 'chai';
+import { Prices } from '../../types/price.types';
 
 import {
+  checkPriceAgainstResources,
   decreaseResourceAmount,
   decreaseResourceMaxLimit,
   findResource,
@@ -8,7 +10,7 @@ import {
   increaseResourceMaxLimit,
   ResourceNotFoundError,
 } from './resources.module';
-import { ResourcesData, ResourceLimits } from './resources.types';
+import { ResourcesData } from './resources.types';
 
 const resourceId1 = 1;
 const resourceId999999X = 999999;
@@ -23,9 +25,9 @@ describe('systems/resources/resources.module.ts', () => {
   const amount = 20;
 
   beforeEach(() => {
-    resourceDataMock = { [resId]: { amount: 10 } };
-    resourceDataMockMax = { [resId]: { amount: 10, max: 15 } };
-    resourceDataMockMin = { [resId]: { amount: 10, min: 0 } };
+    resourceDataMock = { [resId]: { amount: 1000 }, 2: { amount: 1000 } };
+    resourceDataMockMax = { [resId]: { amount: 1000, max: 1005 } };
+    resourceDataMockMin = { [resId]: { amount: 1000, min: 0 } };
     amountBefore = resourceDataMock[resId].amount;
     maxLimitBefore = resourceDataMockMax[resId].max!;
   });
@@ -92,7 +94,7 @@ describe('systems/resources/resources.module.ts', () => {
       decreaseResourceAmount({
         resourcesData: resourceDataMockMin,
         resourceId: resId,
-        amount,
+        amount: 2000,
       });
 
       const amountAfter = resourceDataMockMin[resId].amount;
@@ -185,6 +187,34 @@ describe('systems/resources/resources.module.ts', () => {
         });
 
       expect(fn).to.throw(ResourceNotFoundError);
+    });
+  });
+
+  describe('checkPriceAgainstResources', () => {
+    it('should pass if there are enough resources', () => {
+      const prices: Prices = [
+        { resourceId: resId, amount: 100 },
+        { resourceId: 2, amount: 100 },
+      ];
+      const areEnoughResources = checkPriceAgainstResources({
+        resourcesData: resourceDataMock,
+        prices,
+      });
+
+      expect(areEnoughResources).to.be.true;
+    });
+
+    it('should fail if there are not enough resources', () => {
+      const prices: Prices = [
+        { resourceId: resId, amount: 100000 },
+        { resourceId: 2, amount: 100000 },
+      ];
+      const areEnoughResources = checkPriceAgainstResources({
+        resourcesData: resourceDataMock,
+        prices,
+      });
+
+      expect(areEnoughResources).to.be.false;
     });
   });
 });

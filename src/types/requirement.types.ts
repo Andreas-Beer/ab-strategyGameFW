@@ -1,4 +1,4 @@
-import { BuildingTypeId } from '../systems/buildings/building.types';
+import { BuildingTypeId } from '../systems/buildings/buildings.types';
 import { ItemTypeId } from './item.types';
 
 export type Requirement =
