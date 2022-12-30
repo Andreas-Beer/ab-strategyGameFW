@@ -46,6 +46,22 @@ describe('systems/resources.test', () => {
     });
   });
 
+  describe('checkPrice', () => {
+    it('should return true if the global price fits', () => {
+      const checkResult = resourcesSystem.checkPrices([
+        { resourceId: 1, amount: 10 },
+      ]);
+      expect(checkResult).to.be.true;
+    });
+    it('should return true if the price fits in the given town', () => {
+      const checkResult = resourcesSystem.checkPrices(
+        [{ resourceId: 1, amount: 10 }],
+        { townId },
+      );
+      expect(checkResult).to.be.true;
+    });
+  });
+
   describe('increaseAmount', () => {
     it('should increase the amount of the given resource id by the given amount', async () => {
       const resAmount = 10;

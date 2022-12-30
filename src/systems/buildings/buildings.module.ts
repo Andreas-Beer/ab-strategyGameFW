@@ -45,6 +45,8 @@ function payBuildCosts({
   townId: TownId;
   resourceSystem: ResourcesSystem;
 }) {
+  // const hasEnoughResource = resourceSystem.
+
   for (const { amount, resourceId } of buildingPrice) {
     resourceSystem.decreaseAmount(resourceId, amount, { townId });
   }
