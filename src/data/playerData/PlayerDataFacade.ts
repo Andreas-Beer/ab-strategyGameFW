@@ -1,5 +1,5 @@
 import { BuildingPlayerData } from '../../systems/buildings/buildings.types';
-import { I_RequirementSystemData } from '../../systems/requirements/requirements.interfaces';
+import { I_RequirementPlayerData } from '../../systems/requirements/requirements.interfaces';
 import { ResourcesData } from '../../systems/resources/resources.types';
 import { PlayerData, stackData, TownData, TownId } from './playerData.types';
 
@@ -11,7 +11,7 @@ class TownNotFoundError extends Error {
     super(`The town with the id: "${townId}" was not found`);
   }
 }
-export class PlayerDataFacade implements I_RequirementSystemData {
+export class PlayerDataFacade implements I_RequirementPlayerData {
   constructor(private _playerData: PlayerData) {}
 
   findTownById(townId: TownId): TownData {

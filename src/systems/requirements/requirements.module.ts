@@ -1,5 +1,5 @@
 import { TownId } from '../../data/playerData/playerData.types';
-import { I_RequirementSystemData } from './requirements.interfaces';
+import { I_RequirementPlayerData } from './requirements.interfaces';
 import {
   BuildingRequirement,
   ItemRequirement,
@@ -10,7 +10,7 @@ import {
 } from './requirements.types';
 
 type CheckPlayerDataFn<T extends Requirement> = (args: {
-  playerData: I_RequirementSystemData;
+  playerData: I_RequirementPlayerData;
   requirement: T;
   townId: TownId;
 }) => boolean;
@@ -90,7 +90,7 @@ const requirementTypeCheckerMap: Record<
 } as Record<RequirementKey, CheckPlayerDataFn<Requirement>>;
 
 type CheckRequirementsAgainstPlayerDataArgs = {
-  playerData: I_RequirementSystemData;
+  playerData: I_RequirementPlayerData;
   requirements: Requirement[];
   townId: TownId;
 };

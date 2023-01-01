@@ -2,7 +2,7 @@ import { stackData, TownId } from '../../data/playerData/playerData.types';
 import { BuildingPlayerData } from '../buildings/buildings.types';
 import { ResourcesData } from '../resources/resources.types';
 
-export interface I_RequirementSystemData {
+export interface I_RequirementPlayerData {
   getPlayerLevel(): number;
   getItems(): stackData;
   getBuildings(townId: TownId): BuildingPlayerData[];
