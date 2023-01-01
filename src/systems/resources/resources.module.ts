@@ -17,20 +17,9 @@ function guardResourceExists(data: ResourcesData, resourceId: ResourceId) {
   }
 }
 
-function guardResourceIsAboveZero(newResourceAmount: number) {
-  if (newResourceAmount < 0) {
-    throw new Error('resource beneath zero');
-  }
-}
-
 type FindResourceArgs = {
   resourcesData: ResourcesData;
   resourceId: ResourceId;
-};
-
-type CheckPriceArgs = {
-  resourcesData: ResourcesData;
-  prices: Prices;
 };
 
 type ChangeAmountArgs = {
@@ -46,7 +35,7 @@ type ChangeLimitArgs = {
   amount: number;
 };
 
-function findResource({
+export function findResource({
   resourcesData,
   resourceId,
 }: FindResourceArgs): ResourceData {
@@ -54,27 +43,7 @@ function findResource({
   return resourcesData[resourceId];
 }
 
-function checkPriceAgainstResources({
-  resourcesData,
-  prices,
-}: CheckPriceArgs): boolean {
-  for (const { resourceId, amount } of prices) {
-    const resourceInStock = resourcesData[resourceId];
-
-    if (!resourceInStock) {
-      throw new ResourceNotFoundError(resourceId);
-    }
-
-    const resourceAmountInStock = resourceInStock.amount;
-    if (resourceAmountInStock < amount) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function increaseResourceAmount({
+export function increaseResourceAmount({
   resourcesData,
   resourceId,
   amount,
@@ -88,7 +57,7 @@ function increaseResourceAmount({
   resource.amount = shouldIgnoreLimit ? newAmount : clampedAmount;
 }
 
-function decreaseResourceAmount({
+export function decreaseResourceAmount({
   resourcesData,
   resourceId,
   amount,
@@ -102,7 +71,7 @@ function decreaseResourceAmount({
   resource.amount = shouldIgnoreLimit ? newAmount : clampedAmount;
 }
 
-function increaseResourceMaxLimit({
+export function increaseResourceMaxLimit({
   resourcesData,
   resourceId,
   amount,
@@ -112,7 +81,7 @@ function increaseResourceMaxLimit({
   resource.max = newAmount;
 }
 
-function decreaseResourceMaxLimit({
+export function decreaseResourceMaxLimit({
   resourcesData,
   resourceId,
   amount,
@@ -121,13 +90,3 @@ function decreaseResourceMaxLimit({
   const newAmount = (resource.max || 0) - amount;
   resource.max = newAmount;
 }
-
-export {
-  ResourceNotFoundError,
-  checkPriceAgainstResources,
-  findResource,
-  increaseResourceAmount,
-  decreaseResourceAmount,
-  increaseResourceMaxLimit,
-  decreaseResourceMaxLimit,
-};

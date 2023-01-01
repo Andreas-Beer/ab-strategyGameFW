@@ -1,24 +1,80 @@
 import { expect } from 'chai';
-import Sinon from 'sinon';
+import Sinon, { SinonStubbedInstance } from 'sinon';
 import { I_RequirementSystemData } from './requirements.interfaces';
-import { checkHasItem, checkHasPlayerLevel } from './requirements.module';
+import {
+  checkHasBuilding,
+  checkHasItem,
+  checkHasPlayerLevel,
+  checkHasResourceAmount,
+  checkRequirementsAgainstPlayerData,
+} from './requirements.module';
 
-console.clear();
-
-describe('systems/requirements.module.ts', () => {
-  let playerDataStub: I_RequirementSystemData;
+describe('systems/requirements/requirements.module.ts', () => {
+  let playerDataStub: SinonStubbedInstance<I_RequirementSystemData>;
 
   beforeEach(() => {
     playerDataStub = Sinon.stub({
       getPlayerLevel: () => 1,
       getItems: () => [],
+      getBuildings: (townId) => [],
+      getResources: (townId) => [],
     });
     playerDataStub.getPlayerLevel.returns(10);
     playerDataStub.getItems.returns({ 1: 10, 2: 0 });
+    playerDataStub.getBuildings.returns([
+      { typeId: 1, level: 4 },
+      { typeId: 1, level: 6 },
+    ]);
+    playerDataStub.getResources.returns({ 1: { amount: 10 } });
   });
 
   afterEach(() => {
     Sinon.reset();
+  });
+
+  describe('checkRequirementsAgainstPlayerData', () => {
+    it('should return true if every requirement passes', () => {
+      const result = checkRequirementsAgainstPlayerData({
+        playerData: playerDataStub,
+        requirements: [
+          { type: 'playerLevel', level: 1 },
+          { type: 'item', itemTypeId: 1, amount: 5 },
+          { type: 'building', buildingTypeId: 1, level: 1 },
+        ],
+        townId: 1,
+      });
+
+      expect(result).to.be.true;
+    });
+
+    it('should respect the not value', () => {
+      const result = checkRequirementsAgainstPlayerData({
+        playerData: playerDataStub,
+        requirements: [
+          { type: 'playerLevel', level: 9999, not: true },
+          { type: 'item', itemTypeId: 1, amount: 9999, not: true },
+          { type: 'building', buildingTypeId: 1, level: 9999, not: true },
+          { type: 'building', buildingTypeId: 9999, level: 1, not: true },
+        ],
+        townId: 1,
+      });
+
+      expect(result).to.be.true;
+    });
+
+    it('should return false if some of the requirement does not passes', () => {
+      const result = checkRequirementsAgainstPlayerData({
+        playerData: playerDataStub,
+        requirements: [
+          { type: 'playerLevel', level: 1 },
+          { type: 'item', itemTypeId: 9999, amount: 10 },
+          { type: 'building', buildingTypeId: 1, level: 0 },
+        ],
+        townId: 1,
+      });
+
+      expect(result).to.be.false;
+    });
   });
 
   describe('checkHasPlayerLevel', () => {
@@ -33,6 +89,7 @@ describe('systems/requirements.module.ts', () => {
 
       expect(result).to.be.true;
     });
+
     it('should return false if the player level is less than the requested level', () => {
       const result = checkHasPlayerLevel({
         playerData: playerDataStub,
@@ -54,6 +111,7 @@ describe('systems/requirements.module.ts', () => {
       });
       expect(result).to.be.true;
     });
+
     it('if no amount was specified, 1 is the default', () => {
       const result1 = checkHasItem({
         playerData: playerDataStub,
@@ -78,6 +136,77 @@ describe('systems/requirements.module.ts', () => {
       const result = checkHasItem({
         playerData: playerDataStub,
         requirement: { type: 'item', itemTypeId: 9999, amount: 100 },
+      });
+      expect(result).to.be.false;
+    });
+  });
+
+  describe('checkHasBuilding', () => {
+    it('should return true if the building is in the town', () => {
+      const result = checkHasBuilding({
+        playerData: playerDataStub,
+        requirement: { type: 'building', buildingTypeId: 1, level: 1 },
+        townId: 1,
+      });
+      expect(result).to.be.true;
+    });
+
+    it('should return true if there are multiple buildings with this id and one of the buildings has a level greater or equal than requested ', () => {
+      const result = checkHasBuilding({
+        playerData: playerDataStub,
+        requirement: { type: 'building', buildingTypeId: 1, level: 6 },
+        townId: 1,
+      });
+      expect(result).to.be.true;
+    });
+
+    it('should return false if the building is not the town', () => {
+      const result = checkHasBuilding({
+        playerData: playerDataStub,
+        requirement: { type: 'building', buildingTypeId: 9999, level: 1 },
+        townId: 1,
+      });
+      expect(result).to.be.false;
+    });
+
+    it('should return false if the building level is higher than the required level ', () => {
+      const result = checkHasBuilding({
+        playerData: playerDataStub,
+        requirement: { type: 'building', buildingTypeId: 1, level: 9999 },
+        townId: 1,
+      });
+      expect(result).to.be.false;
+    });
+  });
+
+  describe('checkHasResourceAmount', () => {
+    it('should return true if the resource amount fits', () => {
+      const result = checkHasResourceAmount({
+        playerData: playerDataStub,
+        requirement: { type: 'resourceAmount', resourceId: 1, amount: 1 },
+        townId: 1,
+      });
+      expect(result).to.be.true;
+    });
+
+    it('should return false if the resource does not exists', () => {
+      const result = checkHasResourceAmount({
+        playerData: playerDataStub,
+        requirement: {
+          type: 'resourceAmount',
+          resourceId: 99999,
+          amount: 10000,
+        },
+        townId: 1,
+      });
+      expect(result).to.be.false;
+    });
+
+    it('should return false if the resource amount does not fit', () => {
+      const result = checkHasResourceAmount({
+        playerData: playerDataStub,
+        requirement: { type: 'resourceAmount', resourceId: 1, amount: 10000 },
+        townId: 1,
       });
       expect(result).to.be.false;
     });

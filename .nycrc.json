@@ -4,5 +4,5 @@
   "include": ["src/**/*.ts"],
   "reporter": ["lcov", "text"],
   "check-coverage": false,
-  "exclude": ["**/*.{spec,test}.*", "**/index.*"]
+  "exclude": ["**/*.{spec,test,errors}.*", "**/index.*"]
 }

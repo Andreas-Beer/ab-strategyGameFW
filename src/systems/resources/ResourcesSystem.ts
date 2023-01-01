@@ -3,7 +3,6 @@ import { cloneObj } from '../../helpers/cloneObj';
 import { BaseSystem } from '../base';
 import { ResourceData, ResourceId } from './resources.types';
 import {
-  checkPriceAgainstResources,
   decreaseResourceAmount,
   decreaseResourceMaxLimit,
   findResource,
@@ -44,18 +43,6 @@ export class ResourcesSystem extends BaseSystem {
     });
 
     return Object.freeze(cloneObj(res));
-  }
-
-  checkPrices(prices: Prices, { townId }: CheckPriceOptions = {}) {
-    const resourcesData =
-      typeof townId !== 'undefined'
-        ? this.playerData.findTownById(townId).resources
-        : this.playerData.getGlobalResources();
-
-    return checkPriceAgainstResources({
-      resourcesData,
-      prices,
-    });
   }
 
   increaseAmount(

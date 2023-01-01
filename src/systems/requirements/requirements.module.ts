@@ -1,33 +1,35 @@
-import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
-import { checkPriceAgainstResources } from '../resources/resources.module';
+import { TownId } from '../../data/playerData/playerData.types';
 import { I_RequirementSystemData } from './requirements.interfaces';
 import {
   BuildingRequirement,
   ItemRequirement,
   PlayerLevelRequirement,
   Requirement,
+  RequirementKey,
+  ResourceAmountRequirement,
 } from './requirements.types';
 
-type CheckRequirementsAgainstPlayerDataArgs = {
-  playerDataFacade: PlayerDataFacade;
-  requirements: Requirement[];
-};
-
-type CheckHasRequirementArgs = {
-  playerDataFacade: PlayerDataFacade;
-};
-
-type CheckPlayerDataFn<T extends Requirement> = ({
-  playerData,
-  requirement,
-}: {
+type CheckPlayerDataFn<T extends Requirement> = (args: {
   playerData: I_RequirementSystemData;
   requirement: T;
+  townId: TownId;
 }) => boolean;
 
-export const checkHasResourceRequirement: CheckPlayerDataFn<
-  PlayerLevelRequirement
-> = ({ playerData, requirement }) => {};
+export const checkHasResourceAmount: CheckPlayerDataFn<
+  ResourceAmountRequirement
+> = ({ playerData, requirement, townId }) => {
+  const requiredResourceTypeId = requirement.resourceId;
+  const requiredREsourceAmount = requirement.amount;
+  const currentResources = playerData.getResources(townId);
+
+  const searchedResource = currentResources[requiredResourceTypeId];
+  if (!searchedResource) {
+    return false;
+  }
+
+  const passRequirement = searchedResource.amount >= requiredREsourceAmount;
+  return passRequirement;
+};
 
 export const checkHasPlayerLevel: CheckPlayerDataFn<PlayerLevelRequirement> = ({
   playerData,
@@ -54,10 +56,64 @@ export const checkHasItem: CheckPlayerDataFn<ItemRequirement> = ({
 export const checkHasBuilding: CheckPlayerDataFn<BuildingRequirement> = ({
   playerData,
   requirement,
-}) => {};
+  townId,
+}) => {
+  const requiredBuildingTypeId = requirement.buildingTypeId;
+  const requiredBuildingLevel = requirement.level;
+  const currentBuildings = playerData.getBuildings(townId);
 
-// Kann das hier auch den Resource Check abbliden?
+  const filteredBuildings = currentBuildings.filter(
+    (building) => building.typeId === requiredBuildingTypeId,
+  );
+  if (filteredBuildings.length === 0) {
+    return false;
+  }
+
+  const hasABuildingAHighEnoughLevel = filteredBuildings.some(
+    (building) => building.level >= requiredBuildingLevel,
+  );
+  if (!hasABuildingAHighEnoughLevel) {
+    return false;
+  }
+
+  return true;
+};
+
+const requirementTypeCheckerMap: Record<
+  RequirementKey,
+  CheckPlayerDataFn<Requirement>
+> = {
+  building: checkHasBuilding,
+  item: checkHasItem,
+  playerLevel: checkHasPlayerLevel,
+  resourceAmount: checkHasResourceAmount,
+} as Record<RequirementKey, CheckPlayerDataFn<Requirement>>;
+
+type CheckRequirementsAgainstPlayerDataArgs = {
+  playerData: I_RequirementSystemData;
+  requirements: Requirement[];
+  townId: TownId;
+};
+
 export function checkRequirementsAgainstPlayerData({
-  playerDataFacade,
+  playerData,
   requirements,
-}: CheckRequirementsAgainstPlayerDataArgs): boolean {}
+  townId,
+}: CheckRequirementsAgainstPlayerDataArgs): boolean {
+  for (const requirement of requirements) {
+    const { type, not } = requirement;
+    const checker = requirementTypeCheckerMap[type];
+    const result = checker({
+      playerData,
+      requirement,
+      townId,
+    });
+    const modifiedResult = not ? !result : result;
+
+    if (!modifiedResult) {
+      return false;
+    }
+  }
+
+  return true;
+}

@@ -1,14 +1,12 @@
 import { expect } from 'chai';
-import { Prices } from '../../types/price.types';
+import { ResourceNotFoundError } from './resources.errors';
 
 import {
-  checkPriceAgainstResources,
   decreaseResourceAmount,
   decreaseResourceMaxLimit,
   findResource,
   increaseResourceAmount,
   increaseResourceMaxLimit,
-  ResourceNotFoundError,
 } from './resources.module';
 import { ResourcesData } from './resources.types';
 
@@ -187,34 +185,6 @@ describe('systems/resources/resources.module.ts', () => {
         });
 
       expect(fn).to.throw(ResourceNotFoundError);
-    });
-  });
-
-  describe('checkPriceAgainstResources', () => {
-    it('should pass if there are enough resources', () => {
-      const prices: Prices = [
-        { resourceId: resId, amount: 100 },
-        { resourceId: 2, amount: 100 },
-      ];
-      const areEnoughResources = checkPriceAgainstResources({
-        resourcesData: resourceDataMock,
-        prices,
-      });
-
-      expect(areEnoughResources).to.be.true;
-    });
-
-    it('should fail if there are not enough resources', () => {
-      const prices: Prices = [
-        { resourceId: resId, amount: 100000 },
-        { resourceId: 2, amount: 100000 },
-      ];
-      const areEnoughResources = checkPriceAgainstResources({
-        resourcesData: resourceDataMock,
-        prices,
-      });
-
-      expect(areEnoughResources).to.be.false;
     });
   });
 });
