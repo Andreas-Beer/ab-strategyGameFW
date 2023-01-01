@@ -10,10 +10,7 @@ import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
 import { BuildingNotEnoughResourcesError } from './buildings.errors';
 import { buildBuilding, payBuildCosts } from './buildings.module';
-import { BuildingCityPosition, BuildingConfigData } from './buildings.types';
-
-console.clear();
-console.log('---------------------');
+import { BuildingTownPosition, BuildingConfigData } from './buildings.types';
 
 const buildingConfig1: BuildingConfigData = {
   typeId: 1,
@@ -35,8 +32,8 @@ const buildingConfig1: BuildingConfigData = {
 };
 
 describe('systems/buildings.module.spec', () => {
-  describe.skip('buildBuilding', () => {
-    const buildingCityPosition: BuildingCityPosition = 42;
+  describe('buildBuilding', () => {
+    const buildingCityPosition: BuildingTownPosition = 42;
     let townData: TownData;
     let townDataBefore: TownData;
     let configDataFacade: ConfigDataFacade;
@@ -74,20 +71,18 @@ describe('systems/buildings.module.spec', () => {
         resourceSystem,
         requirementsSystem,
         buildingConfig: buildingConfig1,
-        playerDataFacade,
         townData,
-        buildingCityPosition,
+        buildingTownPosition: buildingCityPosition,
       });
       expect(townData.buildings).has.a.lengthOf(1);
     });
-    it.skip('should remove the necessary resources from the playerData.', () => {
+    it('should remove the necessary resources from the playerData.', () => {
       buildBuilding({
         resourceSystem,
         requirementsSystem,
         buildingConfig: buildingConfig1,
-        playerDataFacade,
         townData,
-        buildingCityPosition,
+        buildingTownPosition: buildingCityPosition,
       });
       const buildingPrice = buildingConfig1.levels[1].price;
 

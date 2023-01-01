@@ -9,7 +9,7 @@ export interface withKoaRouter {
 
 export class BaseSystem {
   constructor(
-    protected configData: ConfigDataFacade,
-    protected playerData: PlayerDataFacade,
+    protected configDataFacade: ConfigDataFacade,
+    protected playerDataFacade: PlayerDataFacade,
   ) {}
 }

@@ -1,25 +1,20 @@
+import { TaskQueue } from '../../classes/TaskQueue';
 import { TownData, TownId } from '../../data/playerData/playerData.types';
 import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
 import { Prices } from '../../types/price.types';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourceAmountRequirement } from '../requirements/requirements.types';
 import { ResourcesSystem } from '../resources';
-import { BuildingNotEnoughResourcesError } from './buildings.errors';
+import {
+  BuildingNotEnoughResourcesError,
+  BuildingRequirementsNotFulfilledError,
+} from './buildings.errors';
 import {
   BuildingCityId,
-  BuildingCityPosition,
+  BuildingTownPosition,
   BuildingConfigData,
   BuildingPlayerData,
 } from './buildings.types';
-
-type BuildBuildingArguments = {
-  resourceSystem: ResourcesSystem;
-  requirementsSystem: RequirementsSystem;
-  buildingConfig: BuildingConfigData;
-  playerDataFacade: PlayerDataFacade;
-  townData: TownData;
-  buildingCityPosition: BuildingCityPosition;
-};
 
 let buildingId: BuildingCityId = 0;
 
@@ -29,7 +24,7 @@ function createUniqueBuildingId() {
 
 function createNewBuilding(
   buildingConfigData: BuildingConfigData,
-  buildingCityPosition: BuildingCityPosition,
+  buildingCityPosition: BuildingTownPosition,
 ): BuildingPlayerData {
   return {
     typeId: buildingConfigData.typeId,
@@ -39,8 +34,6 @@ function createNewBuilding(
     location: buildingCityPosition,
   };
 }
-
-function checkBuildingRequirements({}) {}
 
 function payBuildCosts({
   resourceSystem,
@@ -73,17 +66,24 @@ function buildBuilding({
   resourceSystem,
   requirementsSystem,
   buildingConfig,
-  playerDataFacade,
   townData,
-  buildingCityPosition,
-}: BuildBuildingArguments) {
-  const fulfillsRequirements = requirementsSystem.check(
+  buildingTownPosition: buildingCityPosition,
+  taskQueue,
+}: {
+  resourceSystem: ResourcesSystem;
+  requirementsSystem: RequirementsSystem;
+  buildingConfig: BuildingConfigData;
+  townData: TownData;
+  buildingTownPosition: BuildingTownPosition;
+  taskQueue: TaskQueue;
+}) {
+  const hasFulfilledTheRequirements = requirementsSystem.check(
     buildingConfig.levels[1].requirements,
     townData.id,
   );
 
-  if (!fulfillsRequirements) {
-    throw new Error();
+  if (!hasFulfilledTheRequirements) {
+    throw new BuildingRequirementsNotFulfilledError();
   }
 
   payBuildCosts({

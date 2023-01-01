@@ -34,8 +34,8 @@ export class ResourcesSystem extends BaseSystem {
   ): ResourceData {
     const resourcesData =
       typeof townId !== 'undefined'
-        ? this.playerData.findTownById(townId).resources
-        : this.playerData.getGlobalResources();
+        ? this.playerDataFacade.findTownById(townId).resources
+        : this.playerDataFacade.getGlobalResources();
 
     const res = findResource({
       resourcesData,
@@ -52,8 +52,8 @@ export class ResourcesSystem extends BaseSystem {
   ) {
     const resourcesData =
       typeof townId !== 'undefined'
-        ? this.playerData.findTownById(townId).resources
-        : this.playerData.getGlobalResources();
+        ? this.playerDataFacade.findTownById(townId).resources
+        : this.playerDataFacade.getGlobalResources();
 
     increaseResourceAmount({
       resourcesData,
@@ -70,8 +70,8 @@ export class ResourcesSystem extends BaseSystem {
   ) {
     const resourcesData =
       typeof townId !== 'undefined'
-        ? this.playerData.findTownById(townId).resources
-        : this.playerData.getGlobalResources();
+        ? this.playerDataFacade.findTownById(townId).resources
+        : this.playerDataFacade.getGlobalResources();
 
     decreaseResourceAmount({
       resourcesData,
@@ -88,8 +88,8 @@ export class ResourcesSystem extends BaseSystem {
   ) {
     const resourcesData =
       typeof townId !== 'undefined'
-        ? this.playerData.findTownById(townId).resources
-        : this.playerData.getGlobalResources();
+        ? this.playerDataFacade.findTownById(townId).resources
+        : this.playerDataFacade.getGlobalResources();
 
     increaseResourceMaxLimit({
       resourcesData,
@@ -105,8 +105,8 @@ export class ResourcesSystem extends BaseSystem {
   ) {
     const resourcesData =
       typeof townId !== 'undefined'
-        ? this.playerData.findTownById(townId).resources
-        : this.playerData.getGlobalResources();
+        ? this.playerDataFacade.findTownById(townId).resources
+        : this.playerDataFacade.getGlobalResources();
 
     decreaseResourceMaxLimit({
       resourcesData,

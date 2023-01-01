@@ -5,7 +5,7 @@ import { Duration } from '../../types/time.types';
 
 export type BuildingTypeId = number;
 
-export type BuildingCityPosition = number;
+export type BuildingTownPosition = number;
 
 export type BuildingCityId = number;
 
@@ -34,7 +34,7 @@ export type BuildingPlayerData = {
   id: number;
   typeId: BuildingTypeId;
   level: number;
-  location: BuildingCityPosition;
+  location: BuildingTownPosition;
   constructionProgress: number;
   content?: any;
 };
