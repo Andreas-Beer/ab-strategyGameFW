@@ -1,6 +1,6 @@
 import { EffectConfig } from '../../types/effect.types';
 import { Price } from '../../types/price.types';
-import { Requirement } from '../../types/requirement.types';
+import { Requirement } from '../requirements/requirements.types';
 import { Duration } from '../../types/time.types';
 
 export type BuildingTypeId = number;

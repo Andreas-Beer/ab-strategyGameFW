@@ -1,10 +1,18 @@
-import { expect } from 'chai';
+import { expect, use } from 'chai';
+import Sinon, { SinonStub } from 'sinon';
+import sinonChai from 'sinon-chai';
+use(sinonChai);
+
 import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
 import { PlayerData, TownData } from '../../data/playerData/playerData.types';
 import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
 import { ResourcesSystem } from '../resources';
-import { buildBuilding } from './buildings.module';
+import { BuildingNotEnoughResourcesError } from './buildings.errors';
+import { buildBuilding, payBuildCosts } from './buildings.module';
 import { BuildingCityPosition, BuildingConfigData } from './buildings.types';
+
+console.clear();
+console.log('---------------------');
 
 const buildingConfig1: BuildingConfigData = {
   typeId: 1,
@@ -25,8 +33,8 @@ const buildingConfig1: BuildingConfigData = {
   },
 };
 
-describe('system/buildings.module.spec', () => {
-  describe('build', () => {
+describe('systems/buildings.module.spec', () => {
+  describe('buildBuilding', () => {
     const buildingCityPosition: BuildingCityPosition = 42;
     let townData: TownData;
     let townDataBefore: TownData;
@@ -56,7 +64,9 @@ describe('system/buildings.module.spec', () => {
       resourceSystem = new ResourcesSystem(configDataFacade, playerDataFacade);
 
       expect(townData.buildings).has.a.lengthOf(0);
+    });
 
+    it('should add a building with a unique id to the playerData into the correct town.', () => {
       buildBuilding({
         resourceSystem,
         buildingConfig: buildingConfig1,
@@ -64,12 +74,16 @@ describe('system/buildings.module.spec', () => {
         townData,
         buildingCityPosition,
       });
-    });
-
-    it('should add a building with a unique id to the playerData into the correct town.', () => {
       expect(townData.buildings).has.a.lengthOf(1);
     });
     it('should remove the necessary resources from the playerData.', () => {
+      buildBuilding({
+        resourceSystem,
+        buildingConfig: buildingConfig1,
+        playerDataFacade,
+        townData,
+        buildingCityPosition,
+      });
       const buildingPrice = buildingConfig1.levels[1].price;
 
       for (const { resourceId, amount: priceAmount } of buildingPrice) {
@@ -79,19 +93,65 @@ describe('system/buildings.module.spec', () => {
         expect(amountAfter).to.be.eq(amountBefore - priceAmount);
       }
     });
-    it('should throw an error if there is not enough resource to build the building.', () => {
+    it.skip('should throw an error if the requirement does not fit.', () => {});
+    it.skip('should add a building finish task into the global task queue.', () => {});
+  });
+
+  describe('payBuildCosts', () => {
+    let resourceSystemStub: SinonStub;
+
+    const buildingPrices = [
+      { resourceId: 1, amount: 10 },
+      { resourceId: 2, amount: 10 },
+    ];
+
+    beforeEach(() => {
+      resourceSystemStub = Sinon.stub({
+        checkPrices: () => {},
+        decreaseAmount: () => {},
+      });
+    });
+
+    afterEach(() => {
+      Sinon.reset();
+    });
+
+    it('should call the checkPrices method on the resourceSystem', () => {
+      resourceSystemStub.checkPrices.returns(true);
+
+      payBuildCosts({
+        resourceSystem: resourceSystemStub,
+        buildingPrices,
+        townId: 1,
+      });
+
+      expect(resourceSystemStub.checkPrices).to.be.calledOnceWith(
+        buildingPrices,
+        { townId: 1 },
+      );
+    });
+    it('should call the decreaseAmount method for every resource in the price', () => {
+      resourceSystemStub.checkPrices.returns(true);
+
+      payBuildCosts({
+        resourceSystem: resourceSystemStub,
+        buildingPrices,
+        townId: 1,
+      });
+
+      expect(resourceSystemStub.decreaseAmount).to.be.calledTwice;
+    });
+    it('should throw if the price is higher than the resource capacity', () => {
+      resourceSystemStub.checkPrices.returns(false);
+
       const fn = () =>
-        buildBuilding({
-          resourceSystem,
-          buildingConfig: buildingConfig1,
-          playerDataFacade,
-          townData,
-          buildingCityPosition,
+        payBuildCosts({
+          resourceSystem: resourceSystemStub,
+          buildingPrices,
+          townId: 1,
         });
 
-      expect(fn).to.not.throw;
+      expect(fn).to.throw(BuildingNotEnoughResourcesError);
     });
-    it.skip('should add a building finish task into the global task queue.', () => {});
-    it.skip('should throw an error if the requirement does not fit.', () => {});
   });
 });

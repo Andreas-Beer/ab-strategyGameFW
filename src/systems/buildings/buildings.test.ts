@@ -25,7 +25,7 @@ const configData: ConfigData = {
   buildings: { buildingsBuildParallel: 1, buildings: [buildingConfig1] },
 } as ConfigData;
 
-describe('system/buildings.test', () => {
+describe('systems/buildings.test', () => {
   describe('build', () => {
     it.skip('should add a building with a unique id to the playerData into the correct town.', () => {
       const townData: TownData = {

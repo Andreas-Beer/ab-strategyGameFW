@@ -5,7 +5,7 @@ import {
 import { BuildingPlayerData } from '../../systems/buildings/buildings.types';
 import { EffectData } from '../../types/effect.types';
 
-export type stackData = Record<number, ResourceId>;
+export type stackData = Record<number, number>;
 export type PlayerId = number;
 export type TownId = number;
 

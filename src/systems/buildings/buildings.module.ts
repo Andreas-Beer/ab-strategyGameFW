@@ -2,6 +2,7 @@ import { TownData, TownId } from '../../data/playerData/playerData.types';
 import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
 import { Prices } from '../../types/price.types';
 import { ResourcesSystem } from '../resources';
+import { BuildingNotEnoughResourcesError } from './buildings.errors';
 import {
   BuildingCityId,
   BuildingCityPosition,
@@ -36,18 +37,26 @@ function createNewBuilding(
   };
 }
 
-function payBuildCosts({
-  buildingPrice,
-  townId,
-  resourceSystem,
-}: {
-  buildingPrice: Prices;
-  townId: TownId;
-  resourceSystem: ResourcesSystem;
-}) {
-  // const hasEnoughResource = resourceSystem.
+function checkBuildingRequirements({}) {}
 
-  for (const { amount, resourceId } of buildingPrice) {
+function payBuildCosts({
+  resourceSystem,
+  buildingPrices,
+  townId,
+}: {
+  resourceSystem: ResourcesSystem;
+  buildingPrices: Prices;
+  townId: TownId;
+}) {
+  const hasEnoughResource = resourceSystem.checkPrices(buildingPrices, {
+    townId,
+  });
+
+  if (!hasEnoughResource) {
+    throw new BuildingNotEnoughResourcesError();
+  }
+
+  for (const { amount, resourceId } of buildingPrices) {
     resourceSystem.decreaseAmount(resourceId, amount, { townId });
   }
 }
@@ -60,13 +69,13 @@ function buildBuilding({
   buildingCityPosition,
 }: BuildBuildingArguments) {
   payBuildCosts({
-    buildingPrice: buildingConfig.levels[1].price,
-    townId: townData.id,
     resourceSystem,
+    buildingPrices: buildingConfig.levels[1].price,
+    townId: townData.id,
   });
 
   const newBuilding = createNewBuilding(buildingConfig, buildingCityPosition);
   townData.buildings.push(newBuilding);
 }
 
-export { buildBuilding };
+export { buildBuilding, payBuildCosts };
