@@ -1,5 +1,7 @@
+import { BuildingPlayerData } from '../../systems/buildings/buildings.types';
 import { I_RequirementSystemData } from '../../systems/requirements/requirements.interfaces';
-import { PlayerData, TownId } from './playerData.types';
+import { ResourcesData } from '../../systems/resources/resources.types';
+import { PlayerData, stackData, TownData, TownId } from './playerData.types';
 
 class TownNotFoundError extends Error {
   public name = 'TOWN_NOT_FOUND_ERROR';
@@ -11,11 +13,8 @@ class TownNotFoundError extends Error {
 }
 export class PlayerDataFacade implements I_RequirementSystemData {
   constructor(private _playerData: PlayerData) {}
-  getPlayerLevel(): number {
-    throw new Error('Method not implemented.');
-  }
 
-  findTownById(townId: TownId) {
+  findTownById(townId: TownId): TownData {
     const searchedTown = this._playerData.towns.find(
       (town) => town.id === townId,
     );
@@ -29,5 +28,19 @@ export class PlayerDataFacade implements I_RequirementSystemData {
 
   getGlobalResources() {
     return this._playerData.resources;
+  }
+
+  // I_RequirementSystemData
+  getItems(): stackData {
+    return this._playerData.items;
+  }
+  getBuildings(townId: number): BuildingPlayerData[] {
+    return this.findTownById(townId).buildings;
+  }
+  getResources(townId: number): ResourcesData {
+    return this.findTownById(townId).resources;
+  }
+  getPlayerLevel(): number {
+    return this._playerData.level;
   }
 }
