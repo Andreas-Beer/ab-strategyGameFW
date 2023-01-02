@@ -6,7 +6,11 @@ import { BaseSystem } from '../base';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
 import { buildBuilding } from './buildings.module';
-import { BuildingTownPosition, BuildingTypeId } from './buildings.types';
+import {
+  BuildingPlayerData,
+  BuildingTownPosition,
+  BuildingTypeId,
+} from './buildings.types';
 
 export class BuildingsSystem extends BaseSystem {
   constructor(
@@ -23,8 +27,8 @@ export class BuildingsSystem extends BaseSystem {
     buildingTypeId: BuildingTypeId,
     buildingTownPosition: BuildingTownPosition,
     townId: TownId,
-  ) {
-    buildBuilding({
+  ): BuildingPlayerData {
+    const newBuilding = buildBuilding({
       requirementsSystem: this.requirementSystem,
       resourceSystem: this.resourcesSystem,
       buildingTownPosition,
@@ -33,5 +37,7 @@ export class BuildingsSystem extends BaseSystem {
       townData: this.playerDataFacade.findTownById(townId),
       taskQueue: this.taskQueue,
     });
+
+    return newBuilding;
   }
 }

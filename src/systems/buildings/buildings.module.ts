@@ -1,3 +1,4 @@
+import { Task } from '../../classes/Task';
 import { TaskQueue } from '../../classes/TaskQueue';
 import { TownData, TownId } from '../../data/playerData/playerData.types';
 import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
@@ -25,10 +26,11 @@ function createUniqueBuildingId() {
 function createNewBuilding(
   buildingConfigData: BuildingConfigData,
   buildingCityPosition: BuildingTownPosition,
+  id: BuildingCityId,
 ): BuildingPlayerData {
   return {
     typeId: buildingConfigData.typeId,
-    id: createUniqueBuildingId(),
+    id,
     constructionProgress: 0,
     level: 1,
     location: buildingCityPosition,
@@ -76,9 +78,11 @@ function buildBuilding({
   townData: TownData;
   buildingTownPosition: BuildingTownPosition;
   taskQueue: TaskQueue;
-}) {
+}): BuildingPlayerData {
+  const levelConfig = buildingConfig.levels[1];
+
   const hasFulfilledTheRequirements = requirementsSystem.check(
-    buildingConfig.levels[1].requirements,
+    levelConfig.requirements,
     townData.id,
   );
 
@@ -93,8 +97,21 @@ function buildBuilding({
     townId: townData.id,
   });
 
-  const newBuilding = createNewBuilding(buildingConfig, buildingCityPosition);
+  const newBuildingId = createUniqueBuildingId();
+  const newBuilding = createNewBuilding(
+    buildingConfig,
+    buildingCityPosition,
+    newBuildingId,
+  );
   townData.buildings.push(newBuilding);
+
+  taskQueue.addTask(
+    new Task(levelConfig.duration, () => {
+      newBuilding.constructionProgress = 100;
+    }),
+  );
+
+  return newBuilding;
 }
 
 export { buildBuilding, payBuildCosts };

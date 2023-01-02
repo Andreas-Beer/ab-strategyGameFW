@@ -1,6 +1,7 @@
 import { expect, use } from 'chai';
 import Sinon, { SinonStub, SinonStubbedInstance } from 'sinon';
 import sinonChai from 'sinon-chai';
+import { TaskQueue } from '../../classes/TaskQueue';
 use(sinonChai);
 
 import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
@@ -40,6 +41,7 @@ describe('systems/buildings.module.spec', () => {
     let playerDataFacade: PlayerDataFacade;
     let resourceSystem: ResourcesSystem;
     let requirementsSystem: RequirementsSystem;
+    let taskQueue: TaskQueue;
 
     beforeEach(() => {
       townDataBefore = {
@@ -60,6 +62,8 @@ describe('systems/buildings.module.spec', () => {
 
       configDataFacade = new ConfigDataFacade({});
 
+      taskQueue = new TaskQueue();
+
       resourceSystem = new ResourcesSystem(configDataFacade, playerDataFacade);
       requirementsSystem = new RequirementsSystem(playerDataFacade);
 
@@ -73,6 +77,7 @@ describe('systems/buildings.module.spec', () => {
         buildingConfig: buildingConfig1,
         townData,
         buildingTownPosition: buildingCityPosition,
+        taskQueue,
       });
       expect(townData.buildings).has.a.lengthOf(1);
     });
@@ -83,6 +88,7 @@ describe('systems/buildings.module.spec', () => {
         buildingConfig: buildingConfig1,
         townData,
         buildingTownPosition: buildingCityPosition,
+        taskQueue,
       });
       const buildingPrice = buildingConfig1.levels[1].price;
 

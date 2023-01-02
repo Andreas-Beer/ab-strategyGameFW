@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+import Sinon from 'sinon';
 import { TaskQueue } from '../../classes/TaskQueue';
 import { ConfigData } from '../../data/configData/config.types';
 import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
@@ -12,7 +14,7 @@ const buildingConfig1: BuildingConfigData = {
   typeId: 1,
   levels: {
     1: {
-      duration: '1min',
+      duration: '1ms',
       price: [{ resourceId: 1, amount: 10 }],
       requirements: [{ type: 'playerLevel', level: 1 }],
       effects: [
@@ -29,8 +31,12 @@ const configData: ConfigData = {
 
 describe('systems/buildings.test', () => {
   describe('build', () => {
-    it('should add a building with a unique id to the playerData into the correct town.', () => {
-      const townData: TownData = {
+    let buildingsSystem: BuildingsSystem;
+    let taskQueue: TaskQueue;
+    let townData: TownData;
+
+    beforeEach(() => {
+      townData = {
         name: '',
         units: [],
         location: [0, 0],
@@ -52,19 +58,37 @@ describe('systems/buildings.test', () => {
       );
 
       const requirementsSystem = new RequirementsSystem(playerDataFacade);
-      const taskQueue = new TaskQueue();
+      taskQueue = new TaskQueue();
 
-      const buildingsSystem = new BuildingsSystem(
+      buildingsSystem = new BuildingsSystem(
         configDataFacade,
         playerDataFacade,
         resourceSystem,
         requirementsSystem,
-        taskQueue,
+        Sinon.spy(taskQueue),
       );
+    });
 
+    afterEach(() => {
+      Sinon.reset();
+    });
+
+    it('should add a building with a unique id to the playerData into the correct town.', () => {
       buildingsSystem.build(buildingConfig1.typeId, 1, 1);
     });
-    it.skip('should add a building finish task into the global task queue.', () => {});
+    it('should add a building finish task into the global task queue.', () => {
+      const newBuilding = buildingsSystem.build(buildingConfig1.typeId, 1, 1);
+      expect(taskQueue._queue).to.have.a.lengthOf(1);
+      expect(newBuilding).to.be.not.undefined;
+      expect(newBuilding.constructionProgress).to.be.eq(0);
+
+      taskQueue.callExpiredTasks(Date.now() + 2000);
+      expect(taskQueue._queue).to.have.a.lengthOf(0);
+
+      setTimeout(() => {
+        expect(newBuilding.constructionProgress).to.be.eq(100);
+      }, 0);
+    });
     it.skip('should remove the necessary resources from the playerData.', () => {});
     it.skip('should throw an error if there is not enough resource to build the building.', () => {});
     it.skip('should throw an error if the requirement does not fit.', () => {});
