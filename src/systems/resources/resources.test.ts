@@ -27,7 +27,7 @@ describe('systems/resources.test', () => {
         },
       ],
     });
-    resourcesSystem = new ResourcesSystem(configData, playerData);
+    resourcesSystem = new ResourcesSystem(playerData);
   });
 
   describe('find', () => {

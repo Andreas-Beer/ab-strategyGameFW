@@ -52,10 +52,7 @@ describe('systems/buildings.test', () => {
         towns: [townData],
       } as PlayerData);
 
-      const resourceSystem = new ResourcesSystem(
-        configDataFacade,
-        playerDataFacade,
-      );
+      const resourceSystem = new ResourcesSystem(playerDataFacade);
 
       const requirementsSystem = new RequirementsSystem(playerDataFacade);
       taskQueue = new TaskQueue();

@@ -10,6 +10,7 @@ export type EffectConfig =
       type: `modify/resource/${ResourceId}`;
       amount: Amount;
       repeat?: Duration;
+      expire?: Duration;
     }
   | { type: `modify/capacity/${ResourceId}`; amount: Amount }
   | { type: 'modify/xp'; amount: number }

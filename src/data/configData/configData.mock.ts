@@ -1,6 +1,6 @@
 import { BuildingsConfig } from '../../systems/buildings/buildings.types';
-import { ItemConfig } from '../../types/item.types';
-import { UnitConfig } from '../../types/units.types';
+import { ItemConfigs } from '../../types/item.types';
+import { UnitConfigs } from '../../types/units.types';
 import { ConfigData } from './config.types';
 
 const buildingsConfigMock: BuildingsConfig = {
@@ -19,11 +19,22 @@ const buildingsConfigMock: BuildingsConfig = {
             { resourceId: 1, amount: 100 },
           ],
           duration: '10s',
-          effects: [],
+          events: {
+            onFinish: {
+              effects: [],
+            },
+          },
         },
         10: {
           requirements: [{ type: 'item', itemTypeId: 29 }],
-          effects: [],
+          events: {
+            onFinish: {
+              effects: [],
+            },
+            onDestroy: {
+              effects: [],
+            },
+          },
           price: [
             { resourceId: 2, amount: 300 },
             { resourceId: 1, amount: 100 },
@@ -49,21 +60,26 @@ const buildingsConfigMock: BuildingsConfig = {
         1: {
           price: [{ resourceId: 1, amount: 100 }],
           duration: '30s',
-          effects: [
-            {
-              type: 'modify/resource/2',
-              amount: +200,
-              repeat: '5s',
+          events: {
+            onFinish: {
+              effects: [
+                {
+                  type: 'modify/resource/2',
+                  amount: +200,
+                  repeat: '5s',
+                  expire: '1w',
+                },
+                {
+                  type: 'modify/capacity/2',
+                  amount: +2000,
+                },
+                {
+                  type: 'modify/xp',
+                  amount: +500,
+                },
+              ],
             },
-            {
-              type: 'modify/capacity/2',
-              amount: +2000,
-            },
-            {
-              type: 'modify/xp',
-              amount: +500,
-            },
-          ],
+          },
           requirements: [],
         },
       },
@@ -77,8 +93,10 @@ const buildingsConfigMock: BuildingsConfig = {
             { resourceId: 2, amount: 2000 },
           ],
           duration: '20s',
-          requirements: [{ type: 'not-building', buildingTypeId: 3 }],
-          effects: [],
+          requirements: [
+            { type: 'building', buildingTypeId: 3, level: 1, not: true },
+          ],
+          events: {},
         },
       },
       controller: {
@@ -88,7 +106,7 @@ const buildingsConfigMock: BuildingsConfig = {
   ],
 };
 
-const itemsConfigMock: ItemConfig[] = [
+const itemsConfigMock: ItemConfigs = [
   {
     typeId: 0,
     category: 1,
@@ -173,7 +191,7 @@ const itemsConfigMock: ItemConfig[] = [
   },
 ];
 
-const unitConfigMock: UnitConfig[] = [
+const unitConfigMock: UnitConfigs = [
   {
     typeId: 2,
     stats: {
@@ -194,7 +212,7 @@ const unitConfigMock: UnitConfig[] = [
       { type: 'playerLevel', level: 6 },
       { type: 'building', buildingTypeId: 5, level: 3 },
     ],
-    effects: [{ resourceId: 3, amount: 30, repeat: '1h' }],
+    effects: [{ type: 'modify/resource/4', amount: -30, repeat: '1h' }],
   },
 ];
 

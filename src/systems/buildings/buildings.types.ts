@@ -1,7 +1,15 @@
-import { EffectConfig } from '../../types/effect.types';
 import { Price } from '../../types/price.types';
 import { Requirement } from '../requirements/requirements.types';
 import { Duration } from '../../types/time.types';
+import { EffectConfig } from '../../types/effect.types';
+
+export type EventData<T extends string> = {
+  [key in T]?: {
+    effects?: EffectConfig[];
+  };
+};
+
+export type BuildingLifecycleEvents = 'onFinish' | 'onDestroy';
 
 export type BuildingTypeId = number;
 
@@ -15,13 +23,11 @@ export type BuildingsConfig = {
 };
 
 export type BuildingLevelConfig = {
-  level: number;
   price: Price[];
   requirements: Requirement[];
   duration: Duration;
-  effects: EffectConfig[];
+  events: EventData<BuildingLifecycleEvents>;
 };
-
 export type BuildingConfigData = {
   typeId: BuildingTypeId;
   levels: {

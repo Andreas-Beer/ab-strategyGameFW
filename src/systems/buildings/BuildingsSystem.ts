@@ -1,10 +1,11 @@
 import { TaskQueue } from '../../classes/TaskQueue';
-import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
 import { TownId } from '../../data/playerData/playerData.types';
-import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
-import { BaseSystem } from '../base';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
+import {
+  BuildingsConfigData,
+  BuildingsPlayerData,
+} from './buildings.interfaces';
 import { buildBuilding } from './buildings.module';
 import {
   BuildingPlayerData,
@@ -12,16 +13,14 @@ import {
   BuildingTypeId,
 } from './buildings.types';
 
-export class BuildingsSystem extends BaseSystem {
+export class BuildingsSystem {
   constructor(
-    configDataFacade: ConfigDataFacade,
-    playerDataFacade: PlayerDataFacade,
+    private configData: BuildingsConfigData,
+    private playerData: BuildingsPlayerData,
     private resourcesSystem: ResourcesSystem,
     private requirementSystem: RequirementsSystem,
     private taskQueue: TaskQueue,
-  ) {
-    super(configDataFacade, playerDataFacade);
-  }
+  ) {}
 
   build(
     buildingTypeId: BuildingTypeId,
@@ -33,8 +32,8 @@ export class BuildingsSystem extends BaseSystem {
       resourceSystem: this.resourcesSystem,
       buildingTownPosition,
       buildingConfig:
-        this.configDataFacade.findBuildingConfigByTypeId(buildingTypeId),
-      townData: this.playerDataFacade.findTownById(townId),
+        this.configData.findBuildingConfigByTypeId(buildingTypeId),
+      townData: this.playerData.findTownById(townId),
       taskQueue: this.taskQueue,
     });
 

@@ -17,17 +17,20 @@ const buildingConfig1: BuildingConfigData = {
   typeId: 1,
   levels: {
     1: {
-      level: 1,
       duration: '1min',
       price: [
         { resourceId: 1, amount: 10 },
         { resourceId: 2, amount: 10 },
       ],
       requirements: [{ type: 'playerLevel', level: 1 }],
-      effects: [
-        { type: 'modify/resource/2', amount: 10 },
-        { type: 'modify/capacity/2', amount: 100 },
-      ],
+      events: {
+        onFinish: {
+          effects: [
+            { type: 'modify/resource/2', amount: 10 },
+            { type: 'modify/capacity/2', amount: 100 },
+          ],
+        },
+      },
     },
   },
 };
@@ -64,7 +67,7 @@ describe('systems/buildings.module.spec', () => {
 
       taskQueue = new TaskQueue();
 
-      resourceSystem = new ResourcesSystem(configDataFacade, playerDataFacade);
+      resourceSystem = new ResourcesSystem(playerDataFacade);
       requirementsSystem = new RequirementsSystem(playerDataFacade);
 
       expect(townData.buildings).has.a.lengthOf(0);

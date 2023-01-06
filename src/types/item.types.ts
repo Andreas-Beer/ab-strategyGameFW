@@ -3,6 +3,8 @@ import { Price } from './price.types';
 
 export type ItemTypeId = number;
 
+export type ItemConfigs = ItemConfig[];
+
 export type ItemConfig = {
   typeId: ItemTypeId;
   category: number;

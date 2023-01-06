@@ -1,6 +1,5 @@
 import { TownId } from '../../data/playerData/playerData.types';
 import { cloneObj } from '../../helpers/cloneObj';
-import { BaseSystem } from '../base';
 import { ResourceData, ResourceId } from './resources.types';
 import {
   decreaseResourceAmount,
@@ -9,7 +8,7 @@ import {
   increaseResourceAmount,
   increaseResourceMaxLimit,
 } from './resources.module';
-import { Prices } from '../../types/price.types';
+import { ResourcesPlayerData } from './resources.interfaces';
 
 type FindResourceOptions = {
   townId?: TownId;
@@ -24,18 +23,17 @@ type ChangeLimitAmountOptions = {
   townId?: TownId;
 };
 
-type CheckPriceOptions = {
-  townId?: TownId;
-};
-export class ResourcesSystem extends BaseSystem {
+export class ResourcesSystem {
+  constructor(protected playerData: ResourcesPlayerData) {}
+
   find(
     resourceId: ResourceId,
     { townId }: FindResourceOptions = {},
   ): ResourceData {
     const resourcesData =
       typeof townId !== 'undefined'
-        ? this.playerDataFacade.findTownById(townId).resources
-        : this.playerDataFacade.getGlobalResources();
+        ? this.playerData.findTownById(townId).resources
+        : this.playerData.getGlobalResources();
 
     const res = findResource({
       resourcesData,
@@ -52,8 +50,8 @@ export class ResourcesSystem extends BaseSystem {
   ) {
     const resourcesData =
       typeof townId !== 'undefined'
-        ? this.playerDataFacade.findTownById(townId).resources
-        : this.playerDataFacade.getGlobalResources();
+        ? this.playerData.findTownById(townId).resources
+        : this.playerData.getGlobalResources();
 
     increaseResourceAmount({
       resourcesData,
@@ -70,8 +68,8 @@ export class ResourcesSystem extends BaseSystem {
   ) {
     const resourcesData =
       typeof townId !== 'undefined'
-        ? this.playerDataFacade.findTownById(townId).resources
-        : this.playerDataFacade.getGlobalResources();
+        ? this.playerData.findTownById(townId).resources
+        : this.playerData.getGlobalResources();
 
     decreaseResourceAmount({
       resourcesData,
@@ -88,8 +86,8 @@ export class ResourcesSystem extends BaseSystem {
   ) {
     const resourcesData =
       typeof townId !== 'undefined'
-        ? this.playerDataFacade.findTownById(townId).resources
-        : this.playerDataFacade.getGlobalResources();
+        ? this.playerData.findTownById(townId).resources
+        : this.playerData.getGlobalResources();
 
     increaseResourceMaxLimit({
       resourcesData,
@@ -105,8 +103,8 @@ export class ResourcesSystem extends BaseSystem {
   ) {
     const resourcesData =
       typeof townId !== 'undefined'
-        ? this.playerDataFacade.findTownById(townId).resources
-        : this.playerDataFacade.getGlobalResources();
+        ? this.playerData.findTownById(townId).resources
+        : this.playerData.getGlobalResources();
 
     decreaseResourceMaxLimit({
       resourcesData,

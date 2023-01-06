@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Sinon, { SinonStubbedInstance } from 'sinon';
-import { I_RequirementPlayerData } from './requirements.interfaces';
+import { RequirementPlayerData } from './requirements.interfaces';
 import {
   checkHasBuilding,
   checkHasItem,
@@ -10,7 +10,7 @@ import {
 } from './requirements.module';
 
 describe('systems/requirements/requirements.module.ts', () => {
-  let playerDataStub: SinonStubbedInstance<I_RequirementPlayerData>;
+  let playerDataStub: SinonStubbedInstance<RequirementPlayerData>;
 
   beforeEach(() => {
     playerDataStub = Sinon.stub({

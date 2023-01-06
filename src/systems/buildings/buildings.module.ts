@@ -1,7 +1,6 @@
 import { Task } from '../../classes/Task';
 import { TaskQueue } from '../../classes/TaskQueue';
 import { TownData, TownId } from '../../data/playerData/playerData.types';
-import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
 import { Prices } from '../../types/price.types';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourceAmountRequirement } from '../requirements/requirements.types';
