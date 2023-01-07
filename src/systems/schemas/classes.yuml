@@ -1,0 +1,39 @@
+// {type:class}
+
+[PlayerDataFacade]
+[WorldDataFacade]
+[ConfigDataFacade]
+
+[BuldingsSystem|configData;plaerData|buildBuilding(buildingTypeId, townId);upgradeBuilding(buildingId)]
+[ResourcesSystem|configData;plaerData|increaseAmount(resourceTypeId, amount);decreaseAmount(resourceTypeId, amount)]
+[RequirementsSystem|playerData|check(requirements, townId)]
+[ItemsSystem]
+[ShopSystem]
+[FightSystem]
+[DailyBonusSystem]
+
+
+
+[RequirementsSystem]-.->[PlayerDataFacade]
+
+[ResourcesSystem]-.->[PlayerDataFacade]
+
+[BuldingsSystem]->[ResourcesSystem]
+[BuldingsSystem]->[RequirementsSystem]
+
+[ItemsSystem]-.->[ConfigDataFacade]
+[ItemsSystem]-.->[PlayerDataFacade]
+[ItemsSystem]->[ResourcesSystem]
+[ItemsSystem]->[RequirementsSystem]
+[ItemsSystem]->[BuldingsSystem]
+
+[ShopSystem]->[ItemsSystem]
+
+[FightSystem]->[PlayerDataFacade]
+[FightSystem]->[ItemsSystem]
+[FightSystem]->[ResourcesSystem]
+[FightSystem]->[RequirementsSystem]
+
+[DailyBonusSystem]->[ResourcesSystem]
+[DailyBonusSystem]->[ItemsSystem]
+

@@ -1,7 +1,7 @@
-import { Price } from '../../types/price.types';
-import { Requirement } from '../requirements/requirements.types';
-import { Duration } from '../../types/time.types';
 import { EffectConfig } from '../../types/effect.types';
+import { Price } from '../../types/price.types';
+import { Duration } from '../../types/time.types';
+import { Requirement } from '../requirements/requirements.types';
 
 export type EventData<T extends string> = {
   [key in T]?: {
@@ -9,12 +9,12 @@ export type EventData<T extends string> = {
   };
 };
 
+export type BuildingConstructionProcess = number;
+export type BuildingLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export type BuildingId = number;
 export type BuildingLifecycleEvents = 'onFinish' | 'onDestroy';
-
 export type BuildingTypeId = number;
-
 export type BuildingTownPosition = number;
-
 export type BuildingCityId = number;
 
 export type BuildingsConfig = {
@@ -28,6 +28,7 @@ export type BuildingLevelConfig = {
   duration: Duration;
   events: EventData<BuildingLifecycleEvents>;
 };
+
 export type BuildingConfigData = {
   typeId: BuildingTypeId;
   levels: {
@@ -36,11 +37,18 @@ export type BuildingConfigData = {
   controller?: { name: string; config?: any };
 };
 
-export type BuildingPlayerData = {
+export type BuildingSlots = BuildingSlot[];
+
+export type BuildingSlot = {
   id: number;
+  position: BuildingTownPosition;
+  allowedBuildingTypes: BuildingTypeId[];
+};
+
+export type BuildingsData = {
+  id: BuildingId;
   typeId: BuildingTypeId;
-  level: number;
+  level: BuildingLevel;
   location: BuildingTownPosition;
-  constructionProgress: number;
-  content?: any;
+  constructionProgress: BuildingConstructionProcess;
 };

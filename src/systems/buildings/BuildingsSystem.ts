@@ -1,14 +1,24 @@
+import { Task } from '../../classes/Task';
 import { TaskQueue } from '../../classes/TaskQueue';
 import { TownId } from '../../data/playerData/playerData.types';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
 import {
+  BuildingPlaceNotValidError,
+  BuildingRequirementsNotFulfilledError,
+} from './buildings.errors';
+import {
   BuildingsConfigData,
   BuildingsPlayerData,
 } from './buildings.interfaces';
-import { buildBuilding } from './buildings.module';
 import {
-  BuildingPlayerData,
+  createNewBuilding,
+  createUniqueBuildingId,
+  payBuildCosts,
+  validateBuildingPlace,
+} from './buildings.module';
+import {
+  BuildingsData,
   BuildingTownPosition,
   BuildingTypeId,
 } from './buildings.types';
@@ -18,7 +28,7 @@ export class BuildingsSystem {
     private configData: BuildingsConfigData,
     private playerData: BuildingsPlayerData,
     private resourcesSystem: ResourcesSystem,
-    private requirementSystem: RequirementsSystem,
+    private requirementsSystem: RequirementsSystem,
     private taskQueue: TaskQueue,
   ) {}
 
@@ -26,16 +36,51 @@ export class BuildingsSystem {
     buildingTypeId: BuildingTypeId,
     buildingTownPosition: BuildingTownPosition,
     townId: TownId,
-  ): BuildingPlayerData {
-    const newBuilding = buildBuilding({
-      requirementsSystem: this.requirementSystem,
-      resourceSystem: this.resourcesSystem,
+  ): BuildingsData {
+    const newBuildingId = createUniqueBuildingId();
+    const townData = this.playerData.findTownById(townId);
+    const buildingConfig =
+      this.configData.findBuildingConfigByTypeId(buildingTypeId);
+    const levelConfig = buildingConfig.levels[1];
+
+    const hasFulfilledTheRequirements = this.requirementsSystem.check(
+      levelConfig.requirements,
+      townId,
+    );
+
+    if (!hasFulfilledTheRequirements) {
+      throw new BuildingRequirementsNotFulfilledError();
+    }
+
+    const isBuildingPlaceValid = validateBuildingPlace({
+      buildingTypeId,
       buildingTownPosition,
-      buildingConfig:
-        this.configData.findBuildingConfigByTypeId(buildingTypeId),
-      townData: this.playerData.findTownById(townId),
-      taskQueue: this.taskQueue,
+      townData,
     });
+
+    if (!isBuildingPlaceValid) {
+      throw new BuildingPlaceNotValidError();
+    }
+
+    payBuildCosts({
+      resourceSystem: this.resourcesSystem,
+      requirementsSystem: this.requirementsSystem,
+      buildingPrices: buildingConfig.levels[1].price,
+      townId,
+    });
+
+    const newBuilding = createNewBuilding(
+      buildingConfig,
+      buildingTownPosition,
+      newBuildingId,
+    );
+    townData.buildings.push(newBuilding);
+
+    this.taskQueue.addTask(
+      new Task(levelConfig.duration, () => {
+        newBuilding.constructionProgress = 100;
+      }),
+    );
 
     return newBuilding;
   }

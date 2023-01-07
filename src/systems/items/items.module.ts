@@ -35,20 +35,6 @@ function removeItem(
   return { success: true, value: true };
 }
 
-// function findItemConfig(
-//   itemTypeId: number,
-// ): Result<ItemConfig, ItemConfigNotFoundError> {
-//   const itemConfigs = getConfigData().items;
-//   const foundDefinition = itemConfigs.find((def) => def.typeId === itemTypeId);
-//   if (!foundDefinition) {
-//     return {
-//       success: false,
-//       value: new ItemConfigNotFoundError(`The id ${itemTypeId} is not an item`),
-//     };
-//   }
-//   return { success: true, value: foundDefinition };
-// }
-
 function addItem(playerData: PlayerData, itemTypeId: number): Result<boolean> {
   if (!playerData.items[itemTypeId]) {
     playerData.items[itemTypeId] = 1;

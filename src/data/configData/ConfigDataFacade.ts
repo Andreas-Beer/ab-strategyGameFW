@@ -1,7 +1,7 @@
 import {
   BuildingTypeId,
   BuildingConfigData,
-} from '../../systems/buildings/buildings.types';
+} from '../../systems/buildings/types/buildings.types';
 import { ConfigData } from './config.types';
 import { ItemTypeId, ItemConfig } from '../../types/item.types';
 import { UnitTypeId, UnitConfig } from '../../types/units.types';

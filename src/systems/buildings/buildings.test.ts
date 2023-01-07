@@ -44,6 +44,7 @@ describe('systems/buildings.test', () => {
         id: 1,
         resources: { 1: { amount: 200 } },
         buildings: [],
+        buildingSlots: [{ position: 1, allowedBuildingTypes: [1] }],
       };
       const configDataFacade = new ConfigDataFacade(configData);
 

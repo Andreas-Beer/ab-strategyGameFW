@@ -1,4 +1,4 @@
-import { BuildingTypeId } from '../buildings/buildings.types';
+import { BuildingTypeId } from '../buildings/types/buildings.types';
 import { ItemTypeId } from '../../types/item.types';
 import { ResourceId } from '../resources/resources.types';
 

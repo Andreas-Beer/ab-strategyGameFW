@@ -1,5 +1,5 @@
-import { TownData, TownId } from '../../data/playerData/playerData.types';
-import { BuildingConfigData, BuildingTypeId } from './buildings.types';
+import { TownId, TownData } from '../../data/playerData/playerData.types';
+import { BuildingTypeId, BuildingConfigData } from './buildings.types';
 
 export interface BuildingsPlayerData {
   findTownById(townId: TownId): TownData;

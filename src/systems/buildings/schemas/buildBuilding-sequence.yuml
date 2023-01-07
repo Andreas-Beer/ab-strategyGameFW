@@ -1,0 +1,10 @@
+// {type:sequence}
+
+[API]buildBuilding(buildingTypeId, townId)>[BuildingsSystem]
+[BuildingsSystem]getBuildingConfig(buildingTypeId)>[ConfigDataStore]
+[ConfigDataStore]buildingConfigData.>[BuildingsSystem]
+[BuildingsSystem]checkRequirements(requirements)>[RequirementSystem]
+[RequirementSystem]has passed resource check.>[BuildingsSystem]
+[BuildingsSystem]payBiuldingsPrice>[ResourcesSystem]
+[BuildingsSystem]addBuildingToTown(building)>[PlayerDataStore]
+[BuildingsSystem]buildingId.>[API]

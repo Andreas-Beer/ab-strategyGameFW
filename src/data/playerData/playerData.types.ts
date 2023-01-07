@@ -1,8 +1,9 @@
+import { BuildingsPlayerData } from '../../systems/buildings/buildings.interfaces';
 import {
-  ResourcesData,
-  ResourceId,
-} from '../../systems/resources/resources.types';
-import { BuildingPlayerData } from '../../systems/buildings/buildings.types';
+  BuildingsData,
+  BuildingSlots,
+} from '../../systems/buildings/buildings.types';
+import { ResourcesData } from '../../systems/resources/resources.types';
 import { EffectData } from '../../types/effect.types';
 
 export type stackData = Record<number, number>;
@@ -13,10 +14,11 @@ export type TownData = {
   id: TownId;
   name: string;
   location: [number, number];
-  buildings: BuildingPlayerData[];
+  buildings: BuildingsData[];
   effects: EffectData[];
   units: stackData;
   resources: ResourcesData;
+  buildingSlots: BuildingSlots;
 };
 
 export type PlayerData = {

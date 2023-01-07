@@ -26,12 +26,11 @@ export const playerDataMock: PlayerData = {
           typeId: 4,
           level: 3,
           location: 25,
-          content: { unitsInCreation: [{ id: 1 }] },
           constructionProgress: 37,
         },
         {
           id: 8,
-          level: 0,
+          level: 1,
           typeId: 6,
           location: 11,
           constructionProgress: 60,
@@ -55,6 +54,7 @@ export const playerDataMock: PlayerData = {
       resources: {
         1: { amount: 200, max: 202 },
       },
+      buildingSlots: [],
     },
   ],
 };

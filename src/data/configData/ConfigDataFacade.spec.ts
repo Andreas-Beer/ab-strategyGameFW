@@ -1,4 +1,4 @@
-import { BuildingConfigData } from '../../systems/buildings/buildings.types';
+import { BuildingConfigData } from '../../systems/buildings/types/buildings.types';
 import { ConfigData } from './config.types';
 import { ItemConfig } from '../../types/item.types';
 import { UnitConfig } from '../../types/units.types';

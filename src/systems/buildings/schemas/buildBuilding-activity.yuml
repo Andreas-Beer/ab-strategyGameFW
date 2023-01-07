@@ -1,0 +1,5 @@
+// {type:activity}
+// {direction:leftToRight}
+
+(start)->(buildBuilding)-><d1>[fulfill requirements]->()
+<d1>[not fulfill requirements]-> (ERROR)

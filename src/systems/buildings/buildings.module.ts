@@ -1,32 +1,32 @@
-import { Task } from '../../classes/Task';
-import { TaskQueue } from '../../classes/TaskQueue';
-import { TownData, TownId } from '../../data/playerData/playerData.types';
+import { TownId, TownData } from '../../data/playerData/playerData.types';
 import { Prices } from '../../types/price.types';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourceAmountRequirement } from '../requirements/requirements.types';
 import { ResourcesSystem } from '../resources';
 import {
   BuildingNotEnoughResourcesError,
-  BuildingRequirementsNotFulfilledError,
+  BuildingSlotNotFoundError,
+  BuildingSlotIsNotFreeError,
 } from './buildings.errors';
 import {
   BuildingCityId,
-  BuildingTownPosition,
   BuildingConfigData,
-  BuildingPlayerData,
+  BuildingTownPosition,
+  BuildingsData,
+  BuildingTypeId,
 } from './buildings.types';
 
 let buildingId: BuildingCityId = 0;
 
-function createUniqueBuildingId() {
+export function createUniqueBuildingId() {
   return buildingId++;
 }
 
-function createNewBuilding(
+export function createNewBuilding(
   buildingConfigData: BuildingConfigData,
   buildingCityPosition: BuildingTownPosition,
   id: BuildingCityId,
-): BuildingPlayerData {
+): BuildingsData {
   return {
     typeId: buildingConfigData.typeId,
     id,
@@ -36,7 +36,7 @@ function createNewBuilding(
   };
 }
 
-function payBuildCosts({
+export function payBuildCosts({
   resourceSystem,
   requirementsSystem,
   buildingPrices,
@@ -63,54 +63,36 @@ function payBuildCosts({
   }
 }
 
-function buildBuilding({
-  resourceSystem,
-  requirementsSystem,
-  buildingConfig,
+export function validateBuildingPlace({
+  buildingTypeId,
+  buildingTownPosition,
   townData,
-  buildingTownPosition: buildingCityPosition,
-  taskQueue,
 }: {
-  resourceSystem: ResourcesSystem;
-  requirementsSystem: RequirementsSystem;
-  buildingConfig: BuildingConfigData;
-  townData: TownData;
+  buildingTypeId: BuildingTypeId;
   buildingTownPosition: BuildingTownPosition;
-  taskQueue: TaskQueue;
-}): BuildingPlayerData {
-  const levelConfig = buildingConfig.levels[1];
-
-  const hasFulfilledTheRequirements = requirementsSystem.check(
-    levelConfig.requirements,
-    townData.id,
+  townData: TownData;
+}): boolean {
+  const slotData = townData.buildingSlots.find(
+    (slot) => slot.position === buildingTownPosition,
   );
-
-  if (!hasFulfilledTheRequirements) {
-    throw new BuildingRequirementsNotFulfilledError();
+  const isSlotExisting = typeof slotData !== 'undefined';
+  if (!isSlotExisting) {
+    throw new BuildingSlotNotFoundError(buildingTownPosition);
   }
 
-  payBuildCosts({
-    resourceSystem,
-    requirementsSystem,
-    buildingPrices: buildingConfig.levels[1].price,
-    townId: townData.id,
-  });
-
-  const newBuildingId = createUniqueBuildingId();
-  const newBuilding = createNewBuilding(
-    buildingConfig,
-    buildingCityPosition,
-    newBuildingId,
+  const buildingOnSlot = townData.buildings.find(
+    (building) => building.location === buildingTownPosition,
   );
-  townData.buildings.push(newBuilding);
+  const isBuildingSlotFree = typeof buildingOnSlot === 'undefined';
+  if (!isBuildingSlotFree) {
+    throw new BuildingSlotIsNotFreeError(buildingTownPosition);
+  }
 
-  taskQueue.addTask(
-    new Task(levelConfig.duration, () => {
-      newBuilding.constructionProgress = 100;
-    }),
-  );
+  const typeIsAllowed = slotData?.allowedBuildingTypes.includes(buildingTypeId);
 
-  return newBuilding;
+  if (!typeIsAllowed) {
+    return false;
+  }
+
+  return true;
 }
-
-export { buildBuilding, payBuildCosts };

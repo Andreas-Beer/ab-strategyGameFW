@@ -1,17 +1,18 @@
 import { expect, use } from 'chai';
-import Sinon, { SinonStub, SinonStubbedInstance } from 'sinon';
+import Sinon, { SinonStubbedInstance } from 'sinon';
 import sinonChai from 'sinon-chai';
-import { TaskQueue } from '../../classes/TaskQueue';
 use(sinonChai);
 
-import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
-import { PlayerData, TownData } from '../../data/playerData/playerData.types';
-import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
+import { TownData } from '../../data/playerData/playerData.types';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
-import { BuildingNotEnoughResourcesError } from './buildings.errors';
-import { buildBuilding, payBuildCosts } from './buildings.module';
-import { BuildingTownPosition, BuildingConfigData } from './buildings.types';
+import {
+  BuildingNotEnoughResourcesError,
+  BuildingSlotIsNotFreeError,
+  BuildingSlotNotFoundError,
+} from './buildings.errors';
+import { payBuildCosts, validateBuildingPlace } from './buildings.module';
+import { BuildingConfigData } from './buildings.types';
 
 const buildingConfig1: BuildingConfigData = {
   typeId: 1,
@@ -36,76 +37,6 @@ const buildingConfig1: BuildingConfigData = {
 };
 
 describe('systems/buildings.module.spec', () => {
-  describe('buildBuilding', () => {
-    const buildingCityPosition: BuildingTownPosition = 42;
-    let townData: TownData;
-    let townDataBefore: TownData;
-    let configDataFacade: ConfigDataFacade;
-    let playerDataFacade: PlayerDataFacade;
-    let resourceSystem: ResourcesSystem;
-    let requirementsSystem: RequirementsSystem;
-    let taskQueue: TaskQueue;
-
-    beforeEach(() => {
-      townDataBefore = {
-        id: 1,
-        resources: { 1: { amount: 100 }, 2: { amount: 100 } },
-        buildings: [],
-      };
-      townData = {
-        id: 1,
-        resources: { 1: { amount: 100 }, 2: { amount: 100 } },
-        buildings: [],
-      };
-
-      playerDataFacade = new PlayerDataFacade({
-        level: 1,
-        towns: [townData],
-      } as PlayerData);
-
-      configDataFacade = new ConfigDataFacade({});
-
-      taskQueue = new TaskQueue();
-
-      resourceSystem = new ResourcesSystem(playerDataFacade);
-      requirementsSystem = new RequirementsSystem(playerDataFacade);
-
-      expect(townData.buildings).has.a.lengthOf(0);
-    });
-
-    it('should add a building with a unique id to the playerData into the correct town.', () => {
-      buildBuilding({
-        resourceSystem,
-        requirementsSystem,
-        buildingConfig: buildingConfig1,
-        townData,
-        buildingTownPosition: buildingCityPosition,
-        taskQueue,
-      });
-      expect(townData.buildings).has.a.lengthOf(1);
-    });
-    it('should remove the necessary resources from the playerData.', () => {
-      buildBuilding({
-        resourceSystem,
-        requirementsSystem,
-        buildingConfig: buildingConfig1,
-        townData,
-        buildingTownPosition: buildingCityPosition,
-        taskQueue,
-      });
-      const buildingPrice = buildingConfig1.levels[1].price;
-
-      for (const { resourceId, amount: priceAmount } of buildingPrice) {
-        const amountBefore = townDataBefore.resources[resourceId].amount;
-        const amountAfter = townData.resources[resourceId].amount;
-
-        expect(amountAfter).to.be.eq(amountBefore - priceAmount);
-      }
-    });
-    it.skip('should throw an error if the requirement does not fit.', () => {});
-    it.skip('should add a building finish task into the global task queue.', () => {});
-  });
-
   describe('payBuildCosts', () => {
     let resourceSystemStub: SinonStubbedInstance<ResourcesSystem>;
     let requirementsSystemStub: SinonStubbedInstance<RequirementsSystem>;
@@ -166,6 +97,73 @@ describe('systems/buildings.module.spec', () => {
         });
 
       expect(fn).to.throw(BuildingNotEnoughResourcesError);
+    });
+  });
+  describe('validateBuildingPlace', () => {
+    const townData: TownData = {
+      buildings: [
+        {
+          id: 111111,
+          level: 1,
+          typeId: 1,
+          constructionProgress: 100,
+          location: 2,
+        },
+      ],
+      buildingSlots: [
+        {
+          id: 1,
+          position: 1,
+          allowedBuildingTypes: [1],
+        },
+        {
+          id: 2,
+          position: 2,
+          allowedBuildingTypes: [1],
+        },
+      ],
+    };
+
+    it('should pass if everything is correct', () => {
+      const result = validateBuildingPlace({
+        buildingTypeId: 1,
+        buildingTownPosition: 1,
+        townData,
+      });
+
+      expect(result).to.be.true;
+    });
+
+    it('should return false if the building is not the correct type', () => {
+      const result = validateBuildingPlace({
+        buildingTypeId: 2,
+        buildingTownPosition: 1,
+        townData,
+      });
+
+      expect(result).to.be.false;
+    });
+
+    it('should throw if the place has already a building', () => {
+      const result = () =>
+        validateBuildingPlace({
+          buildingTypeId: 2,
+          buildingTownPosition: 2,
+          townData,
+        });
+
+      expect(result).to.throw(BuildingSlotIsNotFreeError);
+    });
+
+    it('should throw if the slot does not exist', () => {
+      const result = () =>
+        validateBuildingPlace({
+          buildingTypeId: 2,
+          buildingTownPosition: 999999999,
+          townData,
+        });
+
+      expect(result).to.throw(BuildingSlotNotFoundError);
     });
   });
 });

@@ -79,15 +79,14 @@ export const checkHasBuilding: CheckPlayerDataFn<BuildingRequirement> = ({
   return true;
 };
 
-const requirementTypeCheckerMap: Record<
-  RequirementKey,
-  CheckPlayerDataFn<Requirement>
-> = {
+const requirementTypeCheckerMap: {
+  [Key in RequirementKey]: CheckPlayerDataFn<Requirement>;
+} = {
   building: checkHasBuilding,
   item: checkHasItem,
   playerLevel: checkHasPlayerLevel,
   resourceAmount: checkHasResourceAmount,
-} as Record<RequirementKey, CheckPlayerDataFn<Requirement>>;
+};
 
 type CheckRequirementsAgainstPlayerDataArgs = {
   playerData: RequirementPlayerData;

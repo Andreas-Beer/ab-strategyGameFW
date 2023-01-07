@@ -1,10 +1,8 @@
 import { BuildingsPlayerData } from '../../systems/buildings/buildings.interfaces';
 import { RequirementPlayerData } from '../../systems/requirements/requirements.interfaces';
 import { ResourcesPlayerData } from '../../systems/resources/resources.interfaces';
-
-import { BuildingPlayerData } from '../../systems/buildings/buildings.types';
 import { ResourcesData } from '../../systems/resources/resources.types';
-import { PlayerData, stackData, TownData, TownId } from './playerData.types';
+import { TownId, PlayerData, TownData, stackData } from './playerData.types';
 
 class TownNotFoundError extends Error {
   public name = 'TOWN_NOT_FOUND_ERROR';
