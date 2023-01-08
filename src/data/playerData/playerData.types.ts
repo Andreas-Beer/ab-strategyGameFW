@@ -1,6 +1,6 @@
 import { BuildingsPlayerData } from '../../systems/buildings/buildings.interfaces';
 import {
-  BuildingsData,
+  BuildingData,
   BuildingSlots,
 } from '../../systems/buildings/buildings.types';
 import { ResourcesData } from '../../systems/resources/resources.types';
@@ -11,10 +11,11 @@ export type PlayerId = number;
 export type TownId = number;
 
 export type TownData = {
+  buildParallelCapacity: number;
   id: TownId;
   name: string;
   location: [number, number];
-  buildings: BuildingsData[];
+  buildings: BuildingData[];
   effects: EffectData[];
   units: stackData;
   resources: ResourcesData;

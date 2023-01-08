@@ -45,7 +45,7 @@ export type BuildingSlot = {
   allowedBuildingTypes: BuildingTypeId[];
 };
 
-export type BuildingsData = {
+export type BuildingData = {
   id: BuildingId;
   typeId: BuildingTypeId;
   level: BuildingLevel;

@@ -11,7 +11,11 @@ import {
   BuildingSlotIsNotFreeError,
   BuildingSlotNotFoundError,
 } from './buildings.errors';
-import { payBuildCosts, validateBuildingPlace } from './buildings.module';
+import {
+  checkForFreeParallelBuildingCapacities,
+  payBuildCosts,
+  validateBuildingPlace,
+} from './buildings.module';
 import { BuildingConfigData } from './buildings.types';
 
 const buildingConfig1: BuildingConfigData = {
@@ -99,6 +103,7 @@ describe('systems/buildings.module.spec', () => {
       expect(fn).to.throw(BuildingNotEnoughResourcesError);
     });
   });
+
   describe('validateBuildingPlace', () => {
     const townData: TownData = {
       buildings: [
@@ -164,6 +169,30 @@ describe('systems/buildings.module.spec', () => {
         });
 
       expect(result).to.throw(BuildingSlotNotFoundError);
+    });
+  });
+
+  describe('checkForFreeParallelBuildingCapacities', () => {
+    it('should return true if the parallel building capacity has not yet been reached.', () => {
+      const result = checkForFreeParallelBuildingCapacities({
+        townData: {
+          buildParallelCapacity: 1,
+          buildings: [],
+        },
+      });
+
+      expect(result).to.be.true;
+    });
+
+    it('should return false if the parallel building capacity has been reached.', () => {
+      const result = checkForFreeParallelBuildingCapacities({
+        townData: {
+          buildParallelCapacity: 1,
+          buildings: [{ constructionProgress: 0 }],
+        },
+      });
+
+      expect(result).to.be.false;
     });
   });
 });

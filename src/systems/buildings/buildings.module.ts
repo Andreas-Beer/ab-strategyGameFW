@@ -8,11 +8,12 @@ import {
   BuildingSlotNotFoundError,
   BuildingSlotIsNotFreeError,
 } from './buildings.errors';
+import { isBuildingUnderConstruction } from './buildings.helpers';
 import {
   BuildingCityId,
   BuildingConfigData,
   BuildingTownPosition,
-  BuildingsData,
+  BuildingData,
   BuildingTypeId,
 } from './buildings.types';
 
@@ -26,7 +27,7 @@ export function createNewBuilding(
   buildingConfigData: BuildingConfigData,
   buildingCityPosition: BuildingTownPosition,
   id: BuildingCityId,
-): BuildingsData {
+): BuildingData {
   return {
     typeId: buildingConfigData.typeId,
     id,
@@ -95,4 +96,19 @@ export function validateBuildingPlace({
   }
 
   return true;
+}
+
+export function checkForFreeParallelBuildingCapacities({
+  townData,
+}: {
+  townData: TownData;
+}): boolean {
+  const buildParallelCapacity = townData.buildParallelCapacity;
+  const buildingsUnderConstruction = townData.buildings.filter(
+    isBuildingUnderConstruction,
+  );
+  const hasFreeParallelBuildingCapacities =
+    buildingsUnderConstruction.length < buildParallelCapacity;
+
+  return hasFreeParallelBuildingCapacities;
 }

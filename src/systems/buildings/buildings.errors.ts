@@ -32,7 +32,9 @@ export class BuildingPlaceNotValidError extends Error implements GameError {
   level: ErrorLevel = 'WARNING';
 
   constructor() {
-    super('The building place is not valid!');
+    super(
+      'The building plot is not valid! Probably the wrong type of building.',
+    );
   }
 }
 
@@ -53,5 +55,17 @@ export class BuildingSlotNotFoundError extends Error implements GameError {
     super(
       `The Building slot position "${buildingTownPosition}" is not a valid building slot.`,
     );
+  }
+}
+
+export class BuildingParallelCapacityNotFree
+  extends Error
+  implements GameError
+{
+  type: ErrorType = 'NOT_GATE_PASSED';
+  level: ErrorLevel = 'CRITICAL';
+
+  constructor() {
+    super('The Parallel building Capacity has reached!');
   }
 }
