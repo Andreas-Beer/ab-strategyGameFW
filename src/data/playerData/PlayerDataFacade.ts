@@ -1,7 +1,9 @@
 import { BuildingsPlayerData } from '../../systems/buildings/buildings.interfaces';
+import { BuildingData } from '../../systems/buildings/buildings.types';
 import { RequirementPlayerData } from '../../systems/requirements/requirements.interfaces';
 import { ResourcesPlayerData } from '../../systems/resources/resources.interfaces';
 import { ResourcesData } from '../../systems/resources/resources.types';
+import { PLayerDataBuildingNotFoundError } from './playerData.errors';
 import { TownId, PlayerData, TownData, stackData } from './playerData.types';
 
 class TownNotFoundError extends Error {
@@ -16,6 +18,18 @@ export class PlayerDataFacade
   implements RequirementPlayerData, BuildingsPlayerData, ResourcesPlayerData
 {
   constructor(private _playerData: PlayerData) {}
+  findBuildingById(buildingId: number): BuildingData {
+    const searchedBuilding = this._playerData.towns
+      .map((townData) => townData.buildings)
+      .flat()
+      .find((buildingData) => buildingData.id === buildingId);
+
+    if (!searchedBuilding) {
+      throw new PLayerDataBuildingNotFoundError(buildingId);
+    }
+
+    return searchedBuilding;
+  }
 
   findTownById(townId: TownId): TownData {
     const searchedTown = this._playerData.towns.find(

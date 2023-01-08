@@ -96,6 +96,6 @@ export class BuildingsSystem extends EventEmitter {
   }
 
   upgrade(buildingId: BuildingId) {
-    const building = this.playerData;
+    const building = this.playerData.findBuildingById(buildingId);
   }
 }
