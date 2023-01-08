@@ -13,35 +13,13 @@ import {
 } from './buildings.errors';
 import {
   checkForFreeParallelBuildingCapacities,
-  payBuildCosts,
+  payBuildingPrice,
   validateBuildingPlace,
 } from './buildings.module';
 import { BuildingConfigData } from './buildings.types';
 
-const buildingConfig1: BuildingConfigData = {
-  typeId: 1,
-  levels: {
-    1: {
-      duration: '1min',
-      price: [
-        { resourceId: 1, amount: 10 },
-        { resourceId: 2, amount: 10 },
-      ],
-      requirements: [{ type: 'playerLevel', level: 1 }],
-      events: {
-        onFinish: {
-          effects: [
-            { type: 'modify/resource/2', amount: 10 },
-            { type: 'modify/capacity/2', amount: 100 },
-          ],
-        },
-      },
-    },
-  },
-};
-
 describe('systems/buildings.module.spec', () => {
-  describe('payBuildCosts', () => {
+  describe('payBuildingPrice', () => {
     let resourceSystemStub: SinonStubbedInstance<ResourcesSystem>;
     let requirementsSystemStub: SinonStubbedInstance<RequirementsSystem>;
 
@@ -67,7 +45,7 @@ describe('systems/buildings.module.spec', () => {
     it('should call the check method on the requirementsSystem', () => {
       requirementsSystemStub.check.returns(true);
 
-      payBuildCosts({
+      payBuildingPrice({
         resourceSystem: resourceSystemStub,
         requirementsSystem: requirementsSystemStub,
         buildingPrices,
@@ -80,7 +58,7 @@ describe('systems/buildings.module.spec', () => {
     it('should call the decreaseAmount method for every resource in the price', () => {
       requirementsSystemStub.check.returns(true);
 
-      payBuildCosts({
+      payBuildingPrice({
         resourceSystem: resourceSystemStub,
         requirementsSystem: requirementsSystemStub,
         buildingPrices,
@@ -93,7 +71,7 @@ describe('systems/buildings.module.spec', () => {
       requirementsSystemStub.check.returns(false);
 
       const fn = () =>
-        payBuildCosts({
+        payBuildingPrice({
           resourceSystem: resourceSystemStub,
           requirementsSystem: requirementsSystemStub,
           buildingPrices,

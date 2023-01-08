@@ -37,7 +37,7 @@ export function createNewBuilding(
   };
 }
 
-export function payBuildCosts({
+export function payBuildingPrice({
   resourceSystem,
   requirementsSystem,
   buildingPrices,

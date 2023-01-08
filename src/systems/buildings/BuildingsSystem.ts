@@ -17,11 +17,12 @@ import {
   checkForFreeParallelBuildingCapacities,
   createNewBuilding,
   createUniqueBuildingId,
-  payBuildCosts,
+  payBuildingPrice,
   validateBuildingPlace,
 } from './buildings.module';
 import {
   BuildingData,
+  BuildingId,
   BuildingTownPosition,
   BuildingTypeId,
 } from './buildings.types';
@@ -71,7 +72,7 @@ export class BuildingsSystem extends EventEmitter {
       throw new BuildingPlaceNotValidError();
     }
 
-    payBuildCosts({
+    payBuildingPrice({
       resourceSystem: this.resourcesSystem,
       requirementsSystem: this.requirementsSystem,
       buildingPrices: buildingConfig.levels[1].price,
@@ -92,5 +93,9 @@ export class BuildingsSystem extends EventEmitter {
     );
 
     return newBuilding;
+  }
+
+  upgrade(buildingId: BuildingId) {
+    const building = this.playerData;
   }
 }

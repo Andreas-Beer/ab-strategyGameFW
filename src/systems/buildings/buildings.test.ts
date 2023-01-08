@@ -11,7 +11,11 @@ import {
   BuildingNotEnoughResourcesError,
   BuildingParallelCapacityNotFree,
 } from './buildings.errors';
-import { BuildingConfigData } from './buildings.types';
+import {
+  BuildingConfigData,
+  BuildingData,
+  BuildingId,
+} from './buildings.types';
 import { BuildingsSystem } from './BuildingsSystem';
 
 const getData = (playerDataFacade: PlayerDataFacade) =>
@@ -55,12 +59,14 @@ const configData: ConfigData = {
 } as ConfigData;
 
 describe('systems/buildings.test', () => {
-  describe('build', () => {
-    let buildingsSystem: BuildingsSystem;
-    let playerDataFacade: PlayerDataFacade;
-    let taskQueue: TaskQueue;
-    let townData: TownData;
+  const configDataFacade = new ConfigDataFacade(configData);
 
+  let buildingsSystem: BuildingsSystem;
+  let playerDataFacade: PlayerDataFacade;
+  let taskQueue: TaskQueue;
+  let townData: TownData;
+
+  describe('build', () => {
     beforeEach(() => {
       townData = {
         name: '',
@@ -76,7 +82,6 @@ describe('systems/buildings.test', () => {
           { position: 2, allowedBuildingTypes: [1, 2] },
         ],
       };
-      const configDataFacade = new ConfigDataFacade(configData);
 
       playerDataFacade = new PlayerDataFacade({
         level: 1,
@@ -84,7 +89,6 @@ describe('systems/buildings.test', () => {
       } as PlayerData);
 
       const resourceSystem = new ResourcesSystem(playerDataFacade);
-
       const requirementsSystem = new RequirementsSystem(playerDataFacade);
       taskQueue = new TaskQueue();
 
@@ -187,13 +191,65 @@ describe('systems/buildings.test', () => {
 
       expect(resourceAmountAfter).to.be.equal(resourceAmountBefore);
     });
-    it.skip('should throw an error if the requirement does not fit.', () => {});
   });
 
   describe('upgrade', () => {
-    it.skip('should upgrade a building to the next level.', () => {});
+    beforeEach(() => {
+      townData = {
+        name: '',
+        units: [],
+        location: [0, 0],
+        effects: [],
+        id: 1,
+        resources: { 1: { amount: 200 } },
+        buildings: [
+          {
+            id: 1,
+            constructionProgress: 100,
+            level: 1,
+          },
+        ],
+        buildParallelCapacity: 1,
+      };
+
+      playerDataFacade = new PlayerDataFacade({
+        level: 1,
+        towns: [townData],
+      } as PlayerData);
+
+      const resourceSystem = new ResourcesSystem(playerDataFacade);
+      const requirementsSystem = new RequirementsSystem(playerDataFacade);
+      taskQueue = new TaskQueue();
+
+      buildingsSystem = new BuildingsSystem(
+        configDataFacade,
+        playerDataFacade,
+        resourceSystem,
+        requirementsSystem,
+        Sinon.spy(taskQueue),
+      );
+    });
+
+    afterEach(() => {
+      Sinon.reset();
+    });
+
+    it('should upgrade a building to the next level.', () => {
+      const buildingData = townData.buildings[0];
+      const buildingId: BuildingId = buildingData.id;
+      const buildingLevelBefore = buildingData.level;
+      const buildingLevelExpected = buildingLevelBefore + 1;
+
+      buildingsSystem.upgrade(buildingId);
+
+      const buildingLevelAfter = buildingData.level;
+
+      // expect(buildingLevelAfter).to.be.equal(buildingLevelExpected);
+    });
+    it.skip('should add a building finish task into the global task queue.', () => {});
     it.skip('should throw an error if the highest level has reached.', () => {});
     it.skip('should throw an error if the requirement does not fit.', () => {});
+    it.skip('should throw an error if the building progress has finished.', () => {});
   });
 
   describe('downgrade', () => {
