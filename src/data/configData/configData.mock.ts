@@ -5,6 +5,7 @@ import { ConfigData } from './config.types';
 
 const buildingsConfigMock: BuildingsConfig = {
   buildingsBuildParallel: 1,
+  buildingsMaxLevel: 10,
   buildings: [
     {
       typeId: 4,

@@ -1,7 +1,7 @@
 import { TownId, TownData } from '../../data/playerData/playerData.types';
 import {
   BuildingTypeId,
-  BuildingConfigData,
+  BuildingConfig,
   BuildingId,
   BuildingData,
 } from './buildings.types';
@@ -11,7 +11,6 @@ export interface BuildingsPlayerData {
   findBuildingById(buildingId: BuildingId): BuildingData;
 }
 export interface BuildingsConfigData {
-  findBuildingConfigByTypeId(
-    buildingTypeId: BuildingTypeId,
-  ): BuildingConfigData;
+  getBuildingMaxLevel(): number;
+  findBuildingConfigByTypeId(buildingTypeId: BuildingTypeId): BuildingConfig;
 }

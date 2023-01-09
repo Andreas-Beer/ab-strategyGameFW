@@ -16,7 +16,7 @@ import {
   payBuildingPrice,
   validateBuildingPlace,
 } from './buildings.module';
-import { BuildingConfigData } from './buildings.types';
+import { BuildingConfig } from './buildings.types';
 
 describe('systems/buildings.module.spec', () => {
   describe('payBuildingPrice', () => {

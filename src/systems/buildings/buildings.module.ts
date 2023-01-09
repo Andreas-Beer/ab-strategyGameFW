@@ -11,7 +11,7 @@ import {
 import { isBuildingUnderConstruction } from './buildings.helpers';
 import {
   BuildingCityId,
-  BuildingConfigData,
+  BuildingConfig,
   BuildingTownPosition,
   BuildingData,
   BuildingTypeId,
@@ -24,7 +24,7 @@ export function createUniqueBuildingId() {
 }
 
 export function createNewBuilding(
-  buildingConfigData: BuildingConfigData,
+  buildingConfigData: BuildingConfig,
   buildingCityPosition: BuildingTownPosition,
   id: BuildingCityId,
 ): BuildingData {

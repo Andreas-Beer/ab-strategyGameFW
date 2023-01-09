@@ -1,24 +1,27 @@
+import { BuildingsConfigData } from '../../systems/buildings/buildings.interfaces';
 import {
+  BuildingConfig,
   BuildingTypeId,
-  BuildingConfigData,
-} from '../../systems/buildings/types/buildings.types';
+} from '../../systems/buildings/buildings.types';
+import { ItemConfig, ItemTypeId } from '../../types/item.types';
+import { UnitConfig, UnitTypeId } from '../../types/units.types';
 import { ConfigData } from './config.types';
-import { ItemTypeId, ItemConfig } from '../../types/item.types';
-import { UnitTypeId, UnitConfig } from '../../types/units.types';
 
 class ConfigNotFoundError extends Error {
   public name = 'CONFIG_NOT_FOUND_ERROR';
   public level = 'CRITICAL';
 }
 
-class ConfigDataFacade {
+class ConfigDataFacade implements BuildingsConfigData {
   constructor(public configData: ConfigData) {}
 
-  findBuildingConfigByTypeId(
-    buildingTypeId: BuildingTypeId,
-  ): BuildingConfigData {
+  getBuildingMaxLevel(): number {
+    return this.configData.buildings.buildingsMaxLevel;
+  }
+
+  findBuildingConfigByTypeId(buildingTypeId: BuildingTypeId): BuildingConfig {
     const buildingConfig = this.configData.buildings.buildings.find(
-      (buildingConfig: BuildingConfigData) =>
+      (buildingConfig: BuildingConfig) =>
         buildingConfig.typeId === buildingTypeId,
     );
 

@@ -19,7 +19,8 @@ export type BuildingCityId = number;
 
 export type BuildingsConfig = {
   buildingsBuildParallel: number;
-  buildings: BuildingConfigData[];
+  buildingsMaxLevel: number;
+  buildings: BuildingConfig[];
 };
 
 export type BuildingLevelConfig = {
@@ -29,7 +30,7 @@ export type BuildingLevelConfig = {
   events: EventData<BuildingLifecycleEvents>;
 };
 
-export type BuildingConfigData = {
+export type BuildingConfig = {
   typeId: BuildingTypeId;
   levels: {
     [key: number]: BuildingLevelConfig;

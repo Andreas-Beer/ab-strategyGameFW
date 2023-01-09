@@ -69,3 +69,15 @@ export class BuildingParallelCapacityNotFree
     super('The Parallel building Capacity has reached!');
   }
 }
+
+export class BuildingHasReachedMaxLevelError
+  extends Error
+  implements GameError
+{
+  type: ErrorType = 'NOT_GATE_PASSED';
+  level: ErrorLevel = 'CRITICAL';
+
+  constructor() {
+    super('Building has reached the max level');
+  }
+}

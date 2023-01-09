@@ -8,20 +8,17 @@ import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
 import {
+  BuildingHasReachedMaxLevelError,
   BuildingNotEnoughResourcesError,
   BuildingParallelCapacityNotFree,
 } from './buildings.errors';
-import {
-  BuildingConfigData,
-  BuildingData,
-  BuildingId,
-} from './buildings.types';
+import { BuildingConfig, BuildingData, BuildingId } from './buildings.types';
 import { BuildingsSystem } from './BuildingsSystem';
 
 const getData = (playerDataFacade: PlayerDataFacade) =>
   playerDataFacade._playerData;
 
-const buildingConfig1: BuildingConfigData = {
+const buildingConfig1: BuildingConfig = {
   typeId: 1,
   levels: {
     1: {
@@ -36,7 +33,7 @@ const buildingConfig1: BuildingConfigData = {
   },
 };
 
-const buildingConfig2: BuildingConfigData = {
+const buildingConfig2: BuildingConfig = {
   typeId: 2,
   levels: {
     1: {
@@ -54,6 +51,7 @@ const buildingConfig2: BuildingConfigData = {
 const configData: ConfigData = {
   buildings: {
     buildingsBuildParallel: 1,
+    buildingsMaxLevel: 10,
     buildings: [buildingConfig1, buildingConfig2],
   },
 } as ConfigData;
@@ -208,6 +206,11 @@ describe('systems/buildings.test', () => {
             constructionProgress: 100,
             level: 1,
           },
+          {
+            id: 2,
+            constructionProgress: 100,
+            level: 10,
+          },
         ],
         buildParallelCapacity: 1,
       };
@@ -244,8 +247,17 @@ describe('systems/buildings.test', () => {
 
       const buildingLevelAfter = buildingData.level;
 
-      // expect(buildingLevelAfter).to.be.equal(buildingLevelExpected);
+      expect(buildingLevelAfter).to.be.equal(buildingLevelExpected);
     });
+    it('should throw an error if the highest level has reached.', () => {
+      const buildingData = townData.buildings[1];
+      const buildingId: BuildingId = buildingData.id;
+
+      const fn = () => buildingsSystem.upgrade(buildingId);
+
+      expect(fn).to.throw(BuildingHasReachedMaxLevelError);
+    });
+    it.skip('should pay the corresponding price.', () => {});
     it.skip('should add a building finish task into the global task queue.', () => {});
     it.skip('should throw an error if the highest level has reached.', () => {});
     it.skip('should throw an error if the requirement does not fit.', () => {});

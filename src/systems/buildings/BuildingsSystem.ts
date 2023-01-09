@@ -5,6 +5,7 @@ import { TownId } from '../../data/playerData/playerData.types';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
 import {
+  BuildingHasReachedMaxLevelError,
   BuildingParallelCapacityNotFree,
   BuildingPlaceNotValidError,
   BuildingRequirementsNotFulfilledError,
@@ -97,5 +98,14 @@ export class BuildingsSystem extends EventEmitter {
 
   upgrade(buildingId: BuildingId) {
     const building = this.playerData.findBuildingById(buildingId);
+    const currentBuildingLevel = building.level;
+    const maxLevel = this.configData.getBuildingMaxLevel();
+
+    const hasReachedTheMaxLevel = currentBuildingLevel >= maxLevel;
+    if (hasReachedTheMaxLevel) {
+      throw new BuildingHasReachedMaxLevelError();
+    }
+
+    building.level += 1;
   }
 }
