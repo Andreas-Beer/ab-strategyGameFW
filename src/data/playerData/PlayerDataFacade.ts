@@ -18,6 +18,14 @@ export class PlayerDataFacade
   implements RequirementPlayerData, BuildingsPlayerData, ResourcesPlayerData
 {
   constructor(private _playerData: PlayerData) {}
+  findTownByBuildingId(buildingId: number): TownData {
+    const searchedTownIndex = this._playerData.towns
+      .map((townData) => townData.buildings.map((building) => building.id))
+      .findIndex((buildingIds) => buildingIds.includes(buildingId));
+    const searchedTown = this._playerData.towns[searchedTownIndex];
+
+    return searchedTown;
+  }
   findBuildingById(buildingId: number): BuildingData {
     const searchedBuilding = this._playerData.towns
       .map((townData) => townData.buildings)

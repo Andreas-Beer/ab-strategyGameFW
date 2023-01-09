@@ -30,6 +30,24 @@ const buildingConfig1: BuildingConfig = {
         { type: 'modify/capacity/2', amount: 100 },
       ],
     },
+    2: {
+      duration: '1ms',
+      price: [{ resourceId: 1, amount: 11 }],
+      requirements: [{ type: 'playerLevel', level: 1 }],
+      effects: [
+        { type: 'modify/resource/2', amount: 10 },
+        { type: 'modify/capacity/2', amount: 100 },
+      ],
+    },
+    3: {
+      duration: '1ms',
+      price: [{ resourceId: 1, amount: 99999999999999 }],
+      requirements: [{ type: 'playerLevel', level: 1 }],
+      effects: [
+        { type: 'modify/resource/2', amount: 10 },
+        { type: 'modify/capacity/2', amount: 100 },
+      ],
+    },
   },
 };
 
@@ -134,6 +152,7 @@ describe('systems/buildings.test', () => {
         expect(newBuilding.constructionProgress).to.be.eq(100);
       }, 0);
     });
+    it('should activate the effects');
     it('should throw an error if the max building parallel', () => {
       buildingsSystem.build(1, 2, 1);
 
@@ -203,11 +222,13 @@ describe('systems/buildings.test', () => {
         buildings: [
           {
             id: 1,
+            typeId: 1,
             constructionProgress: 100,
             level: 1,
           },
           {
             id: 2,
+            typeId: 1,
             constructionProgress: 100,
             level: 10,
           },
@@ -257,19 +278,49 @@ describe('systems/buildings.test', () => {
 
       expect(fn).to.throw(BuildingHasReachedMaxLevelError);
     });
-    it.skip('should pay the corresponding price.', () => {});
-    it.skip('should add a building finish task into the global task queue.', () => {});
-    it.skip('should throw an error if the highest level has reached.', () => {});
-    it.skip('should throw an error if the requirement does not fit.', () => {});
-    it.skip('should throw an error if the building progress has finished.', () => {});
+    it('should pay the corresponding price.', () => {
+      const buildingData = townData.buildings[0];
+      const buildingId: BuildingId = buildingData.id;
+
+      const buildingConfig = buildingConfig1;
+
+      const buildingPriceLvl2 = buildingConfig.levels[2].price[0];
+      const resourceAmount = buildingPriceLvl2.amount;
+      const resourceId = buildingPriceLvl2.resourceId;
+
+      const resourceAmountBefore =
+        playerDataFacade._playerData.towns[0].resources[resourceId].amount;
+      const resourceAmountExpected = resourceAmountBefore - resourceAmount;
+
+      buildingsSystem.upgrade(buildingId);
+
+      const resourceAmountAfter =
+        playerDataFacade._playerData.towns[0].resources[resourceId].amount;
+
+      expect(resourceAmountAfter).to.be.equal(resourceAmountExpected);
+    });
+    it('should add a building finish task into the global task queue.');
+    it('should throw an error if the building id does not exists');
+    it('should throw an error if the requirement does not fit.', () => {
+      const buildingData = townData.buildings[0];
+      const buildingId: BuildingId = buildingData.id;
+
+      buildingsSystem.upgrade(buildingId);
+      const fn = () => buildingsSystem.upgrade(buildingId);
+
+      expect(fn).to.throw(BuildingNotEnoughResourcesError);
+    });
+    it('should throw an error if the building progress has finished.');
   });
 
   describe('downgrade', () => {
-    it.skip('should downgrade a building to the previous level.', () => {});
-    it.skip('should delete the building from the player data if the level was the lowest.', () => {});
+    it('should downgrade a building to the previous level.');
+    it(
+      'should delete the building from the player data if the level was the lowest.',
+    );
   });
 
   describe('destroy', () => {
-    it.skip('should delete the building from the player data.', () => {});
+    it('should delete the building from the player data.');
   });
 });

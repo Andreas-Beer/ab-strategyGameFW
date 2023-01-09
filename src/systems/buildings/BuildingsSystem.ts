@@ -24,6 +24,7 @@ import {
 import {
   BuildingData,
   BuildingId,
+  BuildingLevel,
   BuildingTownPosition,
   BuildingTypeId,
 } from './buildings.types';
@@ -105,7 +106,27 @@ export class BuildingsSystem extends EventEmitter {
     if (hasReachedTheMaxLevel) {
       throw new BuildingHasReachedMaxLevelError();
     }
+    const nextLevel = currentBuildingLevel + 1;
 
-    building.level += 1;
+    const buildingTypeid = building.typeId;
+    const buildingConfig =
+      this.configData.findBuildingConfigByTypeId(buildingTypeid);
+    const townData = this.playerData.findTownByBuildingId(buildingId);
+
+    const nextLevelPrice = buildingConfig.levels[nextLevel].price;
+    const hasReachedBuildParallelCapacities =
+      checkForFreeParallelBuildingCapacities({ townData });
+    if (!hasReachedBuildParallelCapacities) {
+      throw new BuildingParallelCapacityNotFree();
+    }
+
+    payBuildingPrice({
+      buildingPrices: nextLevelPrice,
+      requirementsSystem: this.requirementsSystem,
+      resourceSystem: this.resourcesSystem,
+      townId: townData.id,
+    });
+
+    building.level = nextLevel as BuildingLevel;
   }
 }
