@@ -6,19 +6,15 @@ export type ResourceData = { amount: number; min?: number; max?: number };
 
 export type ResourcesData = Record<ResourceId, ResourceData>;
 
-export type ModifyResourcesAmountPayload = {
-  resourceId: number;
-  amount: number;
-};
-
-export type ModifyResourceCapacityPayload = {
-  resourceId: number;
-  amount: number;
-};
-
 declare module '../../components/EffectEventBus' {
   interface EffectHandlerMap {
-    'modify/resources': ModifyResourcesAmountPayload;
-    'modify/capacity': ModifyResourceCapacityPayload;
+    'modify/resources': {
+      resourceId: number;
+      amount: number;
+    };
+    'modify/capacity': {
+      resourceId: number;
+      amount: number;
+    };
   }
 }

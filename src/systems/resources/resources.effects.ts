@@ -1,22 +1,31 @@
 import {
   effectEventBus,
-  EffectHandler,
-  EffectHandlerMap,
+  EffectHandlerKey,
 } from '../../components/EffectEventBus';
-import {
-  ModifyResourceCapacityPayload,
-  ModifyResourcesAmountPayload,
-} from './resources.types';
 
-const modifyResources: EffectHandler<ModifyResourcesAmountPayload> = ({
-  amount,
-  resourceId,
-}) => {};
+import { ResourcesSystem } from './ResourcesSystem';
 
-const modifyCapacities: EffectHandler<ModifyResourceCapacityPayload> = ({
-  amount,
-  resourceId,
-}) => {};
+export function initEvents(resourceSystem: ResourcesSystem) {
+  const modifyResources: EffectHandlerKey<'modify/resources'> = ({
+    amount,
+    resourceId,
+  }) => {
+    if (amount === 0) {
+      return;
+    }
 
-effectEventBus.addHandler('modify/resources', modifyResources);
-effectEventBus.addHandler('modify/capacity', modifyCapacities);
+    if (amount < 0) {
+      resourceSystem.decreaseAmount(resourceId, amount);
+    } else {
+      resourceSystem.increaseAmount(resourceId, amount);
+    }
+  };
+
+  const modifyCapacities: EffectHandlerKey<'modify/capacity'> = ({
+    amount,
+    resourceId,
+  }) => {};
+
+  effectEventBus.addHandler('modify/resources', modifyResources);
+  effectEventBus.addHandler('modify/capacity', modifyCapacities);
+}
