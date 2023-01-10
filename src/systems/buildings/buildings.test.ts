@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Sinon from 'sinon';
-import { TaskQueue } from '../../classes/TaskQueue';
+import { TaskQueue } from '../../components/TaskQueue';
 import { ConfigData } from '../../data/configData/config.types';
 import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
 import { PlayerData, TownData } from '../../data/playerData/playerData.types';

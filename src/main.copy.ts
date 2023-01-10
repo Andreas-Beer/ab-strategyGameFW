@@ -1,7 +1,7 @@
 import { createApi } from './api';
-import { Task } from './classes/Task';
-import { TaskQueue } from './classes/TaskQueue';
-import { Ticker } from './classes/Ticker';
+import { Task } from './components/Task';
+import { TaskQueue } from './components/TaskQueue';
+import { Ticker } from './components/Ticker';
 
 const api = createApi();
 

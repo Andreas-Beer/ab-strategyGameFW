@@ -1,6 +1,6 @@
 import { EventEmitter } from 'stream';
-import { Task } from '../../classes/Task';
-import { TaskQueue } from '../../classes/TaskQueue';
+import { Task } from '../../components/Task';
+import { TaskQueue } from '../../components/TaskQueue';
 import { TownId } from '../../data/playerData/playerData.types';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
@@ -88,11 +88,11 @@ export class BuildingsSystem extends EventEmitter {
     );
     townData.buildings.push(newBuilding);
 
-    this.taskQueue.addTask(
-      new Task(levelConfig.duration, () => {
-        newBuilding.constructionProgress = 100;
-      }),
-    );
+    const finishedTask = new Task(levelConfig.duration, () => {
+      newBuilding.constructionProgress = 100;
+    });
+
+    this.taskQueue.addTask(finishedTask);
 
     return newBuilding;
   }
