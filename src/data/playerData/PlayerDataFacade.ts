@@ -50,8 +50,12 @@ export class PlayerDataFacade
 
     return searchedTown;
   }
+  getCurrentActiveTown(): TownData {
+    const currentActiveTownId = this._playerData.currentActiveTownId;
+    return this.findTownById(currentActiveTownId);
+  }
 
-  getGlobalResources() {
+  getGlobalResources(): ResourcesData {
     return this._playerData.resources;
   }
 
@@ -59,7 +63,7 @@ export class PlayerDataFacade
   getItems(): stackData {
     return this._playerData.items;
   }
-  getBuildings(townId: number): BuildingPlayerData[] {
+  getBuildings(townId: number): BuildingData[] {
     return this.findTownById(townId).buildings;
   }
   getResources(townId: number): ResourcesData {

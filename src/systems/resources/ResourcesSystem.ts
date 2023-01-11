@@ -1,6 +1,7 @@
 import { TownId } from '../../data/playerData/playerData.types';
 import { cloneObj } from '../../helpers/cloneObj';
-import { ResourceData, ResourceId } from './resources.types';
+import { initEffectHandlers } from './resources.effects';
+import { ResourcesPlayerData } from './resources.interfaces';
 import {
   decreaseResourceAmount,
   decreaseResourceMaxLimit,
@@ -8,7 +9,7 @@ import {
   increaseResourceAmount,
   increaseResourceMaxLimit,
 } from './resources.module';
-import { ResourcesPlayerData } from './resources.interfaces';
+import { ResourceData, ResourceId } from './resources.types';
 
 type FindResourceOptions = {
   townId?: TownId;
@@ -24,7 +25,9 @@ type ChangeLimitAmountOptions = {
 };
 
 export class ResourcesSystem {
-  constructor(protected playerData: ResourcesPlayerData) {}
+  constructor(protected playerData: ResourcesPlayerData) {
+    initEffectHandlers(this, playerData);
+  }
 
   find(
     resourceId: ResourceId,

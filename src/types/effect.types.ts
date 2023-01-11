@@ -1,3 +1,4 @@
+import { TownId } from '../data/playerData/playerData.types';
 import { ResourceId } from '../systems/resources/resources.types';
 import { ItemTypeId } from './item.types';
 import { Duration } from './time.types';
@@ -22,6 +23,6 @@ export type EffectConfig =
   | { type: 'townBuff/peace'; expire: Duration }
   | { type: 'buff/buildParallel'; expire: Duration }
   | { type: 'speedup/building'; amount: Duration }
-  | { type: 'package/items'; items: { itemId: ItemTypeId; amount: number }[] };
+  | { type: 'item/bundle'; items: { itemId: ItemTypeId; amount: number }[] };
 
-export type EffectData = { effectId: number; expire?: Duration };
+export type EffectData = EffectConfig & { townId?: TownId };
