@@ -16,7 +16,6 @@ export type TownData = {
   name: string;
   location: [number, number];
   buildings: BuildingData[];
-  effects: EffectData[];
   units: stackData;
   resources: ResourcesData;
   buildingSlots: BuildingSlots;
@@ -35,4 +34,5 @@ export type PlayerData = {
   resources: ResourcesData;
   effects: EffectData[];
   towns: TownData[];
+  currentActiveTownId: TownId;
 };

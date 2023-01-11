@@ -21,7 +21,7 @@ describe('components/EffectEventBus.ts', () => {
       const handlerKey = 'myKey';
       const handler = () => {};
 
-      bus.addHandler(handlerKey, handler);
+      bus.registerEffectHandler(handlerKey, handler);
 
       expect(bus)
         .to.have.property('effectsMap')
@@ -31,7 +31,7 @@ describe('components/EffectEventBus.ts', () => {
     it('should warn if the key was not found', () => {
       const warnStub = Sinon.stub(console, 'warn');
       const handlerKey = 'myKey';
-      bus.activateEvent(handlerKey, {});
+      bus.triggerEffect(handlerKey, {});
 
       expect(warnStub).to.be.called;
     });
@@ -40,8 +40,8 @@ describe('components/EffectEventBus.ts', () => {
       const handlerKey = 'myKey';
       const handler = Sinon.spy();
 
-      bus.addHandler(handlerKey, handler);
-      bus.activateEvent(handlerKey, {});
+      bus.registerEffectHandler(handlerKey, handler);
+      bus.triggerEffect(handlerKey, {});
 
       expect(handler).to.be.called;
     });

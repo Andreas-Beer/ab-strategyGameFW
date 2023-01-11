@@ -1,12 +1,12 @@
-import {
-  effectEventBus,
-  EffectHandlerKey,
-} from '../../components/EffectEventBus';
-
+import { effectEventBus, EffectHandler } from '../../components/EffectEventBus';
+import { ResourcesPlayerData } from './resources.interfaces';
 import { ResourcesSystem } from './ResourcesSystem';
 
-export function initEvents(resourceSystem: ResourcesSystem) {
-  const modifyResources: EffectHandlerKey<'modify/resources'> = ({
+export function initEffectHandlers(
+  resourceSystem: ResourcesSystem,
+  resourcesPlayerData: ResourcesPlayerData,
+) {
+  const modifyResources: EffectHandler<'modify/resources'> = ({
     amount,
     resourceId,
   }) => {
@@ -14,18 +14,24 @@ export function initEvents(resourceSystem: ResourcesSystem) {
       return;
     }
 
+    const currentActiveTownId = resourcesPlayerData.getCurrentActiveTown().id;
+
     if (amount < 0) {
-      resourceSystem.decreaseAmount(resourceId, amount);
+      resourceSystem.decreaseAmount(resourceId, amount, {
+        townId: currentActiveTownId,
+      });
     } else {
-      resourceSystem.increaseAmount(resourceId, amount);
+      resourceSystem.increaseAmount(resourceId, amount, {
+        townId: currentActiveTownId,
+      });
     }
   };
 
-  const modifyCapacities: EffectHandlerKey<'modify/capacity'> = ({
+  const modifyCapacities: EffectHandler<'modify/capacity'> = ({
     amount,
     resourceId,
   }) => {};
 
-  effectEventBus.addHandler('modify/resources', modifyResources);
-  effectEventBus.addHandler('modify/capacity', modifyCapacities);
+  effectEventBus.registerEffectHandler('modify/resources', modifyResources);
+  effectEventBus.registerEffectHandler('modify/capacity', modifyCapacities);
 }

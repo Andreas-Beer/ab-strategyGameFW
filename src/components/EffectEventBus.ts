@@ -1,21 +1,20 @@
 export interface EffectHandlerMap {}
 
-export type EffectHandler<T> = (data: T) => void;
-export type EffectHandlerKey<T extends keyof EffectHandlerMap> = (
+export type EffectHandler<T extends keyof EffectHandlerMap> = (
   data: EffectHandlerMap[T],
 ) => void;
 
 export class EffectEventBus {
   private effectsMap: { [key in keyof EffectHandlerMap]?: Function } = {};
 
-  addHandler<
+  registerEffectHandler<
     T extends keyof EffectHandlerMap,
-    U extends EffectHandler<EffectHandlerMap[T]>,
+    U extends EffectHandler<T>,
   >(effectKey: T, handler: U) {
     this.effectsMap[effectKey] = handler;
   }
 
-  activateEvent<
+  triggerEffect<
     T extends keyof EffectHandlerMap,
     U extends EffectHandlerMap[T],
   >(effectKey: T, data: U) {

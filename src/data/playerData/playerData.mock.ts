@@ -9,16 +9,17 @@ export const playerDataMock: PlayerData = {
   groupId: 5397,
   xp: 304737,
   prestige: 73892,
-  effects: [{ effectId: 2 }],
   items: { 1: 3 },
   resources: {
     0: { amount: 20 },
     1: { amount: 100, max: 1000 },
   },
+  currentActiveTownId: 1,
   towns: [
     {
       id: 1,
       name: 'Funky Town',
+      buildParallelCapacity: 1,
       location: [1682, 2864],
       buildings: [
         {
@@ -38,11 +39,11 @@ export const playerDataMock: PlayerData = {
       ],
       effects: [
         {
-          effectId: 1,
+          type: 'buff/buildParallel',
           expire: '3d',
         },
         {
-          effectId: 2,
+          type: 'townBuff/peace',
           expire: '17h',
         },
       ],
