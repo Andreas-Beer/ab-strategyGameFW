@@ -1,10 +1,8 @@
 import { TownId } from '../data/playerData/playerData.types';
+import { Amount } from '../helpers/amountReducer';
 import { ResourceId } from '../systems/resources/resources.types';
 import { ItemTypeId } from './item.types';
 import { Duration } from './time.types';
-
-export type AmountOperator = '+' | '-' | '*' | '/' | '';
-export type Amount = number | `${AmountOperator}${number}${'%' | ''}`;
 
 export type EffectConfig =
   | {

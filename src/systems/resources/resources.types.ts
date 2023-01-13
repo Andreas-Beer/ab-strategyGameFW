@@ -1,3 +1,5 @@
+import { TownId } from '../../data/playerData/playerData.types';
+
 export type ResourceId = number;
 export type ResourceLimits = { max?: number; min?: number };
 export type ResourceData = { amount: number; min?: number; max?: number };
@@ -8,10 +10,12 @@ declare module '../../components/EffectEventBus' {
     'modify/resources': {
       resourceId: number;
       amount: number;
+      townId: TownId;
     };
     'modify/capacity': {
       resourceId: number;
       amount: number;
+      townId: TownId;
     };
   }
 }

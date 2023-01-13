@@ -9,20 +9,21 @@ export function initEffectHandlers(
   const modifyResources: EffectHandler<'modify/resources'> = ({
     amount,
     resourceId,
+    townId,
   }) => {
     if (amount === 0) {
       return;
     }
 
-    const currentActiveTownId = resourcesPlayerData.getCurrentActiveTown().id;
+    townId = townId ?? resourcesPlayerData.getCurrentActiveTown().id;
 
     if (amount < 0) {
       resourceSystem.decreaseAmount(resourceId, amount, {
-        townId: currentActiveTownId,
+        townId,
       });
     } else {
       resourceSystem.increaseAmount(resourceId, amount, {
-        townId: currentActiveTownId,
+        townId,
       });
     }
   };
