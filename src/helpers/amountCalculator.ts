@@ -14,7 +14,7 @@ const operatorCalculatorMap: Record<Operator, Calculator> = {
 const splitOperatorAndNumber = (
   amount: Amount,
 ): { operator: Operator; number: number } => {
-  const splittedAmount = amount.split(/(\+|-|\*|\/)/).filter(Boolean);
+  const splittedAmount = amount.split(/(\d+)/).filter(Boolean);
   const operator = splittedAmount[0] as Operator;
   const number = Number(splittedAmount[1]);
 

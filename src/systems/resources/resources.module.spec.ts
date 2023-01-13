@@ -1,204 +1,102 @@
 import { expect } from 'chai';
 import { ResourceNotFoundError } from './resources.errors';
+import { ResourcesPlayerData } from './resources.interfaces';
 
-import {
-  decreaseResourceAmount,
-  decreaseResourceMaxLimit,
-  findResource,
-  increaseResourceAmount,
-  increaseResourceMaxLimit,
-  modifyResourceAmount,
-} from './resources.module';
+import { findResourceById, modifyResourceAmount } from './resources.module';
 import { ResourcesData } from './resources.types';
 
 const resourceId1 = 1;
+const resourceId100 = 100;
 const resourceId999999X = 999999;
 
 describe('systems/resources/resources.module.ts', () => {
+  let globalResourcesMock: ResourcesData;
   let resourceDataMock: ResourcesData;
   let resourceDataMockMax: ResourcesData;
   let resourceDataMockMin: ResourcesData;
   let amountBefore: number;
   let maxLimitBefore: number;
-  const resId = resourceId1;
+  let resourcesPlayerData: ResourcesPlayerData;
+
+  const localResId = resourceId1;
+  const globalResId = resourceId100;
   const amount = 20;
 
   beforeEach(() => {
-    resourceDataMock = { [resId]: { amount: 1000 }, 2: { amount: 1000 } };
-    resourceDataMockMax = { [resId]: { amount: 1000, max: 1005 } };
-    resourceDataMockMin = { [resId]: { amount: 1000, min: 0 } };
-    amountBefore = resourceDataMock[resId].amount;
-    maxLimitBefore = resourceDataMockMax[resId].max!;
+    globalResourcesMock = {
+      [globalResId]: { amount: 1000 },
+      2: { amount: 1000 },
+    };
+    resourceDataMock = { [localResId]: { amount: 1000 }, 2: { amount: 1000 } };
+    resourceDataMockMax = { [localResId]: { amount: 1000, max: 1005 } };
+    resourceDataMockMin = { [localResId]: { amount: 1000, min: 0 } };
+    amountBefore = resourceDataMock[localResId].amount;
+    maxLimitBefore = resourceDataMockMax[localResId].max!;
+
+    resourcesPlayerData = {
+      getGlobalResources: () => globalResourcesMock,
+      getCurrentActiveTown: () => ({ resources: resourceDataMock }),
+    };
+  });
+
+  describe('FindResource', () => {
+    it('should return the correct Resource', () => {
+      const searchedResource = findResourceById({
+        resourcesPlayerData,
+        resourceId: localResId,
+      });
+      expect(searchedResource).to.be.eq(resourceDataMock[localResId]);
+    });
+
+    it('shouldReturn the global resource if the id matches a global resource', () => {
+      const searchedResource = findResourceById({
+        resourcesPlayerData,
+        resourceId: globalResId,
+      });
+      expect(searchedResource).to.be.eq(globalResourcesMock[globalResId]);
+    });
+
+    it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
+      const fn = () =>
+        findResourceById({
+          resourcesPlayerData,
+          resourceId: resourceId999999X,
+        });
+
+      expect(fn).to.throw(ResourceNotFoundError);
+    });
   });
 
   describe('modifyResourceAmount', () => {
     it('should increase the amount of the resource', () => {
       modifyResourceAmount({
         calculator: (oldAmount) => oldAmount + amount,
-        resourcesData: resourceDataMock,
-        resourceId: resId,
+        resourceData: resourceDataMock[localResId],
       });
 
-      const amountAfter = resourceDataMock[resId].amount;
-      expect(amountAfter).to.be.eq(amountBefore + amount);
-    });
-  });
-
-  describe('increaseResourceAmount', () => {
-    it('should increase the amount of the resource', () => {
-      increaseResourceAmount({
-        resourcesData: resourceDataMock,
-        resourceId: resId,
-        amount,
-      });
-
-      const amountAfter = resourceDataMock[resId].amount;
+      const amountAfter = resourceDataMock[localResId].amount;
       expect(amountAfter).to.be.eq(amountBefore + amount);
     });
 
     it('should increase the amount only to the limit', () => {
-      increaseResourceAmount({
-        resourcesData: resourceDataMockMax,
-        resourceId: resId,
-        amount,
+      modifyResourceAmount({
+        calculator: (oldAmount) => oldAmount + amount,
+        resourceData: resourceDataMockMax[localResId],
       });
 
-      const amountAfter = resourceDataMockMax[resId].amount;
-      expect(amountAfter).to.be.eq(resourceDataMockMax[resId].max);
+      const amountAfter = resourceDataMockMax[localResId].amount;
+      expect(amountAfter).to.be.eq(resourceDataMockMax[localResId].max);
     });
 
     it('should increase the amount above the limit if the shouldIgnoreLimit flag is set', () => {
-      increaseResourceAmount({
-        resourcesData: resourceDataMockMax,
-        resourceId: resId,
-        amount,
+      modifyResourceAmount({
+        calculator: (oldAmount) => oldAmount + amount,
+        resourceData: resourceDataMockMax[localResId],
         options: { shouldIgnoreLimit: true },
       });
 
-      const amountAfter = resourceDataMockMax[resId].amount;
+      const amountAfter = resourceDataMockMax[localResId].amount;
       expect(amountAfter).to.be.eq(amountBefore + amount);
-    });
-
-    it('should throw if the resource did not exists', () => {
-      const fn = () =>
-        increaseResourceAmount({
-          resourcesData: resourceDataMock,
-          resourceId: resourceId999999X,
-          amount,
-        });
-      expect(fn).to.throw(ResourceNotFoundError);
-    });
-  });
-
-  describe('decreaseResourceAmount', () => {
-    it('should decrease the amount of the given resource id in the given player data', () => {
-      decreaseResourceAmount({
-        resourcesData: resourceDataMock,
-        resourceId: resId,
-        amount,
-      });
-
-      const amountAfter = resourceDataMock[resId].amount;
-      expect(amountAfter).to.be.eq(amountBefore - amount);
-    });
-
-    it('should decrease the amount of the given resource id in only to the limit', () => {
-      decreaseResourceAmount({
-        resourcesData: resourceDataMockMin,
-        resourceId: resId,
-        amount: 2000,
-      });
-
-      const amountAfter = resourceDataMockMin[resId].amount;
-      expect(amountAfter).to.be.eq(resourceDataMockMin[resId].min);
-    });
-
-    it('should decrease the amount beneath the limit if the shouldIgnoreLimit flag is set', () => {
-      decreaseResourceAmount({
-        resourcesData: resourceDataMockMin,
-        resourceId: resId,
-        amount,
-        options: { shouldIgnoreLimit: true },
-      });
-
-      const amountAfter = resourceDataMockMin[resId].amount;
-      expect(amountAfter).to.be.eq(amountBefore - amount);
-    });
-
-    it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
-      const fn = () =>
-        decreaseResourceAmount({
-          resourcesData: resourceDataMock,
-          resourceId: resourceId999999X,
-          amount,
-        });
-
-      expect(fn).to.throw(ResourceNotFoundError);
-    });
-  });
-
-  describe('increaseMaxLimit', () => {
-    it('should increase the max limit by the given ', () => {
-      increaseResourceMaxLimit({
-        resourcesData: resourceDataMockMax,
-        resourceId: resId,
-        amount,
-      });
-
-      const limitAfter = resourceDataMockMax[resId].max;
-      expect(limitAfter).to.be.eq(maxLimitBefore + amount);
-    });
-    it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
-      const fn = () =>
-        increaseResourceMaxLimit({
-          resourcesData: resourceDataMock,
-          resourceId: resourceId999999X,
-          amount,
-        });
-
-      expect(fn).to.throw(ResourceNotFoundError);
-    });
-  });
-
-  describe('decreaseResourceMaxLimit', () => {
-    it('should decrease the max limit by the given ', () => {
-      decreaseResourceMaxLimit({
-        resourcesData: resourceDataMockMax,
-        resourceId: resId,
-        amount,
-      });
-
-      const limitAfter = resourceDataMockMax[resId].max;
-      expect(limitAfter).to.be.eq(maxLimitBefore - amount);
-    });
-    it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
-      const fn = () =>
-        decreaseResourceMaxLimit({
-          resourcesData: resourceDataMock,
-          resourceId: resourceId999999X,
-          amount,
-        });
-
-      expect(fn).to.throw(ResourceNotFoundError);
-    });
-  });
-
-  describe('FindResource', () => {
-    it('should return the correct Resource', () => {
-      const searchedResource = findResource({
-        resourcesData: resourceDataMock,
-        resourceId: resId,
-      });
-      expect(searchedResource).to.be.eq(resourceDataMock[resId]);
-    });
-    it('should throw an ResourceNotFoundError if the resourceID is not in the playerData', () => {
-      const fn = () =>
-        findResource({
-          resourcesData: resourceDataMock,
-          resourceId: resourceId999999X,
-        });
-
-      expect(fn).to.throw(ResourceNotFoundError);
     });
   });
 });
