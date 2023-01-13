@@ -7,6 +7,7 @@ import {
   findResource,
   increaseResourceAmount,
   increaseResourceMaxLimit,
+  modifyResourceAmount,
 } from './resources.module';
 import { ResourcesData } from './resources.types';
 
@@ -28,6 +29,19 @@ describe('systems/resources/resources.module.ts', () => {
     resourceDataMockMin = { [resId]: { amount: 1000, min: 0 } };
     amountBefore = resourceDataMock[resId].amount;
     maxLimitBefore = resourceDataMockMax[resId].max!;
+  });
+
+  describe('modifyResourceAmount', () => {
+    it('should increase the amount of the resource', () => {
+      modifyResourceAmount({
+        calculator: (oldAmount) => oldAmount + amount,
+        resourcesData: resourceDataMock,
+        resourceId: resId,
+      });
+
+      const amountAfter = resourceDataMock[resId].amount;
+      expect(amountAfter).to.be.eq(amountBefore + amount);
+    });
   });
 
   describe('increaseResourceAmount', () => {

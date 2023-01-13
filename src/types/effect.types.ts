@@ -1,5 +1,5 @@
 import { TownId } from '../data/playerData/playerData.types';
-import { Amount } from '../helpers/amountReducer';
+import { Amount } from '../helpers/amountCalculator';
 import { ResourceId } from '../systems/resources/resources.types';
 import { ItemTypeId } from './item.types';
 import { Duration } from './time.types';

@@ -138,4 +138,15 @@ describe('systems/resources.test', () => {
       expect(resMaxLimitAfter).to.be.eq(resMaxLimitBefore! - limitAmount);
     });
   });
+
+  describe('modifyAmount', () => {
+    it('should increase the amount', () => {
+      const resAmount = 10;
+      const resAmountBefore = resourcesSystem.find(resId).amount;
+      resourcesSystem.modifyAmount(resId, `+${10}`);
+      const resAmountAfter = resourcesSystem.find(resId).amount;
+
+      expect(resAmountAfter).to.be.eq(resAmountBefore + resAmount);
+    });
+  });
 });

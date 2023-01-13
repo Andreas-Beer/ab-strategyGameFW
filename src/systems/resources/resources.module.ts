@@ -1,9 +1,10 @@
+import { AmountCalculator } from '../../helpers/amountCalculator';
 import { clamp } from '../../helpers/clamp';
-import { Prices } from '../../types/price.types';
 import {
   ResourceDataNotFoundError,
   ResourceNotFoundError,
 } from './resources.errors';
+
 import { ResourcesData, ResourceId, ResourceData } from './resources.types';
 
 function guardResourceExists(data: ResourcesData, resourceId: ResourceId) {
@@ -89,4 +90,23 @@ export function decreaseResourceMaxLimit({
   const resource = findResource({ resourcesData, resourceId });
   const newAmount = (resource.max || 0) - amount;
   resource.max = newAmount;
+}
+
+export function modifyResourceAmount({
+  calculator,
+  resourcesData,
+  resourceId,
+  options: { shouldIgnoreLimit } = {},
+}: {
+  calculator: AmountCalculator;
+  resourcesData: ResourcesData;
+  resourceId: ResourceId;
+  options?: { shouldIgnoreLimit?: boolean };
+}) {
+  const resource = findResource({ resourcesData, resourceId });
+  const newAmount = calculator(resource.amount);
+  const clampedAmount = clamp(newAmount, {
+    max: resource.max,
+  });
+  resource.amount = shouldIgnoreLimit ? newAmount : clampedAmount;
 }
