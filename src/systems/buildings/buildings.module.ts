@@ -1,4 +1,4 @@
-import { TownId, TownData } from '../../data/playerData/playerData.types';
+import { TownData } from '../../data/playerData/playerData.types';
 import { CalculatorAmount } from '../../helpers/amountCalculator';
 import { Prices } from '../../types/price.types';
 import { RequirementsSystem } from '../requirements/Requirements.system';
@@ -6,15 +6,15 @@ import { ResourceAmountRequirement } from '../requirements/requirements.types';
 import { ResourcesSystem } from '../resources';
 import {
   BuildingNotEnoughResourcesError,
-  BuildingSlotNotFoundError,
   BuildingSlotIsNotFreeError,
+  BuildingSlotNotFoundError,
 } from './buildings.errors';
 import { isBuildingUnderConstruction } from './buildings.helpers';
 import {
   BuildingCityId,
   BuildingConfig,
-  BuildingTownPosition,
   BuildingData,
+  BuildingTownPosition,
   BuildingTypeId,
 } from './buildings.types';
 
@@ -54,7 +54,6 @@ export function payBuildingPrice({
   const hasEnoughResource = requirementsSystem.check(
     resourceAmountRequirements,
   );
-  // console.log({ hasEnoughResource, resourceAmountRequirements });
 
   if (!hasEnoughResource) {
     throw new BuildingNotEnoughResourcesError();

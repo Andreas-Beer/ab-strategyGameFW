@@ -57,7 +57,6 @@ export class BuildingsSystem extends EventEmitter {
 
     const hasFulfilledTheRequirements = this.requirementsSystem.check(
       levelConfig.requirements,
-      townData,
     );
     if (!hasFulfilledTheRequirements) {
       throw new BuildingRequirementsNotFulfilledError();
@@ -109,7 +108,7 @@ export class BuildingsSystem extends EventEmitter {
     const buildingTypeid = building.typeId;
     const buildingConfig =
       this.configData.findBuildingConfigByTypeId(buildingTypeid);
-    const townData = this.playerData.findTownByBuildingId(buildingId);
+    const townData = this.playerData.getCurrentActiveTown();
 
     const nextLevelPrice = buildingConfig.levels[nextLevel].price;
     const hasReachedBuildParallelCapacities =

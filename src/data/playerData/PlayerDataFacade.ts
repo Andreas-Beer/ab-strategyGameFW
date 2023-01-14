@@ -52,6 +52,9 @@ export class PlayerDataFacade
   }
   getCurrentActiveTown(): TownData {
     const currentActiveTownId = this._playerData.currentActiveTownId;
+    if (!currentActiveTownId) {
+      throw new Error(`No current active town was found!`);
+    }
     return this.findTownById(currentActiveTownId);
   }
 

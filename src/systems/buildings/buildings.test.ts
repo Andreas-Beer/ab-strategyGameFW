@@ -140,7 +140,7 @@ describe('systems/buildings.test', () => {
       );
     });
     it('should add a building finish task into the global task queue.', () => {
-      const newBuilding = buildingsSystem.build(buildingConfig1.typeId, 1, 1);
+      const newBuilding = buildingsSystem.build(buildingConfig1.typeId, 1);
       expect(taskQueue._queue).to.have.a.lengthOf(1);
       expect(newBuilding).to.be.not.undefined;
       expect(newBuilding.constructionProgress).to.be.eq(0);
@@ -154,14 +154,13 @@ describe('systems/buildings.test', () => {
     });
     it('should activate the effects');
     it('should throw an error if the max building parallel', () => {
-      buildingsSystem.build(1, 2, 1);
+      buildingsSystem.build(1, 2);
 
       const buildingTypeId = buildingConfig1.typeId;
       const buildingPosition = 1;
       const townId = 1;
 
-      const fn = () =>
-        buildingsSystem.build(buildingTypeId, buildingPosition, townId);
+      const fn = () => buildingsSystem.build(buildingTypeId, buildingPosition);
 
       expect(fn).to.throw(BuildingParallelCapacityNotFree);
     });
@@ -179,7 +178,7 @@ describe('systems/buildings.test', () => {
         playerDataFacade._playerData.towns[0].resources[resourceId].amount;
       const resourceAmountExpected = resourceAmountBefore - resourceAmount;
 
-      buildingsSystem.build(buildingTypeId, buildingPosition, townId);
+      buildingsSystem.build(buildingTypeId, buildingPosition);
 
       const resourceAmountAfter =
         playerDataFacade._playerData.towns[0].resources[resourceId].amount;
@@ -195,8 +194,7 @@ describe('systems/buildings.test', () => {
       const buildingPriceLvl1 = buildingConfig.levels[1].price[0];
       const resourceId = buildingPriceLvl1.resourceId;
 
-      const fn = () =>
-        buildingsSystem.build(buildingTypeId, buildingPosition, townId);
+      const fn = () => buildingsSystem.build(buildingTypeId, buildingPosition);
 
       const resourceAmountBefore =
         playerDataFacade._playerData.towns[0].resources[resourceId].amount;
@@ -210,7 +208,7 @@ describe('systems/buildings.test', () => {
     });
   });
 
-  describe.skip('upgrade', () => {
+  describe('upgrade', () => {
     beforeEach(() => {
       townData = {
         name: '',
@@ -238,6 +236,8 @@ describe('systems/buildings.test', () => {
 
       playerDataFacade = new PlayerDataFacade({
         level: 1,
+        resources: {},
+        currentActiveTownId: townData.id,
         towns: [townData],
       } as PlayerData);
 
@@ -310,17 +310,17 @@ describe('systems/buildings.test', () => {
 
       expect(fn).to.throw(BuildingNotEnoughResourcesError);
     });
-    it('should throw an error if the building progress has finished.');
+    it.skip('should throw an error if the building progress has finished.');
   });
 
-  describe.skip('downgrade', () => {
+  describe('downgrade', () => {
     it('should downgrade a building to the previous level.');
     it(
       'should delete the building from the player data if the level was the lowest.',
     );
   });
 
-  describe.skip('destroy', () => {
+  describe('destroy', () => {
     it('should delete the building from the player data.');
   });
 });
