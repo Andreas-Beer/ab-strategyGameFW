@@ -1,4 +1,8 @@
 import { TownId } from '../../data/playerData/playerData.types';
+import {
+  AmountCalculator,
+  CalculatorAmount,
+} from '../../helpers/amountCalculator';
 
 export type ResourceId = number;
 export type ResourceLimits = { max?: number; min?: number };
@@ -8,14 +12,12 @@ export type ResourcesData = Record<ResourceId, ResourceData>;
 declare module '../../components/EffectEventBus' {
   interface EffectHandlerMap {
     'modify/resources': {
-      resourceId: number;
-      amount: number;
-      townId: TownId;
+      resourceId: ResourceId;
+      amount: CalculatorAmount;
     };
     'modify/capacity': {
-      resourceId: number;
-      amount: number;
-      townId: TownId;
+      resourceId: ResourceId;
+      amount: CalculatorAmount;
     };
   }
 }

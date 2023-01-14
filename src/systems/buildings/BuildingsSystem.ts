@@ -1,4 +1,5 @@
 import { EventEmitter } from 'stream';
+import { EffectBus } from '../../components/EffectEventBus';
 import { Task } from '../../components/Task';
 import { TaskQueue } from '../../components/TaskQueue';
 import { RequirementsSystem } from '../requirements/Requirements.system';
@@ -35,6 +36,7 @@ export class BuildingsSystem extends EventEmitter {
     private resourcesSystem: ResourcesSystem,
     private requirementsSystem: RequirementsSystem,
     private taskQueue: TaskQueue,
+    private effectBus: EffectBus,
   ) {
     super();
   }
@@ -85,11 +87,16 @@ export class BuildingsSystem extends EventEmitter {
     );
     townData.buildings.push(newBuilding);
 
-    const finishedTask = new Task(levelConfig.duration, () => {
-      newBuilding.constructionProgress = 100;
-    });
+    this.taskQueue.addTask(
+      new Task(levelConfig.duration, () => {
+        newBuilding.constructionProgress = 100;
 
-    this.taskQueue.addTask(finishedTask);
+        const buildingEffects = levelConfig.events.onFinish?.effects || [];
+        for (const effect of buildingEffects) {
+          this.effectBus.triggerEffect(effect.type, effect.data);
+        }
+      }),
+    );
 
     return newBuilding;
   }
@@ -110,7 +117,9 @@ export class BuildingsSystem extends EventEmitter {
       this.configData.findBuildingConfigByTypeId(buildingTypeid);
     const townData = this.playerData.getCurrentActiveTown();
 
-    const nextLevelPrice = buildingConfig.levels[nextLevel].price;
+    const nextLevelConfig = buildingConfig.levels[nextLevel];
+    const nextLevelPrice = nextLevelConfig.price;
+    const nextLevelDuration = nextLevelConfig.duration;
     const hasReachedBuildParallelCapacities =
       checkForFreeParallelBuildingCapacities({ townData });
     if (!hasReachedBuildParallelCapacities) {
@@ -121,9 +130,16 @@ export class BuildingsSystem extends EventEmitter {
       buildingPrices: nextLevelPrice,
       requirementsSystem: this.requirementsSystem,
       resourceSystem: this.resourcesSystem,
-      townData: townData.id,
+      townData: townData,
     });
 
-    building.level = nextLevel as BuildingLevel;
+    building.constructionProgress = 0;
+
+    this.taskQueue.addTask(
+      new Task(nextLevelDuration, () => {
+        building.constructionProgress = 100;
+        building.level = nextLevel as BuildingLevel;
+      }),
+    );
   }
 }

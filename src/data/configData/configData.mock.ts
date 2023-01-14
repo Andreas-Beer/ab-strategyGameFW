@@ -65,18 +65,24 @@ const buildingsConfigMock: BuildingsConfig = {
             onFinish: {
               effects: [
                 {
-                  type: 'modify/resource/2',
-                  amount: +200,
-                  repeat: '5s',
-                  expire: '1w',
+                  type: 'modify/resource',
+                  data: {
+                    amount: '+200',
+                    repeat: '5s',
+                    expire: '1w',
+                  },
                 },
                 {
-                  type: 'modify/capacity/2',
-                  amount: +2000,
+                  type: 'modify/capacity',
+                  data: {
+                    amount: '+2000',
+                  },
                 },
                 {
                   type: 'modify/xp',
-                  amount: +500,
+                  data: {
+                    amount: '+500',
+                  },
                 },
               ],
             },

@@ -4,7 +4,7 @@ export type EffectHandler<T extends keyof EffectHandlerMap> = (
   data: EffectHandlerMap[T],
 ) => void;
 
-export class EffectEventBus {
+export class EffectBus {
   private effectsMap: { [key in keyof EffectHandlerMap]?: Function } = {};
 
   registerEffectHandler<
@@ -32,4 +32,4 @@ export class EffectEventBus {
   }
 }
 
-export const effectEventBus = new EffectEventBus();
+export const effectBus = new EffectBus();

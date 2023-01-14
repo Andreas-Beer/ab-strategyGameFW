@@ -19,6 +19,7 @@ export type TownData = {
   units: stackData;
   resources: ResourcesData;
   buildingSlots: BuildingSlots;
+  effects: EffectData[];
 };
 
 export type PlayerData = {

@@ -1,4 +1,4 @@
-import { effectEventBus, EffectHandler } from '../../components/EffectEventBus';
+import { effectBus, EffectHandler } from '../../components/EffectEventBus';
 import { ResourcesPlayerData } from './resources.interfaces';
 import { ResourcesSystem } from './ResourcesSystem';
 
@@ -33,6 +33,6 @@ export function initEffectHandlers(
     resourceId,
   }) => {};
 
-  effectEventBus.registerEffectHandler('modify/resources', modifyResources);
-  effectEventBus.registerEffectHandler('modify/capacity', modifyCapacities);
+  effectBus.registerEffectHandler('modify/resources', modifyResources);
+  effectBus.registerEffectHandler('modify/capacity', modifyCapacities);
 }

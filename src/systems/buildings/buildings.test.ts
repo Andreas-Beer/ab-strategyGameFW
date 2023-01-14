@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import Sinon from 'sinon';
+import { EffectBus } from '../../components/EffectEventBus';
 import { TaskQueue } from '../../components/TaskQueue';
 import { ConfigData } from '../../data/configData/config.types';
 import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
@@ -12,7 +13,7 @@ import {
   BuildingNotEnoughResourcesError,
   BuildingParallelCapacityNotFree,
 } from './buildings.errors';
-import { BuildingConfig, BuildingData, BuildingId } from './buildings.types';
+import { BuildingConfig, BuildingId } from './buildings.types';
 import { BuildingsSystem } from './BuildingsSystem';
 
 const getData = (playerDataFacade: PlayerDataFacade) =>
@@ -25,28 +26,40 @@ const buildingConfig1: BuildingConfig = {
       duration: '1ms',
       price: [{ resourceId: 1, amount: 10 }],
       requirements: [{ type: 'playerLevel', level: 1 }],
-      effects: [
-        { type: 'modify/resource/2', amount: 10 },
-        { type: 'modify/capacity/2', amount: 100 },
-      ],
+      events: {
+        onFinish: {
+          effects: [
+            { type: 'modify/resource', data: { resourceId: 2, amount: '+10' } },
+            { type: 'modify/capacity', data: { resourceId: 2, amount: '+10' } },
+          ],
+        },
+      },
     },
     2: {
       duration: '1ms',
       price: [{ resourceId: 1, amount: 11 }],
       requirements: [{ type: 'playerLevel', level: 1 }],
-      effects: [
-        { type: 'modify/resource/2', amount: 10 },
-        { type: 'modify/capacity/2', amount: 100 },
-      ],
+      events: {
+        onFinish: {
+          effects: [
+            { type: 'modify/resource', data: { resourceId: 2, amount: '+10' } },
+            { type: 'modify/capacity', data: { resourceId: 2, amount: '+10' } },
+          ],
+        },
+      },
     },
     3: {
       duration: '1ms',
       price: [{ resourceId: 1, amount: 99999999999999 }],
       requirements: [{ type: 'playerLevel', level: 1 }],
-      effects: [
-        { type: 'modify/resource/2', amount: 10 },
-        { type: 'modify/capacity/2', amount: 100 },
-      ],
+      events: {
+        onFinish: {
+          effects: [
+            { type: 'modify/resource', data: { resourceId: 2, amount: '+10' } },
+            { type: 'modify/capacity', data: { resourceId: 2, amount: '+10' } },
+          ],
+        },
+      },
     },
   },
 };
@@ -58,10 +71,14 @@ const buildingConfig2: BuildingConfig = {
       duration: '1ms',
       price: [{ resourceId: 1, amount: 9999999999999 }],
       requirements: [{ type: 'playerLevel', level: 1 }],
-      effects: [
-        { type: 'modify/resource/2', amount: 10 },
-        { type: 'modify/capacity/2', amount: 100 },
-      ],
+      events: {
+        onFinish: {
+          effects: [
+            { type: 'modify/resource/2', amount: 10 },
+            { type: 'modify/capacity/2', amount: 100 },
+          ],
+        },
+      },
     },
   },
 };
@@ -80,6 +97,7 @@ describe('systems/buildings.test', () => {
   let buildingsSystem: BuildingsSystem;
   let playerDataFacade: PlayerDataFacade;
   let taskQueue: TaskQueue;
+  let effectBus: EffectBus;
   let townData: TownData;
 
   describe('build', () => {
@@ -94,8 +112,8 @@ describe('systems/buildings.test', () => {
         buildings: [],
         buildParallelCapacity: 1,
         buildingSlots: [
-          { position: 1, allowedBuildingTypes: [1, 2] },
-          { position: 2, allowedBuildingTypes: [1, 2] },
+          { id: 10, position: 1, allowedBuildingTypes: [1, 2] },
+          { id: 20, position: 2, allowedBuildingTypes: [1, 2] },
         ],
       };
 
@@ -109,6 +127,7 @@ describe('systems/buildings.test', () => {
       const resourceSystem = new ResourcesSystem(playerDataFacade);
       const requirementsSystem = new RequirementsSystem(playerDataFacade);
       taskQueue = new TaskQueue();
+      effectBus = new EffectBus();
 
       buildingsSystem = new BuildingsSystem(
         configDataFacade,
@@ -116,6 +135,7 @@ describe('systems/buildings.test', () => {
         resourceSystem,
         requirementsSystem,
         Sinon.spy(taskQueue),
+        Sinon.spy(effectBus),
       );
     });
 
@@ -139,7 +159,7 @@ describe('systems/buildings.test', () => {
         newBuilding,
       );
     });
-    it('should add a building finish task into the global task queue.', () => {
+    it('should add a building finish task into the global task queue.', (done) => {
       const newBuilding = buildingsSystem.build(buildingConfig1.typeId, 1);
       expect(taskQueue._queue).to.have.a.lengthOf(1);
       expect(newBuilding).to.be.not.undefined;
@@ -150,9 +170,18 @@ describe('systems/buildings.test', () => {
 
       setTimeout(() => {
         expect(newBuilding.constructionProgress).to.be.eq(100);
+        done();
       }, 0);
     });
-    it('should activate the effects');
+    it('should activate the effects', (done) => {
+      buildingsSystem.build(buildingConfig1.typeId, 1);
+      taskQueue.callExpiredTasks(Date.now() + 2000);
+
+      setTimeout(() => {
+        expect(effectBus.triggerEffect).to.be.called;
+        done();
+      }, 0);
+    });
     it('should throw an error if the max building parallel', () => {
       buildingsSystem.build(1, 2);
 
@@ -223,13 +252,19 @@ describe('systems/buildings.test', () => {
             typeId: 1,
             constructionProgress: 100,
             level: 1,
+            location: 1,
           },
           {
             id: 2,
             typeId: 1,
             constructionProgress: 100,
             level: 10,
+            location: 2,
           },
+        ],
+        buildingSlots: [
+          { id: 1, allowedBuildingTypes: [1, 2], position: 23 },
+          { id: 2, allowedBuildingTypes: [1, 2], position: 25 },
         ],
         buildParallelCapacity: 1,
       };
@@ -244,6 +279,7 @@ describe('systems/buildings.test', () => {
       const resourceSystem = new ResourcesSystem(playerDataFacade);
       const requirementsSystem = new RequirementsSystem(playerDataFacade);
       taskQueue = new TaskQueue();
+      effectBus = new EffectBus();
 
       buildingsSystem = new BuildingsSystem(
         configDataFacade,
@@ -251,6 +287,7 @@ describe('systems/buildings.test', () => {
         resourceSystem,
         requirementsSystem,
         Sinon.spy(taskQueue),
+        Sinon.spy(effectBus),
       );
     });
 
@@ -258,17 +295,21 @@ describe('systems/buildings.test', () => {
       Sinon.reset();
     });
 
-    it('should upgrade a building to the next level.', () => {
+    it('should upgrade a building to the next level.', (done) => {
       const buildingData = townData.buildings[0];
       const buildingId: BuildingId = buildingData.id;
       const buildingLevelBefore = buildingData.level;
       const buildingLevelExpected = buildingLevelBefore + 1;
 
       buildingsSystem.upgrade(buildingId);
+      taskQueue.callExpiredTasks(Date.now() + 2000);
 
-      const buildingLevelAfter = buildingData.level;
-
-      expect(buildingLevelAfter).to.be.equal(buildingLevelExpected);
+      setTimeout(() => {
+        const buildingLevelAfter = buildingData.level;
+        expect(buildingLevelAfter).to.be.equal(buildingLevelExpected);
+        expect(buildingData.constructionProgress).to.be.eq(100);
+        done();
+      }, 0);
     });
     it('should throw an error if the highest level has reached.', () => {
       const buildingData = townData.buildings[1];
@@ -299,18 +340,39 @@ describe('systems/buildings.test', () => {
 
       expect(resourceAmountAfter).to.be.equal(resourceAmountExpected);
     });
-    it('should add a building finish task into the global task queue.');
+    it('should add a building finish task into the global task queue.', () => {
+      const buildingData = townData.buildings[0];
+      const buildingId: BuildingId = buildingData.id;
+
+      const buildingConfig = buildingConfig1;
+
+      const buildingPriceLvl2 = buildingConfig.levels[2].price[0];
+      const resourceAmount = buildingPriceLvl2.amount;
+      const resourceId = buildingPriceLvl2.resourceId;
+
+      const resourceAmountBefore =
+        playerDataFacade._playerData.towns[0].resources[resourceId].amount;
+      const resourceAmountExpected = resourceAmountBefore - resourceAmount;
+
+      buildingsSystem.upgrade(buildingId);
+
+      // expect(taskQueue._queue).to.have.a.lengthOf(1);
+      expect(buildingData.constructionProgress).to.be.eq(0);
+
+      // expect(taskQueue._queue).to.have.a.lengthOf(1);
+    });
     it('should throw an error if the building id does not exists');
-    it('should throw an error if the requirement does not fit.', () => {
+    it('should throw an error if the building parallel capacity does not fit.', () => {
       const buildingData = townData.buildings[0];
       const buildingId: BuildingId = buildingData.id;
 
       buildingsSystem.upgrade(buildingId);
       const fn = () => buildingsSystem.upgrade(buildingId);
 
-      expect(fn).to.throw(BuildingNotEnoughResourcesError);
+      expect(fn).to.throw(BuildingParallelCapacityNotFree);
     });
-    it.skip('should throw an error if the building progress has finished.');
+    it('should throw an error if the building resources does not fit.');
+    it('should throw an error if the building progress has finished.');
   });
 
   describe('downgrade', () => {

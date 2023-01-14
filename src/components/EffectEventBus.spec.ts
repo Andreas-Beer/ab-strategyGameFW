@@ -3,14 +3,14 @@ import Sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 use(sinonChai);
 
-import { EffectEventBus } from './EffectEventBus';
+import { EffectBus } from './EffectEventBus';
 
 describe('components/EffectEventBus.ts', () => {
   describe('addHandler', () => {
-    let bus: EffectEventBus;
+    let bus: EffectBus;
 
     beforeEach(() => {
-      bus = new EffectEventBus();
+      bus = new EffectBus();
     });
 
     beforeEach(() => {
