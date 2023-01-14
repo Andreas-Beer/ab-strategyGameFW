@@ -63,12 +63,15 @@ export class PlayerDataFacade
   getItems(): stackData {
     return this._playerData.items;
   }
-  getBuildings(townId: number): BuildingData[] {
-    return this.findTownById(townId).buildings;
+
+  getBuildings(townData: TownData): BuildingData[] {
+    return townData.buildings;
   }
-  getResources(townId: number): ResourcesData {
-    return this.findTownById(townId).resources;
+
+  getResources(townData: TownData): ResourcesData {
+    return townData.resources;
   }
+
   getPlayerLevel(): number {
     return this._playerData.level;
   }

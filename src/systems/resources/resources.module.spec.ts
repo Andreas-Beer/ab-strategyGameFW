@@ -99,4 +99,6 @@ describe('systems/resources/resources.module.ts', () => {
       expect(amountAfter).to.be.eq(amountBefore + amount);
     });
   });
+
+  describe('modifyMaxResourceLimit', () => {});
 });

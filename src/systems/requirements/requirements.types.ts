@@ -1,5 +1,5 @@
-import { BuildingTypeId } from '../buildings/types/buildings.types';
 import { ItemTypeId } from '../../types/item.types';
+import { BuildingTypeId } from '../buildings/buildings.types';
 import { ResourceId } from '../resources/resources.types';
 
 type RequirementNegator = { not?: boolean };

@@ -1,4 +1,5 @@
 import { TownId, TownData } from '../../data/playerData/playerData.types';
+import { CalculatorAmount } from '../../helpers/amountCalculator';
 import { Prices } from '../../types/price.types';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourceAmountRequirement } from '../requirements/requirements.types';
@@ -41,26 +42,27 @@ export function payBuildingPrice({
   resourceSystem,
   requirementsSystem,
   buildingPrices,
-  townId,
 }: {
   requirementsSystem: RequirementsSystem;
   resourceSystem: ResourcesSystem;
   buildingPrices: Prices;
-  townId: TownId;
+  townData: TownData;
 }) {
   const resourceAmountRequirements: ResourceAmountRequirement[] =
     buildingPrices.map((price) => ({ type: 'resourceAmount', ...price }));
+
   const hasEnoughResource = requirementsSystem.check(
     resourceAmountRequirements,
-    townId,
   );
+  // console.log({ hasEnoughResource, resourceAmountRequirements });
 
   if (!hasEnoughResource) {
     throw new BuildingNotEnoughResourcesError();
   }
 
   for (const { amount, resourceId } of buildingPrices) {
-    resourceSystem.decreaseAmount(resourceId, amount, { townId });
+    const calculatorAmount: CalculatorAmount = `-${amount}`;
+    resourceSystem.modifyAmount(resourceId, calculatorAmount);
   }
 }
 

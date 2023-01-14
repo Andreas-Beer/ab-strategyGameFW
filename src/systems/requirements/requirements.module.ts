@@ -1,4 +1,4 @@
-import { TownId } from '../../data/playerData/playerData.types';
+import { TownData } from '../../data/playerData/playerData.types';
 import { RequirementPlayerData } from './requirements.interfaces';
 import {
   BuildingRequirement,
@@ -9,18 +9,23 @@ import {
   ResourceAmountRequirement,
 } from './requirements.types';
 
-type CheckPlayerDataFn<T extends Requirement> = (args: {
+type CheckPlayerData<T extends Requirement> = (args: {
   playerData: RequirementPlayerData;
   requirement: T;
-  townId: TownId;
+  townData: TownData;
 }) => boolean;
 
-export const checkHasResourceAmount: CheckPlayerDataFn<
+type CheckRequirementsAgainstPlayerDataArgs = {
+  playerData: RequirementPlayerData;
+  requirements: Requirement[];
+};
+
+export const checkHasResourceAmount: CheckPlayerData<
   ResourceAmountRequirement
-> = ({ playerData, requirement, townId }) => {
+> = ({ playerData, requirement, townData }) => {
   const requiredResourceTypeId = requirement.resourceId;
   const requiredREsourceAmount = requirement.amount;
-  const currentResources = playerData.getResources(townId);
+  const currentResources = playerData.getResources(townData);
 
   const searchedResource = currentResources[requiredResourceTypeId];
   if (!searchedResource) {
@@ -31,7 +36,7 @@ export const checkHasResourceAmount: CheckPlayerDataFn<
   return passRequirement;
 };
 
-export const checkHasPlayerLevel: CheckPlayerDataFn<PlayerLevelRequirement> = ({
+export const checkHasPlayerLevel: CheckPlayerData<PlayerLevelRequirement> = ({
   playerData,
   requirement,
 }) => {
@@ -41,7 +46,7 @@ export const checkHasPlayerLevel: CheckPlayerDataFn<PlayerLevelRequirement> = ({
   return passRequirement;
 };
 
-export const checkHasItem: CheckPlayerDataFn<ItemRequirement> = ({
+export const checkHasItem: CheckPlayerData<ItemRequirement> = ({
   playerData,
   requirement,
 }) => {
@@ -53,14 +58,14 @@ export const checkHasItem: CheckPlayerDataFn<ItemRequirement> = ({
   return passRequirement;
 };
 
-export const checkHasBuilding: CheckPlayerDataFn<BuildingRequirement> = ({
+export const checkHasBuilding: CheckPlayerData<BuildingRequirement> = ({
   playerData,
   requirement,
-  townId,
+  townData,
 }) => {
   const requiredBuildingTypeId = requirement.buildingTypeId;
   const requiredBuildingLevel = requirement.level;
-  const currentBuildings = playerData.getBuildings(townId);
+  const currentBuildings = playerData.getBuildings(townData);
 
   const filteredBuildings = currentBuildings.filter(
     (building) => building.typeId === requiredBuildingTypeId,
@@ -80,7 +85,7 @@ export const checkHasBuilding: CheckPlayerDataFn<BuildingRequirement> = ({
 };
 
 const requirementTypeCheckerMap: {
-  [Key in RequirementKey]: CheckPlayerDataFn<Requirement>;
+  [Key in RequirementKey]: CheckPlayerData<Requirement>;
 } = {
   building: checkHasBuilding,
   item: checkHasItem,
@@ -88,24 +93,18 @@ const requirementTypeCheckerMap: {
   resourceAmount: checkHasResourceAmount,
 };
 
-type CheckRequirementsAgainstPlayerDataArgs = {
-  playerData: RequirementPlayerData;
-  requirements: Requirement[];
-  townId: TownId;
-};
-
 export function checkRequirementsAgainstPlayerData({
   playerData,
   requirements,
-  townId,
 }: CheckRequirementsAgainstPlayerDataArgs): boolean {
   for (const requirement of requirements) {
     const { type, not } = requirement;
+    const townData = playerData.getCurrentActiveTown();
     const checker = requirementTypeCheckerMap[type];
     const result = checker({
       playerData,
       requirement,
-      townId,
+      townData,
     });
     const modifiedResult = not ? !result : result;
 

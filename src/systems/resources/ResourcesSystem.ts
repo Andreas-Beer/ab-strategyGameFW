@@ -1,5 +1,8 @@
 import { TownId } from '../../data/playerData/playerData.types';
-import { Amount, amountCalculator } from '../../helpers/amountCalculator';
+import {
+  CalculatorAmount,
+  amountCalculator,
+} from '../../helpers/amountCalculator';
 import { cloneObj } from '../../helpers/cloneObj';
 import { initEffectHandlers } from './resources.effects';
 import { ResourcesPlayerData } from './resources.interfaces';
@@ -33,9 +36,9 @@ export class ResourcesSystem {
     return Object.freeze(cloneObj(resourcesData));
   }
 
-  increaseMaxLimit(resourceId: ResourceId, amount: Amount) {
-    const resourcesData = findGlobalOrCurrentTownResource({
-      playerData: this.playerData,
+  increaseMaxLimit(resourceId: ResourceId, amount: CalculatorAmount) {
+    const resourcesData = findResourceById({
+      resourcesPlayerData: this.playerData,
       resourceId,
     });
 
@@ -46,9 +49,15 @@ export class ResourcesSystem {
     });
   }
 
+  modifyLimit(
+    resourceId: ResourceId,
+    amount: CalculatorAmount,
+    { type }: { type: 'max' | 'min' } = { type: 'max' },
+  ) {}
+
   modifyAmount(
     resourceId: ResourceId,
-    amount: Amount,
+    amount: CalculatorAmount,
     { shouldIgnoreLimit }: ChangeResourceAmountOptions = {},
   ) {
     const resourceData = findResourceById({

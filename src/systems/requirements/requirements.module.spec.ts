@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import Sinon, { SinonStubbedInstance } from 'sinon';
+import { TownData } from '../../data/playerData/playerData.types';
 import { RequirementPlayerData } from './requirements.interfaces';
 import {
   checkHasBuilding,
@@ -11,13 +12,15 @@ import {
 
 describe('systems/requirements/requirements.module.ts', () => {
   let playerDataStub: SinonStubbedInstance<RequirementPlayerData>;
+  let townData: TownData = {};
 
   beforeEach(() => {
     playerDataStub = Sinon.stub({
       getPlayerLevel: () => 1,
       getItems: () => [],
-      getBuildings: (townId) => [],
-      getResources: (townId) => [],
+      getBuildings: (townData) => [],
+      getResources: (townData) => [],
+      getCurrentActiveTown: () => townData,
     });
     playerDataStub.getPlayerLevel.returns(10);
     playerDataStub.getItems.returns({ 1: 10, 2: 0 });
@@ -41,7 +44,6 @@ describe('systems/requirements/requirements.module.ts', () => {
           { type: 'item', itemTypeId: 1, amount: 5 },
           { type: 'building', buildingTypeId: 1, level: 1 },
         ],
-        townId: 1,
       });
 
       expect(result).to.be.true;
@@ -56,7 +58,6 @@ describe('systems/requirements/requirements.module.ts', () => {
           { type: 'building', buildingTypeId: 1, level: 9999, not: true },
           { type: 'building', buildingTypeId: 9999, level: 1, not: true },
         ],
-        townId: 1,
       });
 
       expect(result).to.be.true;
@@ -70,7 +71,6 @@ describe('systems/requirements/requirements.module.ts', () => {
           { type: 'item', itemTypeId: 9999, amount: 10 },
           { type: 'building', buildingTypeId: 1, level: 0 },
         ],
-        townId: 1,
       });
 
       expect(result).to.be.false;
@@ -85,6 +85,7 @@ describe('systems/requirements/requirements.module.ts', () => {
           type: 'playerLevel',
           level: 10,
         },
+        townData,
       });
 
       expect(result).to.be.true;
@@ -97,6 +98,7 @@ describe('systems/requirements/requirements.module.ts', () => {
           type: 'playerLevel',
           level: 20,
         },
+        townData,
       });
 
       expect(result).to.be.false;
@@ -108,6 +110,7 @@ describe('systems/requirements/requirements.module.ts', () => {
       const result = checkHasItem({
         playerData: playerDataStub,
         requirement: { type: 'item', itemTypeId: 1, amount: 10 },
+        townData,
       });
       expect(result).to.be.true;
     });
@@ -116,12 +119,14 @@ describe('systems/requirements/requirements.module.ts', () => {
       const result1 = checkHasItem({
         playerData: playerDataStub,
         requirement: { type: 'item', itemTypeId: 1 },
+        townData,
       });
       expect(result1).to.be.true;
 
       const result2 = checkHasItem({
         playerData: playerDataStub,
         requirement: { type: 'item', itemTypeId: 2 },
+        townData,
       });
       expect(result2).to.be.false;
     });
@@ -129,6 +134,7 @@ describe('systems/requirements/requirements.module.ts', () => {
       const result = checkHasItem({
         playerData: playerDataStub,
         requirement: { type: 'item', itemTypeId: 1, amount: 100 },
+        townData,
       });
       expect(result).to.be.false;
     });
@@ -136,6 +142,7 @@ describe('systems/requirements/requirements.module.ts', () => {
       const result = checkHasItem({
         playerData: playerDataStub,
         requirement: { type: 'item', itemTypeId: 9999, amount: 100 },
+        townData,
       });
       expect(result).to.be.false;
     });
@@ -146,7 +153,7 @@ describe('systems/requirements/requirements.module.ts', () => {
       const result = checkHasBuilding({
         playerData: playerDataStub,
         requirement: { type: 'building', buildingTypeId: 1, level: 1 },
-        townId: 1,
+        townData,
       });
       expect(result).to.be.true;
     });
@@ -155,7 +162,7 @@ describe('systems/requirements/requirements.module.ts', () => {
       const result = checkHasBuilding({
         playerData: playerDataStub,
         requirement: { type: 'building', buildingTypeId: 1, level: 6 },
-        townId: 1,
+        townData,
       });
       expect(result).to.be.true;
     });
@@ -164,7 +171,7 @@ describe('systems/requirements/requirements.module.ts', () => {
       const result = checkHasBuilding({
         playerData: playerDataStub,
         requirement: { type: 'building', buildingTypeId: 9999, level: 1 },
-        townId: 1,
+        townData,
       });
       expect(result).to.be.false;
     });
@@ -173,7 +180,7 @@ describe('systems/requirements/requirements.module.ts', () => {
       const result = checkHasBuilding({
         playerData: playerDataStub,
         requirement: { type: 'building', buildingTypeId: 1, level: 9999 },
-        townId: 1,
+        townData,
       });
       expect(result).to.be.false;
     });
@@ -184,7 +191,7 @@ describe('systems/requirements/requirements.module.ts', () => {
       const result = checkHasResourceAmount({
         playerData: playerDataStub,
         requirement: { type: 'resourceAmount', resourceId: 1, amount: 1 },
-        townId: 1,
+        townData,
       });
       expect(result).to.be.true;
     });
@@ -197,7 +204,7 @@ describe('systems/requirements/requirements.module.ts', () => {
           resourceId: 99999,
           amount: 10000,
         },
-        townId: 1,
+        townData,
       });
       expect(result).to.be.false;
     });
@@ -206,7 +213,7 @@ describe('systems/requirements/requirements.module.ts', () => {
       const result = checkHasResourceAmount({
         playerData: playerDataStub,
         requirement: { type: 'resourceAmount', resourceId: 1, amount: 10000 },
-        townId: 1,
+        townData,
       });
       expect(result).to.be.false;
     });

@@ -1,7 +1,6 @@
 import { EventEmitter } from 'stream';
 import { Task } from '../../components/Task';
 import { TaskQueue } from '../../components/TaskQueue';
-import { TownId } from '../../data/playerData/playerData.types';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
 import {
@@ -43,10 +42,9 @@ export class BuildingsSystem extends EventEmitter {
   build(
     buildingTypeId: BuildingTypeId,
     buildingTownPosition: BuildingTownPosition,
-    townId: TownId,
   ): BuildingData {
     const newBuildingId = createUniqueBuildingId();
-    const townData = this.playerData.findTownById(townId);
+    const townData = this.playerData.getCurrentActiveTown();
     const buildingConfig =
       this.configData.findBuildingConfigByTypeId(buildingTypeId);
     const levelConfig = buildingConfig.levels[1];
@@ -59,7 +57,7 @@ export class BuildingsSystem extends EventEmitter {
 
     const hasFulfilledTheRequirements = this.requirementsSystem.check(
       levelConfig.requirements,
-      townId,
+      townData,
     );
     if (!hasFulfilledTheRequirements) {
       throw new BuildingRequirementsNotFulfilledError();
@@ -78,7 +76,7 @@ export class BuildingsSystem extends EventEmitter {
       resourceSystem: this.resourcesSystem,
       requirementsSystem: this.requirementsSystem,
       buildingPrices: buildingConfig.levels[1].price,
-      townId,
+      townData,
     });
 
     const newBuilding = createNewBuilding(
@@ -124,7 +122,7 @@ export class BuildingsSystem extends EventEmitter {
       buildingPrices: nextLevelPrice,
       requirementsSystem: this.requirementsSystem,
       resourceSystem: this.resourcesSystem,
-      townId: townData.id,
+      townData: townData.id,
     });
 
     building.level = nextLevel as BuildingLevel;

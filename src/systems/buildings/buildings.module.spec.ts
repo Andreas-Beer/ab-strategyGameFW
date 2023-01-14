@@ -22,6 +22,7 @@ describe('systems/buildings.module.spec', () => {
   describe('payBuildingPrice', () => {
     let resourceSystemStub: SinonStubbedInstance<ResourcesSystem>;
     let requirementsSystemStub: SinonStubbedInstance<RequirementsSystem>;
+    let townData: TownData;
 
     const buildingPrices = [
       { resourceId: 1, amount: 10 },
@@ -29,8 +30,10 @@ describe('systems/buildings.module.spec', () => {
     ];
 
     beforeEach(() => {
+      townData = {};
+
       resourceSystemStub = Sinon.stub({
-        decreaseAmount: () => {},
+        modifyAmount: () => {},
       });
 
       requirementsSystemStub = Sinon.stub({
@@ -49,23 +52,23 @@ describe('systems/buildings.module.spec', () => {
         resourceSystem: resourceSystemStub,
         requirementsSystem: requirementsSystemStub,
         buildingPrices,
-        townId: 1,
+        townData,
       });
 
       expect(requirementsSystemStub.check).to.be.calledOnce;
-      expect(resourceSystemStub.decreaseAmount).to.be.calledTwice;
+      expect(resourceSystemStub.modifyAmount).to.be.calledTwice;
     });
-    it('should call the decreaseAmount method for every resource in the price', () => {
+    it('should call the modifyAmount method for every resource in the price', () => {
       requirementsSystemStub.check.returns(true);
 
       payBuildingPrice({
         resourceSystem: resourceSystemStub,
         requirementsSystem: requirementsSystemStub,
         buildingPrices,
-        townId: 1,
+        townData,
       });
 
-      expect(resourceSystemStub.decreaseAmount).to.be.calledTwice;
+      expect(resourceSystemStub.modifyAmount).to.be.calledTwice;
     });
     it('should throw if the price is higher than the resource capacity', () => {
       requirementsSystemStub.check.returns(false);
@@ -75,7 +78,7 @@ describe('systems/buildings.module.spec', () => {
           resourceSystem: resourceSystemStub,
           requirementsSystem: requirementsSystemStub,
           buildingPrices,
-          townId: 1,
+          townData,
         });
 
       expect(fn).to.throw(BuildingNotEnoughResourcesError);

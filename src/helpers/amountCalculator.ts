@@ -2,7 +2,7 @@ type Operator = '+' | '-' | '*' | '/';
 type Calculator = (a: number, b: number) => number;
 
 export type AmountCalculator = (a: number) => number;
-export type Amount = `${Operator}${number}${'%' | ''}`;
+export type CalculatorAmount = `${Operator}${number}${'%' | ''}`;
 
 const operatorCalculatorMap: Record<Operator, Calculator> = {
   '+': (a, b) => a + b,
@@ -12,7 +12,7 @@ const operatorCalculatorMap: Record<Operator, Calculator> = {
 };
 
 const splitOperatorAndNumber = (
-  amount: Amount,
+  amount: CalculatorAmount,
 ): { operator: Operator; number: number } => {
   const splittedAmount = amount.split(/(\d+)/).filter(Boolean);
   const operator = splittedAmount[0] as Operator;
@@ -25,7 +25,7 @@ const splitOperatorAndNumber = (
   return { operator, number };
 };
 
-export function amountCalculator(amount: Amount) {
+export function amountCalculator(amount: CalculatorAmount) {
   const { number, operator } = splitOperatorAndNumber(amount);
   const calculator = operatorCalculatorMap[operator];
 

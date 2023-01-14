@@ -10,6 +10,7 @@ export interface BuildingsPlayerData {
   findTownById(townId: TownId): TownData;
   findBuildingById(buildingId: BuildingId): BuildingData;
   findTownByBuildingId(buildingId: BuildingId): TownData;
+  getCurrentActiveTown(): TownData;
 }
 export interface BuildingsConfigData {
   getBuildingMaxLevel(): number;
