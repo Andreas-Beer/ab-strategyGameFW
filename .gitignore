@@ -2,3 +2,6 @@ node_modules
 dist
 .nyc_output
 coverage
+
+scripts/token.json
+scripts/credentials.json
