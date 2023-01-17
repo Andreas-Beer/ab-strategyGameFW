@@ -13,6 +13,8 @@ import {
   BuildingHasReachedMaxLevelError,
   BuildingNotEnoughResourcesError,
   BuildingParallelCapacityNotFree,
+  BuildingProcessHasNotYetCompleted,
+  BuildingRequirementsNotFulfilledError,
 } from './buildings.errors';
 import { BuildingConfig, BuildingId } from './buildings.types';
 import { BuildingsSystem } from './BuildingsSystem';
@@ -85,6 +87,19 @@ const buildingConfig2: BuildingConfig = {
       duration: '1ms',
       price: [{ resourceId: 1, amount: 9999999999999 }],
       requirements: [{ type: 'playerLevel', level: 1 }],
+      events: {
+        onFinish: {
+          effects: [
+            { type: 'modify/resource/2', amount: 10 },
+            { type: 'modify/capacity/2', amount: 100 },
+          ],
+        },
+      },
+    },
+    3: {
+      duration: '1ms',
+      price: [{ resourceId: 1, amount: 10 }],
+      requirements: [{ type: 'playerLevel', level: 20 }],
       events: {
         onFinish: {
           effects: [
@@ -279,14 +294,35 @@ describe('systems/buildings.test', () => {
             typeId: 2,
             constructionProgress: 100,
             level: 1,
-            location: 2,
+            location: 3,
+          },
+          {
+            id: 4,
+            typeId: 2,
+            constructionProgress: 100,
+            level: 2,
+            location: 4,
+          },
+          {
+            id: 5,
+            typeId: 1,
+            constructionProgress: 90,
+            level: 1,
+            location: 4,
+          },
+          {
+            id: 6,
+            typeId: 1,
+            constructionProgress: 100,
+            level: 1,
+            location: 1,
           },
         ],
         buildingSlots: [
           { id: 1, allowedBuildingTypes: [1, 2], position: 23 },
           { id: 2, allowedBuildingTypes: [1, 2], position: 25 },
         ],
-        buildParallelCapacity: 1,
+        buildParallelCapacity: 2,
       };
 
       playerDataFacade = new PlayerDataFacade({
@@ -386,11 +422,14 @@ describe('systems/buildings.test', () => {
       expect(fn).to.throw(PlayerDataBuildingNotFoundError);
     });
     it('should throw an error if the building parallel capacity does not fit.', () => {
-      const buildingData = townData.buildings[0];
-      const buildingId: BuildingId = buildingData.id;
+      const buildingData1 = townData.buildings[0];
+      const buildingId1: BuildingId = buildingData1.id;
 
-      buildingsSystem.upgrade(buildingId);
-      const fn = () => buildingsSystem.upgrade(buildingId);
+      const buildingData2 = townData.buildings[5];
+      const buildingId2: BuildingId = buildingData2.id;
+
+      buildingsSystem.upgrade(buildingId2);
+      const fn = () => buildingsSystem.upgrade(buildingId1);
 
       expect(fn).to.throw(BuildingParallelCapacityNotFree);
     });
@@ -401,7 +440,20 @@ describe('systems/buildings.test', () => {
       const fn = () => buildingsSystem.upgrade(buildingId);
       expect(fn).to.throw(BuildingNotEnoughResourcesError);
     });
-    it('should throw an error if the building progress has finished.');
+    it('should throw an error if the building does not pass the requirements.', () => {
+      const buildingData = townData.buildings[3];
+      const buildingId: BuildingId = buildingData.id;
+
+      const fn = () => buildingsSystem.upgrade(buildingId);
+      expect(fn).to.throw(BuildingRequirementsNotFulfilledError);
+    });
+    it('should trigger an error if the construction progress is not yet complete.', () => {
+      const buildingData = townData.buildings[4];
+      const buildingId: BuildingId = buildingData.id;
+
+      const fn = () => buildingsSystem.upgrade(buildingId);
+      expect(fn).to.throw(BuildingProcessHasNotYetCompleted);
+    });
   });
 
   describe('downgrade', () => {

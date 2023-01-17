@@ -8,6 +8,7 @@ import {
   BuildingHasReachedMaxLevelError,
   BuildingParallelCapacityNotFree,
   BuildingPlaceNotValidError,
+  BuildingProcessHasNotYetCompleted,
   BuildingRequirementsNotFulfilledError,
 } from './buildings.errors';
 import {
@@ -16,6 +17,7 @@ import {
 } from './buildings.interfaces';
 import {
   checkForFreeParallelBuildingCapacities,
+  checkHasCompleteItsProcess,
   createNewBuilding,
   createUniqueBuildingId,
   payBuildingPrice,
@@ -46,9 +48,9 @@ export class BuildingsSystem extends EventEmitter {
     buildingTownPosition: BuildingTownPosition,
   ): BuildingData {
     const newBuildingId = createUniqueBuildingId();
-    const townData = this.playerData.getCurrentActiveTown();
     const buildingConfig =
       this.configData.findBuildingConfigByTypeId(buildingTypeId);
+    const townData = this.playerData.getCurrentActiveTown();
     const levelConfig = buildingConfig.levels[1];
 
     const hasReachedBuildParallelCapacities =
@@ -110,21 +112,37 @@ export class BuildingsSystem extends EventEmitter {
     const currentTownData = this.playerData.getCurrentActiveTown();
     const currentBuildingLevel = building.level;
 
+    const hasCompleteItsProcess = checkHasCompleteItsProcess(building);
+    if (!hasCompleteItsProcess) {
+      throw new BuildingProcessHasNotYetCompleted();
+    }
+
     const hasReachedTheMaxLevel = currentBuildingLevel >= maxLevel;
     if (hasReachedTheMaxLevel) {
       throw new BuildingHasReachedMaxLevelError();
     }
 
-    const nextLevel = currentBuildingLevel + 1;
-    const nextLevelConfig = buildingConfig.levels[nextLevel];
-    const nextLevelPrice = nextLevelConfig.price;
-    const nextLevelDuration = nextLevelConfig.duration;
-    const hasReachedBuildParallelCapacities =
+    const hasFreeBuildParallelCapacities =
       checkForFreeParallelBuildingCapacities({ townData: currentTownData });
-    if (!hasReachedBuildParallelCapacities) {
+    if (!hasFreeBuildParallelCapacities) {
       throw new BuildingParallelCapacityNotFree();
     }
 
+    // Get next Level Specs
+    const nextLevel = (currentBuildingLevel + 1) as BuildingLevel;
+    const nextLevelConfig = buildingConfig.levels[nextLevel];
+    const nextLevelDuration = nextLevelConfig.duration;
+    const nextLevelRequirements = nextLevelConfig.requirements;
+    const nextLevelPrice = nextLevelConfig.price;
+
+    const hasFulfilledTheRequirements = this.requirementsSystem.check(
+      nextLevelRequirements,
+    );
+    if (!hasFulfilledTheRequirements) {
+      throw new BuildingRequirementsNotFulfilledError();
+    }
+
+    // Pay Building Price
     payBuildingPrice({
       buildingPrices: nextLevelPrice,
       requirementsSystem: this.requirementsSystem,
@@ -132,12 +150,15 @@ export class BuildingsSystem extends EventEmitter {
       townData: currentTownData,
     });
 
+    // Reset Build Process
     building.constructionProgress = 0;
 
+    // setTimeout for finish Event
     this.taskQueue.addTask(
       new Task(nextLevelDuration, () => {
+        // trigger finish event
         building.constructionProgress = 100;
-        building.level = nextLevel as BuildingLevel;
+        building.level = nextLevel;
       }),
     );
   }

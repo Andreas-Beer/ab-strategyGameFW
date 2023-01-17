@@ -81,3 +81,14 @@ export class BuildingHasReachedMaxLevelError
     super('Building has reached the max level');
   }
 }
+export class BuildingProcessHasNotYetCompleted
+  extends Error
+  implements GameError
+{
+  type: ErrorType = 'NOT_GATE_PASSED';
+  level: ErrorLevel = 'UNEXPECTED';
+
+  constructor() {
+    super('The construction process is not yet complete');
+  }
+}

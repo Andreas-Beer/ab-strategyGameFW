@@ -20,6 +20,10 @@ import {
 
 let buildingId: BuildingCityId = 0;
 
+export function checkHasCompleteItsProcess(building: BuildingData) {
+  return building.constructionProgress === 100;
+}
+
 export function createUniqueBuildingId() {
   return buildingId++;
 }
