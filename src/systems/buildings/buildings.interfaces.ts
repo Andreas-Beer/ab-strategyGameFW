@@ -4,6 +4,7 @@ import {
   BuildingConfig,
   BuildingId,
   BuildingData,
+  BuildingLevel,
 } from './buildings.types';
 
 export interface BuildingsPlayerData {
@@ -13,6 +14,6 @@ export interface BuildingsPlayerData {
   getCurrentActiveTown(): TownData;
 }
 export interface BuildingsConfigData {
-  getBuildingMaxLevel(buildingConfig: BuildingConfig): number;
+  getBuildingMaxLevel(buildingConfig: BuildingConfig): BuildingLevel;
   findBuildingConfigByTypeId(buildingTypeId: BuildingTypeId): BuildingConfig;
 }
