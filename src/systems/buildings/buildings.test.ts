@@ -210,17 +210,6 @@ describe('systems/buildings.test', () => {
         done();
       }, 0);
     });
-    it('should throw an error if the max building parallel', () => {
-      buildingsSystem.build(1, 2);
-
-      const buildingTypeId = buildingConfig1.typeId;
-      const buildingPosition = 1;
-      const townId = 1;
-
-      const fn = () => buildingsSystem.build(buildingTypeId, buildingPosition);
-
-      expect(fn).to.throw(BuildingParallelCapacityNotFree);
-    });
     it('should remove the necessary resources from the playerData.', () => {
       const buildingConfig = buildingConfig1;
       const buildingTypeId = buildingConfig.typeId;
@@ -241,6 +230,17 @@ describe('systems/buildings.test', () => {
         playerDataFacade._playerData.towns[0].resources[resourceId].amount;
 
       expect(resourceAmountAfter).to.be.equal(resourceAmountExpected);
+    });
+    it('should throw an error if the max building parallel', () => {
+      buildingsSystem.build(1, 2);
+
+      const buildingTypeId = buildingConfig1.typeId;
+      const buildingPosition = 1;
+      const townId = 1;
+
+      const fn = () => buildingsSystem.build(buildingTypeId, buildingPosition);
+
+      expect(fn).to.throw(BuildingParallelCapacityNotFree);
     });
     it('should throw an error if there is not enough resource to build the building.', () => {
       const buildingConfig = buildingConfig2;
@@ -263,6 +263,7 @@ describe('systems/buildings.test', () => {
 
       expect(resourceAmountAfter).to.be.equal(resourceAmountBefore);
     });
+    it('should throw an error if the building place is not valid');
   });
 
   describe('upgrade', () => {

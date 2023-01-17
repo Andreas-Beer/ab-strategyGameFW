@@ -13,7 +13,7 @@ import {
 } from './buildings.interfaces';
 import {
   checkForFreeParallelBuildingCapacities,
-  checkHasCompleteItsProcess,
+  isBuildingUnderConstruction,
   validateBuildingPlace,
 } from './buildings.module';
 import {
@@ -30,7 +30,7 @@ export class BuildingGuard {
   ) {}
 
   hasCompletedItsProcess(building: BuildingData) {
-    const hasCompleteItsProcess = checkHasCompleteItsProcess(building);
+    const hasCompleteItsProcess = !isBuildingUnderConstruction(building);
     if (!hasCompleteItsProcess) {
       throw new BuildingProcessHasNotYetCompleted();
     }
@@ -48,7 +48,7 @@ export class BuildingGuard {
     }
   }
 
-  hasFreeParallelCapacities() {
+  thereAreFreeParallelCapacities() {
     const currentTownData = this.playerData.getCurrentActiveTown();
     const hasFreeBuildParallelCapacities =
       checkForFreeParallelBuildingCapacities({ townData: currentTownData });

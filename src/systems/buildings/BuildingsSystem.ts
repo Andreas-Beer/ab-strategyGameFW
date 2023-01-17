@@ -4,7 +4,7 @@ import { Task } from '../../components/Task';
 import { TaskQueue } from '../../components/TaskQueue';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
-import { BuildingGuard } from './buildings.guards';
+import { BuildingGuard } from './BuildingsGuards';
 import {
   BuildingsConfigData,
   BuildingsPlayerData,
@@ -41,13 +41,14 @@ export class BuildingsSystem extends EventEmitter {
     buildingTypeId: BuildingTypeId,
     buildingTownPosition: BuildingTownPosition,
   ): BuildingData {
+    this.guard.thereAreFreeParallelCapacities();
+
     const newBuildingId = createUniqueBuildingId();
     const buildingConfig =
       this.configData.findBuildingConfigByTypeId(buildingTypeId);
     const townData = this.playerData.getCurrentActiveTown();
     const levelConfig = buildingConfig.levels[1];
 
-    this.guard.hasFreeParallelCapacities();
     this.guard.hasFulfilledTheRequirements(levelConfig.requirements);
     this.guard.placeIsValid(buildingTypeId, buildingTownPosition);
 
@@ -80,6 +81,8 @@ export class BuildingsSystem extends EventEmitter {
   }
 
   upgrade(buildingId: BuildingId) {
+    this.guard.thereAreFreeParallelCapacities();
+
     const building = this.playerData.findBuildingById(buildingId);
     const buildingConfig = this.configData.findBuildingConfigByTypeId(
       building.typeId,
@@ -89,7 +92,6 @@ export class BuildingsSystem extends EventEmitter {
 
     this.guard.hasCompletedItsProcess(building);
     this.guard.hasNotReachedItsMaxLevel(building);
-    this.guard.hasFreeParallelCapacities();
 
     // Get next Level Specs
     const nextLevel = (currentBuildingLevel + 1) as BuildingLevel;

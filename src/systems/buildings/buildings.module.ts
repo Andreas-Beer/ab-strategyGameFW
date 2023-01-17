@@ -9,7 +9,6 @@ import {
   BuildingSlotIsNotFreeError,
   BuildingSlotNotFoundError,
 } from './buildings.errors';
-import { isBuildingUnderConstruction } from './buildings.helpers';
 import {
   BuildingCityId,
   BuildingConfig,
@@ -20,8 +19,8 @@ import {
 
 let buildingId: BuildingCityId = 0;
 
-export function checkHasCompleteItsProcess(building: BuildingData) {
-  return building.constructionProgress === 100;
+export function isBuildingUnderConstruction(buildingData: BuildingData) {
+  return buildingData.constructionProgress < 100;
 }
 
 export function createUniqueBuildingId() {
