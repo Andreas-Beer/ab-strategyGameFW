@@ -19,7 +19,6 @@ export type BuildingCityId = number;
 
 export type BuildingsConfig = {
   buildingsBuildParallel: number;
-  buildingsMaxLevel: number;
   buildings: BuildingConfig[];
 };
 

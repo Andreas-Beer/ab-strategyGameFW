@@ -3,7 +3,7 @@ import { BuildingData } from '../../systems/buildings/buildings.types';
 import { RequirementPlayerData } from '../../systems/requirements/requirements.interfaces';
 import { ResourcesPlayerData } from '../../systems/resources/resources.interfaces';
 import { ResourcesData } from '../../systems/resources/resources.types';
-import { PLayerDataBuildingNotFoundError } from './playerData.errors';
+import { PlayerDataBuildingNotFoundError } from './playerData.errors';
 import { TownId, PlayerData, TownData, stackData } from './playerData.types';
 
 class TownNotFoundError extends Error {
@@ -33,7 +33,7 @@ export class PlayerDataFacade
       .find((buildingData) => buildingData.id === buildingId);
 
     if (!searchedBuilding) {
-      throw new PLayerDataBuildingNotFoundError(buildingId);
+      throw new PlayerDataBuildingNotFoundError(buildingId);
     }
 
     return searchedBuilding;

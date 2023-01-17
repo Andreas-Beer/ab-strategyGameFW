@@ -1,7 +1,7 @@
 import { BuildingId } from '../../systems/buildings/buildings.types';
 import { ErrorLevel, ErrorType, GameError } from '../../types/error.types';
 
-export class PLayerDataBuildingNotFoundError
+export class PlayerDataBuildingNotFoundError
   extends Error
   implements GameError
 {

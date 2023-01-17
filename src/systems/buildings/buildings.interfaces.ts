@@ -13,6 +13,6 @@ export interface BuildingsPlayerData {
   getCurrentActiveTown(): TownData;
 }
 export interface BuildingsConfigData {
-  getBuildingMaxLevel(): number;
+  getBuildingMaxLevel(buildingConfig: BuildingConfig): number;
   findBuildingConfigByTypeId(buildingTypeId: BuildingTypeId): BuildingConfig;
 }

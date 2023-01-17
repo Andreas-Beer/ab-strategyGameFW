@@ -103,25 +103,24 @@ export class BuildingsSystem extends EventEmitter {
 
   upgrade(buildingId: BuildingId) {
     const building = this.playerData.findBuildingById(buildingId);
+    const buildingConfig = this.configData.findBuildingConfigByTypeId(
+      building.typeId,
+    );
+    const maxLevel = this.configData.getBuildingMaxLevel(buildingConfig);
+    const currentTownData = this.playerData.getCurrentActiveTown();
     const currentBuildingLevel = building.level;
-    const maxLevel = this.configData.getBuildingMaxLevel();
 
     const hasReachedTheMaxLevel = currentBuildingLevel >= maxLevel;
     if (hasReachedTheMaxLevel) {
       throw new BuildingHasReachedMaxLevelError();
     }
+
     const nextLevel = currentBuildingLevel + 1;
-
-    const buildingTypeid = building.typeId;
-    const buildingConfig =
-      this.configData.findBuildingConfigByTypeId(buildingTypeid);
-    const townData = this.playerData.getCurrentActiveTown();
-
     const nextLevelConfig = buildingConfig.levels[nextLevel];
     const nextLevelPrice = nextLevelConfig.price;
     const nextLevelDuration = nextLevelConfig.duration;
     const hasReachedBuildParallelCapacities =
-      checkForFreeParallelBuildingCapacities({ townData });
+      checkForFreeParallelBuildingCapacities({ townData: currentTownData });
     if (!hasReachedBuildParallelCapacities) {
       throw new BuildingParallelCapacityNotFree();
     }
@@ -130,7 +129,7 @@ export class BuildingsSystem extends EventEmitter {
       buildingPrices: nextLevelPrice,
       requirementsSystem: this.requirementsSystem,
       resourceSystem: this.resourcesSystem,
-      townData: townData,
+      townData: currentTownData,
     });
 
     building.constructionProgress = 0;

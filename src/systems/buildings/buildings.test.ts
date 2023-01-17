@@ -4,6 +4,7 @@ import { EffectBus } from '../../components/EffectEventBus';
 import { TaskQueue } from '../../components/TaskQueue';
 import { ConfigData } from '../../data/configData/config.types';
 import { ConfigDataFacade } from '../../data/configData/ConfigDataFacade';
+import { PlayerDataBuildingNotFoundError } from '../../data/playerData/playerData.errors';
 import { PlayerData, TownData } from '../../data/playerData/playerData.types';
 import { PlayerDataFacade } from '../../data/playerData/PlayerDataFacade';
 import { RequirementsSystem } from '../requirements/Requirements.system';
@@ -80,13 +81,25 @@ const buildingConfig2: BuildingConfig = {
         },
       },
     },
+    2: {
+      duration: '1ms',
+      price: [{ resourceId: 1, amount: 9999999999999 }],
+      requirements: [{ type: 'playerLevel', level: 1 }],
+      events: {
+        onFinish: {
+          effects: [
+            { type: 'modify/resource/2', amount: 10 },
+            { type: 'modify/capacity/2', amount: 100 },
+          ],
+        },
+      },
+    },
   },
 };
 
 const configData: ConfigData = {
   buildings: {
     buildingsBuildParallel: 1,
-    buildingsMaxLevel: 10,
     buildings: [buildingConfig1, buildingConfig2],
   },
 } as ConfigData;
@@ -261,6 +274,13 @@ describe('systems/buildings.test', () => {
             level: 10,
             location: 2,
           },
+          {
+            id: 3,
+            typeId: 2,
+            constructionProgress: 100,
+            level: 1,
+            location: 2,
+          },
         ],
         buildingSlots: [
           { id: 1, allowedBuildingTypes: [1, 2], position: 23 },
@@ -361,7 +381,10 @@ describe('systems/buildings.test', () => {
 
       // expect(taskQueue._queue).to.have.a.lengthOf(1);
     });
-    it('should throw an error if the building id does not exists');
+    it('should throw an error if the building id does not exists', () => {
+      const fn = () => buildingsSystem.upgrade(9999999);
+      expect(fn).to.throw(PlayerDataBuildingNotFoundError);
+    });
     it('should throw an error if the building parallel capacity does not fit.', () => {
       const buildingData = townData.buildings[0];
       const buildingId: BuildingId = buildingData.id;
@@ -371,7 +394,13 @@ describe('systems/buildings.test', () => {
 
       expect(fn).to.throw(BuildingParallelCapacityNotFree);
     });
-    it('should throw an error if the building resources does not fit.');
+    it('should throw an error if the building resources does not fit.', () => {
+      const buildingData = townData.buildings[2];
+      const buildingId: BuildingId = buildingData.id;
+
+      const fn = () => buildingsSystem.upgrade(buildingId);
+      expect(fn).to.throw(BuildingNotEnoughResourcesError);
+    });
     it('should throw an error if the building progress has finished.');
   });
 

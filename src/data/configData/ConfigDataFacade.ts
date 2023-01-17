@@ -1,6 +1,7 @@
 import { BuildingsConfigData } from '../../systems/buildings/buildings.interfaces';
 import {
   BuildingConfig,
+  BuildingId,
   BuildingTypeId,
 } from '../../systems/buildings/buildings.types';
 import { ItemConfig, ItemTypeId } from '../../types/item.types';
@@ -15,8 +16,10 @@ class ConfigNotFoundError extends Error {
 class ConfigDataFacade implements BuildingsConfigData {
   constructor(public configData: ConfigData) {}
 
-  getBuildingMaxLevel(): number {
-    return this.configData.buildings.buildingsMaxLevel;
+  getBuildingMaxLevel(buildingConfig: BuildingConfig): number {
+    const buildingLevels = Object.keys(buildingConfig.levels).sort();
+    const maxLevel = Number(buildingLevels[buildingLevels.length - 1]);
+    return maxLevel;
   }
 
   findBuildingConfigByTypeId(buildingTypeId: BuildingTypeId): BuildingConfig {

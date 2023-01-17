@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { BuildingData } from '../../systems/buildings/buildings.types';
-import { PLayerDataBuildingNotFoundError } from './playerData.errors';
+import { PlayerDataBuildingNotFoundError } from './playerData.errors';
 import { PlayerDataFacade } from './PlayerDataFacade';
 
 describe('data/playerDataFacade.ts', () => {
@@ -27,7 +27,7 @@ describe('data/playerDataFacade.ts', () => {
       });
       it('should throw an error if the building was not found', () => {
         const fn = () => playerDataFacade.findBuildingById(999999);
-        expect(fn).to.be.throw(PLayerDataBuildingNotFoundError);
+        expect(fn).to.be.throw(PlayerDataBuildingNotFoundError);
       });
     });
 
