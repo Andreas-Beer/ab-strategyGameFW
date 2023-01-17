@@ -4,6 +4,7 @@ import { Task } from '../../components/Task';
 import { TaskQueue } from '../../components/TaskQueue';
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { ResourcesSystem } from '../resources';
+import { BuildingGuard } from './buildings.guards';
 import {
   BuildingsConfigData,
   BuildingsPlayerData,
@@ -14,13 +15,6 @@ import {
   payBuildingPrice,
 } from './buildings.module';
 import {
-  guardBuildingHasCompletedItsProcess,
-  guardBuildingHasFreeParallelCapacities,
-  guardBuildingHasFulfilledTheRequirements,
-  guardBuildingHasNotReachedItsMaxLevel,
-  guardBuildingPlaceIsValid,
-} from './buildings.guards';
-import {
   BuildingData,
   BuildingId,
   BuildingLevel,
@@ -29,6 +23,8 @@ import {
 } from './buildings.types';
 
 export class BuildingsSystem extends EventEmitter {
+  private guard: BuildingGuard;
+
   constructor(
     private configData: BuildingsConfigData,
     private playerData: BuildingsPlayerData,
@@ -38,6 +34,7 @@ export class BuildingsSystem extends EventEmitter {
     private effectBus: EffectBus,
   ) {
     super();
+    this.guard = new BuildingGuard(configData, playerData, requirementsSystem);
   }
 
   build(
@@ -50,12 +47,9 @@ export class BuildingsSystem extends EventEmitter {
     const townData = this.playerData.getCurrentActiveTown();
     const levelConfig = buildingConfig.levels[1];
 
-    guardBuildingHasFreeParallelCapacities(townData);
-    guardBuildingHasFulfilledTheRequirements(
-      this.requirementsSystem,
-      levelConfig.requirements,
-    );
-    guardBuildingPlaceIsValid(buildingTypeId, buildingTownPosition, townData);
+    this.guard.hasFreeParallelCapacities();
+    this.guard.hasFulfilledTheRequirements(levelConfig.requirements);
+    this.guard.placeIsValid(buildingTypeId, buildingTownPosition);
 
     payBuildingPrice({
       resourceSystem: this.resourcesSystem,
@@ -90,13 +84,12 @@ export class BuildingsSystem extends EventEmitter {
     const buildingConfig = this.configData.findBuildingConfigByTypeId(
       building.typeId,
     );
-    const maxLevel = this.configData.getBuildingMaxLevel(buildingConfig);
     const currentTownData = this.playerData.getCurrentActiveTown();
     const currentBuildingLevel = building.level;
 
-    guardBuildingHasCompletedItsProcess(building);
-    guardBuildingHasNotReachedItsMaxLevel(currentBuildingLevel, maxLevel);
-    guardBuildingHasFreeParallelCapacities(currentTownData);
+    this.guard.hasCompletedItsProcess(building);
+    this.guard.hasNotReachedItsMaxLevel(building);
+    this.guard.hasFreeParallelCapacities();
 
     // Get next Level Specs
     const nextLevel = (currentBuildingLevel + 1) as BuildingLevel;
@@ -105,10 +98,7 @@ export class BuildingsSystem extends EventEmitter {
     const nextLevelRequirements = nextLevelConfig.requirements;
     const nextLevelPrice = nextLevelConfig.price;
 
-    guardBuildingHasFulfilledTheRequirements(
-      this.requirementsSystem,
-      nextLevelRequirements,
-    );
+    this.guard.hasFulfilledTheRequirements(nextLevelRequirements);
 
     // Pay Building Price
     payBuildingPrice({
