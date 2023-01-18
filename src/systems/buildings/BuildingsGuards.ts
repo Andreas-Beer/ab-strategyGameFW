@@ -1,9 +1,9 @@
 import { RequirementsSystem } from '../requirements/Requirements.system';
 import { Requirement } from '../requirements/requirements.types';
 import {
+  BuildingHasLowestLevelError,
   BuildingHasReachedMaxLevelError,
   BuildingParallelCapacityNotFree,
-  BuildingPlaceNotValidError,
   BuildingProcessHasNotYetCompleted,
   BuildingRequirementsNotFulfilledError,
 } from './buildings.errors';
@@ -43,8 +43,20 @@ export class BuildingGuard {
     const currentBuildingLevel = building.level;
     const maxLevel = this.configData.getBuildingMaxLevel(buildingConfig);
     const hasReachedTheMaxLevel = currentBuildingLevel >= maxLevel;
+
     if (hasReachedTheMaxLevel) {
       throw new BuildingHasReachedMaxLevelError();
+    }
+  }
+
+  hasNotTheLowestLevel(building: BuildingData) {
+    const buildingConfig = this.configData.findBuildingConfigByTypeId(
+      building.typeId,
+    );
+    const currentBuildingLevel = building.level;
+    const hasTheLowestLevel = currentBuildingLevel === 1;
+    if (hasTheLowestLevel) {
+      throw new BuildingHasLowestLevelError();
     }
   }
 
@@ -61,7 +73,7 @@ export class BuildingGuard {
     const hasFulfilledTheRequirements =
       this.requirementsSystem.check(requirements);
     if (!hasFulfilledTheRequirements) {
-      throw new BuildingRequirementsNotFulfilledError();
+      throw new BuildingRequirementsNotFulfilledError(requirements);
     }
   }
 
@@ -75,8 +87,5 @@ export class BuildingGuard {
       buildingTownPosition,
       townData: currentTownData,
     });
-    if (!isBuildingPlaceValid) {
-      throw new BuildingPlaceNotValidError();
-    }
   }
 }

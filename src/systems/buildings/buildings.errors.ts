@@ -1,4 +1,5 @@
 import { ErrorLevel, ErrorType, GameError } from '../../types/error.types';
+import { Requirement } from '../requirements/requirements.types';
 import { BuildingTownPosition } from './buildings.types';
 
 export class BuildingNotEnoughResourcesError
@@ -22,22 +23,14 @@ export class BuildingRequirementsNotFulfilledError
   public type: ErrorType = 'NOT_GATE_PASSED';
   public level: ErrorLevel = 'WARNING';
 
-  constructor() {
-    super('The building requirements are not fulfilled!');
-  }
-}
-
-export class BuildingPlaceNotValidError extends Error implements GameError {
-  type: ErrorType = 'NOT_GATE_PASSED';
-  level: ErrorLevel = 'WARNING';
-
-  constructor() {
+  constructor(requirements: Requirement[]) {
     super(
-      'The building plot is not valid! Probably the wrong type of building.',
+      `The building requirements are not fulfilled! (${JSON.stringify(
+        requirements,
+      )}`,
     );
   }
 }
-
 export class BuildingSlotIsNotFreeError extends Error implements GameError {
   type: ErrorType = 'NOT_GATE_PASSED';
   level: ErrorLevel = 'UNEXPECTED';
@@ -79,6 +72,15 @@ export class BuildingHasReachedMaxLevelError
 
   constructor() {
     super('Building has reached the max level');
+  }
+}
+
+export class BuildingHasLowestLevelError extends Error implements GameError {
+  type: ErrorType = 'NOT_GATE_PASSED';
+  level: ErrorLevel = 'CRITICAL';
+
+  constructor() {
+    super('Building has the lowest level');
   }
 }
 export class BuildingProcessHasNotYetCompleted

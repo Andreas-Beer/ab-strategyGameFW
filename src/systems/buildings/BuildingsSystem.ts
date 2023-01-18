@@ -122,4 +122,39 @@ export class BuildingsSystem extends EventEmitter {
       }),
     );
   }
+
+  downgrade(buildingId: BuildingId) {
+    this.guard.thereAreFreeParallelCapacities();
+
+    const building = this.playerData.findBuildingById(buildingId);
+    const buildingConfig = this.configData.findBuildingConfigByTypeId(
+      building.typeId,
+    );
+    const currentTownData = this.playerData.getCurrentActiveTown();
+    const currentBuildingLevel = building.level;
+
+    this.guard.hasCompletedItsProcess(building);
+    this.guard.hasNotTheLowestLevel(building);
+
+    // Get next Level Specs
+    const nextLevel = (currentBuildingLevel - 1) as BuildingLevel;
+    const nextLevelConfig = buildingConfig.levels[nextLevel];
+    const nextLevelDuration = nextLevelConfig.duration;
+    const nextLevelRequirements = nextLevelConfig.requirements;
+    const nextLevelPrice = nextLevelConfig.price;
+
+    this.guard.hasFulfilledTheRequirements(nextLevelRequirements);
+
+    // Reset Build Process
+    building.constructionProgress = 0;
+
+    // setTimeout for finish Event
+    this.taskQueue.addTask(
+      new Task(nextLevelDuration, () => {
+        // trigger finish event
+        building.constructionProgress = 100;
+        building.level = nextLevel;
+      }),
+    );
+  }
 }
