@@ -146,8 +146,8 @@ const buildingConfig3: BuildingConfig = {
       events: {
         onFinish: {
           effects: [
-            { type: 'modify/resource/2', amount: 10 },
-            { type: 'modify/capacity/2', amount: 100 },
+            { type: 'modify/resource/2', amount: '+10' },
+            { type: 'modify/capacity/2', amount: '+100' },
           ],
         },
         onDowngrade: {

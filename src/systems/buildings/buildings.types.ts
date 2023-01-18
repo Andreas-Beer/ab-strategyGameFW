@@ -5,14 +5,19 @@ import { Requirement } from '../requirements/requirements.types';
 
 export type EventData<T extends string> = {
   [key in T]?: {
-    effects?: EffectConfig[];
+    effects: EffectConfig[];
   };
 };
 
 export type BuildingConstructionProcess = number;
 export type BuildingLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export type BuildingId = number;
-export type BuildingLifecycleEvents = 'onFinish' | 'onDestroy' | 'onDowngrade';
+export type BuildingLifecycleEvents =
+  | 'onStartConstructing'
+  | 'onCancelConstructing'
+  | 'onFinishConstructing'
+  | 'onFinishDowngrading'
+  | 'onDestroy';
 export type BuildingTypeId = number;
 export type BuildingTownPosition = number;
 export type BuildingCityId = number;

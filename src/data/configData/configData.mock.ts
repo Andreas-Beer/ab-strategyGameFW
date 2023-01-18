@@ -13,6 +13,8 @@ const buildingsConfigMock: BuildingsConfig = {
           requirements: [
             { type: 'playerLevel', level: 2 },
             { type: 'building', buildingTypeId: 13, level: 5 },
+            { type: 'resourceAmount', resourceId: 2, amount: 300 },
+            { type: 'resourceAmount', resourceId: 1, amount: 100 },
           ],
           price: [
             { resourceId: 2, amount: 300 },
@@ -20,9 +22,11 @@ const buildingsConfigMock: BuildingsConfig = {
           ],
           duration: '10s',
           events: {
-            onFinish: {
-              effects: [],
-            },
+            onStartConstructing: { effects: [] },
+            onFinishConstructing: { effects: [] },
+            onCancelConstructing: { effects: [] },
+            onFinishDowngrading: { effects: [] },
+            onDestroy: { effects: [] },
           },
         },
         10: {

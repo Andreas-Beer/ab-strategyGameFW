@@ -29,15 +29,15 @@ export type EffectConfig =
         resourceId: ResourceId;
         amount: CalculatorAmount;
       }
-    >
-  | Effect<'modify/xp', { amount: number }>
-  | Effect<
-      'townBuff/resource',
-      { resourceId: ResourceId; amount: CalculatorAmount }
-    >
-  | Effect<'townBuff/peace'>
-  | Effect<'buff/buildParallel'>
-  | Effect<'speedup/building'>
-  | Effect<'item/bundle', { items: { itemId: ItemTypeId; amount: number }[] }>;
+    >;
+// | Effect<'modify/xp', { amount: number }>
+// | Effect<
+//     'townBuff/resource',
+//     { resourceId: ResourceId; amount: CalculatorAmount }
+//   >
+// | Effect<'townBuff/peace'>
+// | Effect<'buff/buildParallel'>
+// | Effect<'speedup/building'>
+// | Effect<'item/bundle', { items: { itemId: ItemTypeId; amount: number }[] }>;
 
 export type EffectData = EffectConfig & { townId?: TownId };

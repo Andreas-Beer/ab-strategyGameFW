@@ -48,7 +48,6 @@ describe('systems/requirements/requirements.module.ts', () => {
 
       expect(result).to.be.true;
     });
-
     it('should respect the not value', () => {
       const result = checkRequirementsAgainstPlayerData({
         playerData: playerDataStub,
@@ -62,7 +61,6 @@ describe('systems/requirements/requirements.module.ts', () => {
 
       expect(result).to.be.true;
     });
-
     it('should return false if some of the requirement does not passes', () => {
       const result = checkRequirementsAgainstPlayerData({
         playerData: playerDataStub,
@@ -90,7 +88,6 @@ describe('systems/requirements/requirements.module.ts', () => {
 
       expect(result).to.be.true;
     });
-
     it('should return false if the player level is less than the requested level', () => {
       const result = checkHasPlayerLevel({
         playerData: playerDataStub,
@@ -114,7 +111,6 @@ describe('systems/requirements/requirements.module.ts', () => {
       });
       expect(result).to.be.true;
     });
-
     it('if no amount was specified, 1 is the default', () => {
       const result1 = checkHasItem({
         playerData: playerDataStub,
@@ -157,7 +153,6 @@ describe('systems/requirements/requirements.module.ts', () => {
       });
       expect(result).to.be.true;
     });
-
     it('should return true if there are multiple buildings with this id and one of the buildings has a level greater or equal than requested ', () => {
       const result = checkHasBuilding({
         playerData: playerDataStub,
@@ -166,7 +161,6 @@ describe('systems/requirements/requirements.module.ts', () => {
       });
       expect(result).to.be.true;
     });
-
     it('should return false if the building is not the town', () => {
       const result = checkHasBuilding({
         playerData: playerDataStub,
@@ -175,7 +169,6 @@ describe('systems/requirements/requirements.module.ts', () => {
       });
       expect(result).to.be.false;
     });
-
     it('should return false if the building level is higher than the required level ', () => {
       const result = checkHasBuilding({
         playerData: playerDataStub,
@@ -195,7 +188,6 @@ describe('systems/requirements/requirements.module.ts', () => {
       });
       expect(result).to.be.true;
     });
-
     it('should return false if the resource does not exists', () => {
       const result = checkHasResourceAmount({
         playerData: playerDataStub,
@@ -208,7 +200,6 @@ describe('systems/requirements/requirements.module.ts', () => {
       });
       expect(result).to.be.false;
     });
-
     it('should return false if the resource amount does not fit', () => {
       const result = checkHasResourceAmount({
         playerData: playerDataStub,
