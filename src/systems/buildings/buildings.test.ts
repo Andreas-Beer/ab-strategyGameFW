@@ -26,11 +26,17 @@ const buildingConfig1: BuildingConfig = {
     1: {
       duration: '1ms',
       price: [{ resourceId: 1, amount: 10 }],
-      requirements: [{ type: 'playerLevel', level: 1 }],
-      events: {
-        onFinish: {
+      requirements: [
+        { type: 'playerLevel', level: 1 },
+        { type: 'resourceAmount', resourceId: 2, amount: 10 },
+      ],
+      hooks: {
+        onFinishConstructing: {
           effects: [
-            { type: 'modify/resource', data: { resourceId: 2, amount: '+10' } },
+            {
+              type: 'modify/resources',
+              data: { resourceId: 2, amount: '+10' },
+            },
             { type: 'modify/capacity', data: { resourceId: 2, amount: '+10' } },
           ],
         },
@@ -41,7 +47,7 @@ const buildingConfig1: BuildingConfig = {
       price: [{ resourceId: 1, amount: 11 }],
       requirements: [{ type: 'playerLevel', level: 1 }],
       events: {
-        onFinish: {
+        onFinishConstructing: {
           effects: [
             { type: 'modify/resource', data: { resourceId: 2, amount: '+10' } },
             { type: 'modify/capacity', data: { resourceId: 2, amount: '+10' } },
@@ -54,7 +60,7 @@ const buildingConfig1: BuildingConfig = {
       price: [{ resourceId: 1, amount: 99999999999999 }],
       requirements: [{ type: 'playerLevel', level: 1 }],
       events: {
-        onFinish: {
+        onFinishConstructing: {
           effects: [
             { type: 'modify/resource', data: { resourceId: 2, amount: '+10' } },
             { type: 'modify/capacity', data: { resourceId: 2, amount: '+10' } },
@@ -115,58 +121,100 @@ const buildingConfig3: BuildingConfig = {
   levels: {
     1: {
       duration: '1ms',
-      price: [{ resourceId: 1, amount: 10 }],
-      requirements: [{ type: 'playerLevel', level: 1 }],
-      events: {
-        onFinish: {
+      requirements: [
+        { type: 'playerLevel', level: 1 },
+        { type: 'resourceAmount', resourceId: 1, amount: 10 },
+      ],
+      hooks: {
+        onStartConstructing: {
           effects: [
-            { type: 'modify/resource/2', amount: 10 },
-            { type: 'modify/capacity/2', amount: 100 },
+            {
+              type: 'modify/resources',
+              data: { resourceId: 1, amount: '-10' },
+            },
+          ],
+        },
+        onFinishConstructing: {
+          effects: [
+            {
+              type: 'modify/capacity',
+              data: { resourceId: 1, amount: '+100' },
+            },
           ],
         },
       },
     },
     2: {
       duration: '1ms',
-      price: [{ resourceId: 1, amount: 10 }],
-      requirements: [{ type: 'playerLevel', level: 1 }],
-      events: {
-        onFinish: {
+      requirements: [
+        { type: 'playerLevel', level: 1 },
+        { type: 'resourceAmount', resourceId: 1, amount: 10 },
+      ],
+      hooks: {
+        onStartConstructing: {
           effects: [
-            { type: 'modify/resource/2', amount: 10 },
-            { type: 'modify/capacity/2', amount: 100 },
+            {
+              type: 'modify/resources',
+              data: { resourceId: 1, amount: '-10' },
+            },
+          ],
+        },
+        onFinishConstructing: {
+          effects: [
+            {
+              type: 'modify/capacity',
+              data: { resourceId: 1, amount: '+100' },
+            },
           ],
         },
       },
     },
     3: {
       duration: '1ms',
-      price: [{ resourceId: 1, amount: 10 }],
-      requirements: [{ type: 'playerLevel', level: 1 }],
-      events: {
-        onFinish: {
+      requirements: [
+        { type: 'playerLevel', level: 1 },
+        { type: 'resourceAmount', resourceId: 1, amount: 10 },
+      ],
+      hooks: {
+        onStartConstructing: {
           effects: [
-            { type: 'modify/resource/2', amount: '+10' },
-            { type: 'modify/capacity/2', amount: '+100' },
+            {
+              type: 'modify/resources',
+              data: { resourceId: 1, amount: '-10' },
+            },
           ],
         },
-        onDowngrade: {
+        onFinishConstructing: {
           effects: [
-            { type: 'modify/resource/2', amount: '-5' },
-            { type: 'modify/capacity/2', amount: '100' },
+            {
+              type: 'modify/capacity',
+              data: { resourceId: 1, amount: '+100' },
+            },
           ],
         },
       },
     },
     4: {
       duration: '1ms',
-      price: [{ resourceId: 1, amount: 10 }],
-      requirements: [{ type: 'playerLevel', level: 1 }],
-      events: {
-        onFinish: {
+      requirements: [
+        { type: 'playerLevel', level: 1 },
+        { type: 'resourceAmount', resourceId: 1, amount: 10 },
+      ],
+      hooks: {
+        onStartConstructing: {
           effects: [
-            { type: 'modify/resource/2', amount: 10 },
-            { type: 'modify/capacity/2', amount: 100 },
+            {
+              type: 'modify/resources',
+              data: { resourceId: 1, amount: '-10' },
+            },
+          ],
+        },
+        onFinishConstructing: {
+          effects: [
+            {
+              type: 'modify/capacity',
+              data: { resourceId: 1, amount: '+100' },
+            },
           ],
         },
       },
@@ -208,7 +256,7 @@ describe('systems/buildings.test', () => {
         units: [],
         location: [0, 0],
         effects: [],
-        resources: { 1: { amount: 200 } },
+        resources: { 1: { amount: 200 }, 2: { amount: 200 } },
         buildings: [],
         buildParallelCapacity: 1,
         buildingSlots: [

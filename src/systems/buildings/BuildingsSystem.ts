@@ -70,7 +70,8 @@ export class BuildingsSystem extends EventEmitter {
       new Task(levelConfig.duration, () => {
         newBuilding.constructionProgress = 100;
 
-        const buildingEffects = levelConfig.events.onFinish?.effects || [];
+        const buildingEffects =
+          levelConfig.hooks.onFinishConstructing?.effects || [];
         for (const effect of buildingEffects) {
           this.effectBus.triggerEffect(effect.type, effect.data);
         }
@@ -141,7 +142,6 @@ export class BuildingsSystem extends EventEmitter {
     const nextLevelConfig = buildingConfig.levels[nextLevel];
     const nextLevelDuration = nextLevelConfig.duration;
     const nextLevelRequirements = nextLevelConfig.requirements;
-    const nextLevelPrice = nextLevelConfig.price;
 
     this.guard.hasFulfilledTheRequirements(nextLevelRequirements);
 

@@ -28,10 +28,9 @@ export type BuildingsConfig = {
 };
 
 export type BuildingLevelConfig = {
-  price: Price[];
   requirements: Requirement[];
   duration: Duration;
-  events: EventData<BuildingLifecycleEvents>;
+  hooks: EventData<BuildingLifecycleEvents>;
 };
 
 export type BuildingConfig = {
