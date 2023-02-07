@@ -1,8 +1,7 @@
 import { EffectHandlerMap } from '../components/EffectEventBus';
 import { TownId } from '../data/playerData/playerData.types';
 import { CalculatorAmount } from '../helpers/amountCalculator';
-import { ResourceId } from '../systems/resources/resources.types';
-import { ItemTypeId } from './item.types';
+import { ResourceTypeId } from '../systems/resources/resources.types';
 import { Duration } from './time.types';
 
 type EffectModifiers = {
@@ -19,18 +18,18 @@ export type EffectConfig =
   | Effect<
       'modify/resources',
       {
+        resourceTypeId: ResourceTypeId;
         amount: CalculatorAmount;
-        resourceId: ResourceId;
       }
     >
   | Effect<
       'modify/capacity',
       {
-        resourceId: ResourceId;
+        resourceTypeId: ResourceTypeId;
         amount: CalculatorAmount;
       }
-    >;
-// | Effect<'modify/xp', { amount: number }>
+    >
+  | Effect<'modify/xp', { amount: CalculatorAmount }>;
 // | Effect<
 //     'townBuff/resource',
 //     { resourceId: ResourceId; amount: CalculatorAmount }

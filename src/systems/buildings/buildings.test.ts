@@ -77,9 +77,14 @@ const buildingConfig2: BuildingConfig = {
     1: {
       duration: '1ms',
       price: [{ resourceId: 1, amount: 9999999999999 }],
-      requirements: [{ type: 'playerLevel', level: 1 }],
-      events: {
-        onFinish: {
+      requirements: [{ type: 'playerLevel', level: 1 }, {type: 'resourceAmount', resourceId: 1, amount: 999999999}],
+      hooks: {
+        onStartConstructing: {
+          effects: [
+            {type: 'modify/resources', data: { }}
+          ]
+        }
+        onFinishConstructing: {
           effects: [
             { type: 'modify/resource/2', amount: 10 },
             { type: 'modify/capacity/2', amount: 100 },
@@ -91,8 +96,8 @@ const buildingConfig2: BuildingConfig = {
       duration: '1ms',
       price: [{ resourceId: 1, amount: 9999999999999 }],
       requirements: [{ type: 'playerLevel', level: 1 }],
-      events: {
-        onFinish: {
+      hooks: {
+        onFinishConstructing: {
           effects: [
             { type: 'modify/resource/2', amount: 10 },
             { type: 'modify/capacity/2', amount: 100 },
@@ -104,8 +109,8 @@ const buildingConfig2: BuildingConfig = {
       duration: '1ms',
       price: [{ resourceId: 1, amount: 10 }],
       requirements: [{ type: 'playerLevel', level: 20 }],
-      events: {
-        onFinish: {
+      hooks: {
+        onFinishConstructing: {
           effects: [
             { type: 'modify/resource/2', amount: 10 },
             { type: 'modify/capacity/2', amount: 100 },
@@ -376,7 +381,7 @@ describe('systems/buildings.test', () => {
       const resourceAmountBefore =
         playerDataFacade._playerData.towns[0].resources[resourceId].amount;
 
-      expect(fn).to.throw(BuildingNotEnoughResourcesError);
+      expect(fn).to.throw(BuildingRequirementsNotFulfilledError);
 
       const resourceAmountAfter =
         playerDataFacade._playerData.towns[0].resources[resourceId].amount;

@@ -1,0 +1,2667 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--City and resource buildings values-->
+<!--Includes time, money, food, junk, stone, energy and population-->
+<Buildings>
+  <freeSpeedup time="150"/>
+  <town type="town">
+    <building name="techScavanger" id="1">
+      <!-- Tech-Scavenger -->
+      <properties>
+        <level1>
+          <cost time="480" money="0" food="0" junk="1750" stone="2500" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="960" money="0" food="0" junk="3500" stone="5000" energy="960" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="2" />
+            </buildings>
+          </requirements>
+        </level2>
+        <level3>
+          <cost time="1920" money="0" food="0" junk="7000" stone="10000" energy="1920" />
+          <prod money="0" food="300" junk="300" stone="300" energy="300" population="0" />
+          <respect value="45" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="3" />
+            </buildings>
+          </requirements>
+        </level3>
+        <level4>
+          <cost time="3840" money="0" food="0" junk="14000" stone="20000" energy="3840" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="4" />
+            </buildings>
+          </requirements>
+        </level4>
+        <level5>
+          <cost time="7680" money="0" food="0" junk="28000" stone="40000" energy="7680" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="5" />
+            </buildings>
+          </requirements>
+        </level5>
+        <level6>
+          <cost time="15360" money="0" food="0" junk="56000" stone="80000" energy="15360" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="6" />
+            </buildings>
+          </requirements>
+        </level6>
+        <level7>
+          <cost time="30720" money="0" food="0" junk="112000" stone="160000" energy="30720" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="7" />
+            </buildings>
+          </requirements>
+        </level7>
+        <level8>
+          <cost time="61440" money="0" food="0" junk="224000" stone="320000" energy="61440" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="8" />
+            </buildings>
+          </requirements>
+        </level8>
+        <level9>
+          <cost time="122880" money="0" food="0" junk="448000" stone="640000" energy="122880" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="9" />
+            </buildings>
+          </requirements>
+        </level9>
+        <level10>
+          <cost time="245760" money="0" food="0" junk="896000" stone="128000" energy="245760" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="10" />
+            </buildings>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="techScavenger_01" />
+        <level2 image_path="techScavenger_01" />
+        <level3 image_path="techScavenger_01" />
+        <level4 image_path="techScavenger_02" />
+        <level5 image_path="techScavenger_02" />
+        <level6 image_path="techScavenger_02" />
+        <level7 image_path="techScavenger_03" />
+        <level8 image_path="techScavenger_03" />
+        <level9 image_path="techScavenger_03" />
+        <level10 image_path="techScavenger_04" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="false" />
+      <positionInMenu value="0" />
+    </building>
+    <building name="barracks" id="2">
+      <!-- Barracks -->
+      <properties>
+        <level1>
+          <cost time="165" money="0" food="0" junk="1400" stone="1850" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+            </buildings>
+          </requirements>
+          <queue length="1" />
+        </level1>
+        <level2>
+          <cost time="600" money="0" food="0" junk="2800" stone="3700" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="2" />
+            </buildings>
+          </requirements>
+          <queue length="2" />
+        </level2>
+        <level3>
+          <cost time="1200" money="0" food="0" junk="5600" stone="7400" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="3" />
+            </buildings>
+          </requirements>
+          <queue length="2" />
+        </level3>
+        <level4>
+          <cost time="2400" money="0" food="0" junk="11200" stone="14800" energy="1000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="70" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="4" />
+            </buildings>
+          </requirements>
+          <queue length="3" />
+        </level4>
+        <level5>
+          <cost time="4800" money="0" food="0" junk="19200" stone="24000" energy="3000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="85" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="5" />
+            </buildings>
+          </requirements>
+          <queue length="3" />
+        </level5>
+        <level6>
+          <cost time="9600" money="0" food="0" junk="38400" stone="48000" energy="8000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="100" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="6" />
+            </buildings>
+          </requirements>
+          <queue length="3" />
+        </level6>
+        <level7>
+          <cost time="19200" money="0" food="0" junk="76800" stone="96000" energy="20000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="135" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="7" />
+            </buildings>
+          </requirements>
+          <queue length="4" />
+        </level7>
+        <level8>
+          <cost time="38400" money="0" food="0" junk="153600" stone="192000" energy="50000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="150" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="8" />
+            </buildings>
+          </requirements>
+          <queue length="4" />
+        </level8>
+        <level9>
+          <cost time="76800" money="0" food="0" junk="307200" stone="384000" energy="128000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="165" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="9" />
+            </buildings>
+          </requirements>
+          <queue length="4" />
+        </level9>
+        <level10>
+          <cost time="153600" money="0" food="0" junk="614400" stone="768000" energy="256000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="210" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="10" />
+            </buildings>
+          </requirements>
+          <queue length="5" />
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="barracks_01" />
+        <level2 image_path="barracks_01" />
+        <level3 image_path="barracks_01" />
+        <level4 image_path="barracks_02" />
+        <level5 image_path="barracks_02" />
+        <level6 image_path="barracks_02" />
+        <level7 image_path="barracks_03" />
+        <level8 image_path="barracks_03" />
+        <level9 image_path="barracks_03" />
+        <level10 image_path="barracks_04" />
+      </images>
+      <maxQuantity value="0" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="3" />
+      <maxUnits value="1000" />
+      <!-- unit limitation in barracks -->
+    </building>
+    <building name="scoutTower" id="3">
+      <!-- Scout Tower -->
+      <properties>
+        <level1>
+          <cost time="450" money="0" food="0" junk="400" stone="1000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+            </buildings>
+          </requirements>
+          <scout bonus="100" forewarning="30" />
+        </level1>
+        <level2>
+          <cost time="900" money="0" food="0" junk="800" stone="2000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="2" />
+            </buildings>
+          </requirements>
+          <scout bonus="110" forewarning="60" />
+        </level2>
+        <level3>
+          <cost time="1800" money="0" food="0" junk="1600" stone="4000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="3" />
+            </buildings>
+          </requirements>
+          <scout bonus="120" forewarning="90" />
+        </level3>
+        <level4>
+          <cost time="3600" money="0" food="0" junk="3200" stone="8000" energy="500" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="4" />
+            </buildings>
+          </requirements>
+          <scout bonus="130" forewarning="120" />
+        </level4>
+        <level5>
+          <cost time="7200" money="0" food="0" junk="6400" stone="16000" energy="1200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="5" />
+            </buildings>
+          </requirements>
+          <scout bonus="140" forewarning="150" />
+        </level5>
+        <level6>
+          <cost time="14400" money="0" food="0" junk="12800" stone="32000" energy="4000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="6" />
+            </buildings>
+          </requirements>
+          <scout bonus="150" forewarning="180" />
+        </level6>
+        <level7>
+          <cost time="28800" money="0" food="0" junk="25600" stone="64000" energy="12000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="7" />
+            </buildings>
+          </requirements>
+          <scout bonus="160" forewarning="210" />
+        </level7>
+        <level8>
+          <cost time="57600" money="0" food="0" junk="51200" stone="128000" energy="24000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="8" />
+            </buildings>
+          </requirements>
+          <scout bonus="170" forewarning="240" />
+        </level8>
+        <level9>
+          <cost time="115200" money="0" food="0" junk="256000" stone="256000" energy="50200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="9" />
+            </buildings>
+          </requirements>
+          <scout bonus="180" forewarning="270" />
+        </level9>
+        <level10>
+          <cost time="230400" money="0" food="0" junk="512000" stone="1536000" energy="120400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="10" />
+            </buildings>
+          </requirements>
+          <scout bonus="190" forewarning="330" />
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="scoutTower_01" />
+        <level2 image_path="scoutTower_01" />
+        <level3 image_path="scoutTower_01" />
+        <level4 image_path="scoutTower_02" />
+        <level5 image_path="scoutTower_02" />
+        <level6 image_path="scoutTower_02" />
+        <level7 image_path="scoutTower_03" />
+        <level8 image_path="scoutTower_03" />
+        <level9 image_path="scoutTower_03" />
+        <level10 image_path="scoutTower_04" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="2" />
+    </building>
+    <building name="shack" id="4">
+      <!-- Shack -->
+      <properties>
+        <level1>
+          <cost time="10" money="0" food="0" junk="500" stone="250" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="5" />
+          <capacity food="0" junk="0" stone="0" energy="0" population="15" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="150" money="0" food="0" junk="1000" stone="500" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="10" />
+          <capacity food="0" junk="0" stone="0" energy="0" population="30" />
+          <respect value="30" />
+          <requirements>
+          </requirements>
+        </level2>
+        <level3>
+          <cost time="300" money="0" food="0" junk="2000" stone="1000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="20" />
+          <capacity food="0" junk="0" stone="0" energy="0" population="60" />
+          <respect value="45" />
+          <requirements>
+          </requirements>
+        </level3>
+        <level4>
+          <cost time="600" money="0" food="0" junk="4000" stone="2000" energy="100" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="35" />
+          <capacity food="0" junk="0" stone="0" energy="0" population="120" />
+          <respect value="70" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="4" />
+            </buildings>
+          </requirements>
+        </level4>
+        <level5>
+          <cost time="1200" money="0" food="0" junk="8000" stone="3200" energy="400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="50" />
+          <capacity food="0" junk="0" stone="0" energy="0" population="180" />
+          <respect value="85" />
+          <requirements>
+          </requirements>
+        </level5>
+        <level6>
+          <cost time="2400" money="0" food="0" junk="16000" stone="6400" energy="1200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="70" />
+          <capacity food="0" junk="0" stone="0" energy="0" population="300" />
+          <respect value="100" />
+          <requirements>
+          </requirements>
+        </level6>
+        <level7>
+          <cost time="4800" money="0" food="0" junk="32000" stone="12800" energy="3200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="95" />
+          <capacity food="0" junk="0" stone="0" energy="0" population="480" />
+          <respect value="135" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="7" />
+            </buildings>
+          </requirements>
+        </level7>
+        <level8>
+          <cost time="9600" money="0" food="0" junk="64000" stone="25600" energy="6400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="125" />
+          <capacity food="0" junk="0" stone="0" energy="0" population="780" />
+          <respect value="150" />
+          <requirements>
+          </requirements>
+        </level8>
+        <level9>
+          <cost time="19200" money="0" food="0" junk="128000" stone="51200" energy="12800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="160" />
+          <capacity food="0" junk="0" stone="0" energy="0" population="1260" />
+          <respect value="165" />
+          <requirements>
+          </requirements>
+        </level9>
+        <level10>
+          <cost time="38400" money="0" food="0" junk="256000" stone="102400" energy="25600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="200" />
+          <capacity food="0" junk="0" stone="0" energy="0" population="2040" />
+          <respect value="210" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="10" />
+            </buildings>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="shacks_01" />
+        <level2 image_path="shacks_01" />
+        <level3 image_path="shacks_01" />
+        <level4 image_path="shacks_02" />
+        <level5 image_path="shacks_02" />
+        <level6 image_path="shacks_02" />
+        <level7 image_path="shacks_03" />
+        <level8 image_path="shacks_03" />
+        <level9 image_path="shacks_03" />
+        <level10 image_path="shacks_04" />
+      </images>
+      <maxQuantity value="0" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="1" />
+    </building>
+    <building name="radioStation" id="5">
+      <!-- Radio Station -->
+      <properties>
+        <level1>
+          <cost time="900" money="0" food="0" junk="5000" stone="6000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="1800" money="0" food="0" junk="10000" stone="12000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements>
+          </requirements>
+        </level2>
+        <level3>
+          <cost time="7200" money="0" food="0" junk="16000" stone="18000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements>
+          </requirements>
+        </level3>
+        <level4>
+          <cost time="14400" money="0" food="0" junk="40000" stone="48000" energy="20000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="4" />
+            </buildings>
+          </requirements>
+        </level4>
+        <level5>
+          <cost time="28800" money="0" food="0" junk="80000" stone="96000" energy="62500" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements>
+          </requirements>
+        </level5>
+        <level6>
+          <cost time="57600" money="0" food="0" junk="160000" stone="192000" energy="125000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements>
+          </requirements>
+        </level6>
+        <level7>
+          <cost time="115200" money="0" food="0" junk="320000" stone="384000" energy="250000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="7" />
+            </buildings>
+          </requirements>
+        </level7>
+        <level8>
+          <cost time="230400" money="0" food="0" junk="640000" stone="768000" energy="500000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements>
+          </requirements>
+        </level8>
+        <level9>
+          <cost time="460800" money="0" food="0" junk="1280000" stone="1440000" energy="1000000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements>
+          </requirements>
+        </level9>
+        <level10>
+          <cost time="921600" money="0" food="0" junk="2560000" stone="2880000" energy="2000000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="10" />
+            </buildings>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="radiostation_01" />
+        <level2 image_path="radiostation_01" />
+        <level3 image_path="radiostation_01" />
+        <level4 image_path="radiostation_02" />
+        <level5 image_path="radiostation_02" />
+        <level6 image_path="radiostation_02" />
+        <level7 image_path="radiostation_03" />
+        <level8 image_path="radiostation_03" />
+        <level9 image_path="radiostation_03" />
+        <level10 image_path="radiostation_04" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="10" />
+      <buildable value="true" />
+      <mainCityOnly value="true" />
+      <showIngame value="true" />
+      <positionInMenu value="8" />
+    </building>
+    <building name="finalRest" id="6">
+      <!-- Final Rest -->
+      <properties>
+        <level1>
+          <cost time="360" money="0" food="0" junk="2500" stone="1200" energy="700" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+              <!-- pup -->
+              <building id="8" level="1" />
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="720" money="0" food="0" junk="5000" stone="2400" energy="1400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements></requirements>
+        </level2>
+        <level3>
+          <cost time="1440" money="0" food="0" junk="10000" stone="4800" energy="2800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements></requirements>
+        </level3>
+        <level4>
+          <cost time="2880" money="0" food="0" junk="20000" stone="9600" energy="5600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements></requirements>
+        </level4>
+        <level5>
+          <cost time="5760" money="0" food="0" junk="40000" stone="19200" energy="11200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements></requirements>
+        </level5>
+        <level6>
+          <cost time="11520" money="0" food="0" junk="80000" stone="38400" energy="224000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements></requirements>
+        </level6>
+        <level7>
+          <cost time="23040" money="0" food="0" junk="160000" stone="76800" energy="44800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements></requirements>
+        </level7>
+        <level8>
+          <cost time="46080" money="0" food="0" junk="320000" stone="12800" energy="44800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements></requirements>
+        </level8>
+        <level9>
+          <cost time="92160" money="0" food="0" junk="640000" stone="25600" energy="89600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements></requirements>
+        </level9>
+        <level10>
+          <cost time="184320" money="0" food="0" junk="1280000" stone="51200" energy="179200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="placeholder" />
+        <level2 image_path="placeholder" />
+        <level3 image_path="placeholder" />
+        <level4 image_path="placeholder" />
+        <level5 image_path="placeholder" />
+        <level6 image_path="placeholder" />
+        <level7 image_path="placeholder" />
+        <level8 image_path="placeholder" />
+        <level9 image_path="placeholder" />
+        <level10 image_path="placeholder" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="false" />
+      <positionInMenu value="0" />
+    </building>
+    <building name="weaponsmith" id="7">
+      <!-- Weaponsmith -->
+      <properties>
+        <level1>
+          <cost time="150" money="0" food="0" junk="720" stone="1500" energy="500" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+              <!-- barracks -->
+              <building id="2" level="1" />
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="1200" money="0" food="" junk="1440" stone="3000" energy="1000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements></requirements>
+        </level2>
+        <level3>
+          <cost time="2400" money="0" food="0" junk="2880" stone="6000" energy="2000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements></requirements>
+        </level3>
+        <level4>
+          <cost time="4800" money="0" food="0" junk="5760" stone="12000" energy="4000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements></requirements>
+        </level4>
+        <level5>
+          <cost time="9600" money="0" food="0" junk="11520" stone="24000" energy="8000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements></requirements>
+        </level5>
+        <level6>
+          <cost time="19200" money="0" food="0" junk="23040" stone="48000" energy="16000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements></requirements>
+        </level6>
+        <level7>
+          <cost time="38400" money="0" food="0" junk="46080" stone="96000" energy="32000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements></requirements>
+        </level7>
+        <level8>
+          <cost time="76800" money="0" food="0" junk="92160" stone="192000" energy="64000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements></requirements>
+        </level8>
+        <level9>
+          <cost time="153600" money="0" food="0" junk="184320" stone="384000" energy="128000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements></requirements>
+        </level9>
+        <level10>
+          <cost time="307200" money="0" food="0" junk="368640" stone="768000" energy="256000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="placeholder" />
+        <level2 image_path="placeholder" />
+        <level3 image_path="placeholder" />
+        <level4 image_path="placeholder" />
+        <level5 image_path="placeholder" />
+        <level6 image_path="placeholder" />
+        <level7 image_path="placeholder" />
+        <level8 image_path="placeholder" />
+        <level9 image_path="placeholder" />
+        <level10 image_path="placeholder" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="false" />
+      <positionInMenu value="0" />
+    </building>
+    <building name="pub" id="8">
+      <!-- Pub -->
+      <properties>
+        <level1>
+          <cost time="240" money="0" food="0" junk="1300" stone="2000" energy="400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+              <!-- shacks -->
+              <building id="4" level="2" />
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="480" money="0" food="0" junk="2600" stone="4000" energy="800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements></requirements>
+        </level2>
+        <level3>
+          <cost time="960" money="0" food="0" junk="5200" stone="8000" energy="1600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements></requirements>
+        </level3>
+        <level4>
+          <cost time="1920" money="0" food="0" junk="10400" stone="16000" energy="3200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements></requirements>
+        </level4>
+        <level5>
+          <cost time="3840" money="0" food="0" junk="20800" stone="32000" energy="6400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements></requirements>
+        </level5>
+        <level6>
+          <cost time="7680" money="0" food="0" junk="41600" stone="64000" energy="12800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements></requirements>
+        </level6>
+        <level7>
+          <cost time="15360" money="0" food="0" junk="83200" stone="128000" energy="25600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements></requirements>
+        </level7>
+        <level8>
+          <cost time="30720" money="0" food="0" junk="166400" stone="256000" energy="51200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements></requirements>
+        </level8>
+        <level9>
+          <cost time="61440" money="0" food="0" junk="332800" stone="512000" energy="102400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements></requirements>
+        </level9>
+        <level10>
+          <cost time="122880" money="0" food="0" junk="665600" stone="1024000" energy="204800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="placeholder" />
+        <level2 image_path="placeholder" />
+        <level3 image_path="placeholder" />
+        <level4 image_path="placeholder" />
+        <level5 image_path="placeholder" />
+        <level6 image_path="placeholder" />
+        <level7 image_path="placeholder" />
+        <level8 image_path="placeholder" />
+        <level9 image_path="placeholder" />
+        <level10 image_path="placeholder" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="false" />
+      <positionInMenu value="0" />
+    </building>
+    <building name="tradePost" id="9">
+      <!-- Trade Post -->
+      <properties>
+        <level1>
+          <cost time="390" money="0" food="0" junk="1200" stone="1200" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <building id="16" level="1" />
+              <!-- City Hall -->
+              <building id="4" level="1" />
+              <!-- shacks -->
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="760" money="0" food="0" junk="2400" stone="2400" energy="900" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="2" />
+              <building id="4" level="2" />
+              <!-- shacks -->
+            </buildings>
+          </requirements>
+        </level2>
+        <level3>
+          <cost time="1520" money="0" food="0" junk="4800" stone="4800" energy="1800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="3" />
+              <building id="4" level="3" />
+              <!-- shacks -->
+            </buildings>
+          </requirements>
+        </level3>
+        <level4>
+          <cost time="3040" money="0" food="0" junk="9600" stone="9600" energy="9600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="4" />
+              <building id="4" level="4" />
+              <!-- shacks -->
+            </buildings>
+          </requirements>
+        </level4>
+        <level5>
+          <cost time="6080" money="0" food="0" junk="19200" stone="19200" energy="19200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="5" />
+              <building id="4" level="5" />
+              <!-- shacks -->
+            </buildings>
+          </requirements>
+        </level5>
+        <level6>
+          <cost time="12160" money="0" food="0" junk="38400" stone="38400" energy="38400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="6" />
+              <building id="4" level="6" />
+              <!-- shacks -->
+            </buildings>
+          </requirements>
+        </level6>
+        <level7>
+          <cost time="24320" money="0" food="0" junk="76800" stone="76800" energy="76800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="7" />
+              <building id="4" level="7" />
+              <!-- shacks -->
+            </buildings>
+          </requirements>
+        </level7>
+        <level8>
+          <cost time="48640" money="0" food="0" junk="153600" stone="153600" energy="153600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="8" />
+              <building id="4" level="8" />
+              <!-- shacks -->
+            </buildings>
+          </requirements>
+        </level8>
+        <level9>
+          <cost time="97280" money="0" food="0" junk="307200" stone="307200" energy="307200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="9" />
+              <building id="4" level="9" />
+              <!-- shacks -->
+            </buildings>
+          </requirements>
+        </level9>
+        <level10>
+          <cost time="194560" money="0" food="0" junk="614400" stone="614400" energy="614400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="10" />
+              <building id="4" level="10" />
+              <!-- shacks -->
+            </buildings>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="tradepost_01" />
+        <level2 image_path="tradepost_01" />
+        <level3 image_path="tradepost_01" />
+        <level4 image_path="tradepost_02" />
+        <level5 image_path="tradepost_02" />
+        <level6 image_path="tradepost_02" />
+        <level7 image_path="tradepost_03" />
+        <level8 image_path="tradepost_03" />
+        <level9 image_path="tradepost_03" />
+        <level10 image_path="tradepost_04" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="false" />
+      <mainCityOnly value="false" />
+      <showIngame value="false" />
+      <positionInMenu value="5" />
+    </building>
+    <building name="commandCenter" id="10">
+      <!-- Command Center -->
+      <properties>
+        <level1>
+          <cost time="175" money="0" food="0" junk="720" stone="2000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+              <building id="2" level="1" />
+              <!-- barracks -->
+            </buildings>
+          </requirements>
+          <squads maxSquads="1" maxUnits="10000" />
+        </level1>
+        <level2>
+          <cost time="300" money="0" food="0" junk="1440" stone="4000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="2" />
+              <building id="2" level="2" />
+              <!-- barracks -->
+            </buildings>
+          </requirements>
+          <squads maxSquads="2" maxUnits="20000" />
+        </level2>
+        <level3>
+          <cost time="600" money="0" food="0" junk="2880" stone="8000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="3" />
+              <building id="2" level="3" />
+              <!-- barracks -->
+            </buildings>
+          </requirements>
+          <squads maxSquads="3" maxUnits="30000" />
+        </level3>
+        <level4>
+          <cost time="1200" money="0" food="0" junk="5760" stone="16000" energy="12000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="4" />
+              <building id="2" level="4" />
+              <!-- barracks -->
+            </buildings>
+          </requirements>
+          <squads maxSquads="4" maxUnits="40000" />
+        </level4>
+        <level5>
+          <cost time="2400" money="0" food="0" junk="11520" stone="32000" energy="24000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="5" />
+              <building id="2" level="5" />
+              <!-- barracks -->
+            </buildings>
+          </requirements>
+          <squads maxSquads="5" maxUnits="50000" />
+        </level5>
+        <level6>
+          <cost time="4800" money="0" food="0" junk="23040" stone="64000" energy="48000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="6" />
+              <building id="2" level="6" />
+              <!-- barracks -->
+            </buildings>
+          </requirements>
+          <squads maxSquads="6" maxUnits="60000" />
+        </level6>
+        <level7>
+          <cost time="9600" money="0" food="0" junk="46080" stone="128000" energy="96000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="7" />
+              <building id="2" level="7" />
+              <!-- barracks -->
+            </buildings>
+          </requirements>
+          <squads maxSquads="7" maxUnits="70000" />
+        </level7>
+        <level8>
+          <cost time="19200" money="0" food="0" junk="92160" stone="256000" energy="192000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="8" />
+              <building id="2" level="8" />
+              <!-- barracks -->
+            </buildings>
+          </requirements>
+          <squads maxSquads="8" maxUnits="80000" />
+        </level8>
+        <level9>
+          <cost time="38400" money="0" food="0" junk="184320" stone="512000" energy="384000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="9" />
+              <building id="2" level="9" />
+              <!-- barracks -->
+            </buildings>
+          </requirements>
+          <squads maxSquads="9" maxUnits="90000" />
+        </level9>
+        <level10>
+          <cost time="76800" money="0" food="0" junk="368640" stone="1024000" energy="768000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="10" />
+              <building id="2" level="10" />
+              <!-- barracks -->
+            </buildings>
+          </requirements>
+          <squads maxSquads="10" maxUnits="100000" />
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="commandcenter_01" />
+        <level2 image_path="commandcenter_01" />
+        <level3 image_path="commandcenter_01" />
+        <level4 image_path="commandcenter_02" />
+        <level5 image_path="commandcenter_02" />
+        <level6 image_path="commandcenter_02" />
+        <level7 image_path="commandcenter_03" />
+        <level8 image_path="commandcenter_03" />
+        <level9 image_path="commandcenter_03" />
+        <level10 image_path="commandcenter_04" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="4" />
+    </building>
+    <building name="supplyDump" id="11">
+      <!-- Supply Dump -->
+      <properties>
+        <level1>
+          <cost time="150" money="0" food="0" junk="700" stone="2000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="2" />
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="300" money="0" food="0" junk="1400" stone="4000" energy="300" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="2" />
+            </buildings>
+          </requirements>
+        </level2>
+        <level3>
+          <cost time="600" money="0" food="0" junk="2800" stone="8000" energy="600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="3" />
+            </buildings>
+          </requirements>
+        </level3>
+        <level4>
+          <cost time="1200" money="0" food="0" junk="5600" stone="16000" energy="1200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="4" />
+            </buildings>
+          </requirements>
+        </level4>
+        <level5>
+          <cost time="2400" money="0" food="0" junk="11200" stone="32000" energy="2400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="5" />
+            </buildings>
+          </requirements>
+        </level5>
+        <level6>
+          <cost time="4800" money="0" food="0" junk="22400" stone="64000" energy="4800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="6" />
+            </buildings>
+          </requirements>
+        </level6>
+        <level7>
+          <cost time="9600" money="0" food="0" junk="44800" stone="128000" energy="9600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="7" />
+            </buildings>
+          </requirements>
+        </level7>
+        <level8>
+          <cost time="9600" money="0" food="0" junk="89600" stone="256000" energy="19200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="8" />
+            </buildings>
+          </requirements>
+        </level8>
+        <level9>
+          <cost time="19200" money="0" food="0" junk="179200" stone="512000" energy="38400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="9" />
+            </buildings>
+          </requirements>
+        </level9>
+        <level10>
+          <cost time="38400" money="0" food="0" junk="358400" stone="1024000" energy="76800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="10" />
+            </buildings>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="supplydump_01" />
+        <level2 image_path="supplydump_01" />
+        <level3 image_path="supplydump_01" />
+        <level4 image_path="supplydump_02" />
+        <level5 image_path="supplydump_02" />
+        <level6 image_path="supplydump_02" />
+        <level7 image_path="supplydump_03" />
+        <level8 image_path="supplydump_03" />
+        <level9 image_path="supplydump_03" />
+        <level10 image_path="supplydump_04" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="false" />
+      <positionInMenu value="0" />
+    </building>
+    <building name="motorPool" id="12">
+      <!-- Motor pool -->
+      <properties>
+        <level1>
+          <cost time="3600" money="0" food="0" junk="1800" stone="2000" energy="500" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+              <!-- workshop -->
+              <building id="14" level="1" />
+              <!-- greenhaus -->
+              <building id="19" level="5" />
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="7200" money="0" food="0" junk="3600" stone="4000" energy="1000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements></requirements>
+        </level2>
+        <level3>
+          <cost time="14400" money="0" food="0" junk="7200" stone="8000" energy="2000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements></requirements>
+        </level3>
+        <level4>
+          <cost time="28800" money="0" food="0" junk="14800" stone="16000" energy="4000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements></requirements>
+        </level4>
+        <level5>
+          <cost time="57600" money="0" food="0" junk="29600" stone="32000" energy="8000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements></requirements>
+        </level5>
+        <level6>
+          <cost time="115200" money="0" food="0" junk="59200" stone="64000" energy="16000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements></requirements>
+        </level6>
+        <level7>
+          <cost time="230400" money="0" food="0" junk="118400" stone="128000" energy="32000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements></requirements>
+        </level7>
+        <level8>
+          <cost time="460800" money="0" food="0" junk="236800" stone="256000" energy="64000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements></requirements>
+        </level8>
+        <level9>
+          <cost time="921600" money="0" food="0" junk="453600" stone="512000" energy="128000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements></requirements>
+        </level9>
+        <level10>
+          <cost time="1843200" money="0" food="0" junk="907200" stone="1024000" energy="256000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="placeholder" />
+        <level2 image_path="placeholder" />
+        <level3 image_path="placeholder" />
+        <level4 image_path="placeholder" />
+        <level5 image_path="placeholder" />
+        <level6 image_path="placeholder" />
+        <level7 image_path="placeholder" />
+        <level8 image_path="placeholder" />
+        <level9 image_path="placeholder" />
+        <level10 image_path="placeholder" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="false" />
+      <positionInMenu value="0" />
+    </building>
+    <building name="hideOut" id="13">
+      <!-- Hide Out -->
+      <properties>
+        <level1>
+          <cost time="600" money="0" food="0" junk="1500" stone="1000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="10" />
+          <hidingSpace value="4400" />
+          <requirements>
+            <buildings>
+              <building id="16" level="1" />
+              <!-- City Hall -->
+              <building id="102" level="1" />
+              <!-- junkyard -->
+              <building id="103" level="1" />
+              <!-- greenhouse -->
+              <building id="104" level="1" />
+              <!-- breaker -->
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="1200" money="0" food="0" junk="3000" stone="2000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="20" />
+          <hidingSpace value="8800" />
+          <requirements>
+          </requirements>
+        </level2>
+        <level3>
+          <cost time="2400" money="0" food="0" junk="6000" stone="4000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <hidingSpace value="16000" />
+          <requirements>
+            <buildings>
+              <building id="16" level="4" />
+              <!-- City Hall -->
+              <building id="102" level="4" />
+              <!-- junkyard -->
+              <building id="103" level="4" />
+              <!-- greenhouse -->
+              <building id="104" level="4" />
+              <!-- breaker -->
+              <building id="101" level="4" />
+              <!-- PowerPlant -->
+            </buildings>
+          </requirements>
+        </level3>
+        <level4>
+          <cost time="4800" money="0" food="0" junk="12000" stone="8000" energy="2000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="70" />
+          <hidingSpace value="32000" />
+          <requirements>
+          </requirements>
+        </level4>
+        <level5>
+          <cost time="9600" money="0" food="0" junk="24000" stone="16000" energy="8000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="85" />
+          <hidingSpace value="48000" />
+          <requirements>
+          </requirements>
+        </level5>
+        <level6>
+          <cost time="19200" money="0" food="0" junk="48000" stone="32000" energy="12800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="100" />
+          <hidingSpace value="80000" />
+          <requirements>
+          </requirements>
+        </level6>
+        <level7>
+          <cost time="38400" money="0" food="0" junk="96000" stone="64000" energy="25600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="135" />
+          <hidingSpace value="128000" />
+          <requirements>
+            <buildings>
+              <building id="16" level="7" />
+              <!-- City Hall -->
+              <building id="102" level="7" />
+              <!-- junkyard -->
+              <building id="103" level="7" />
+              <!-- greenhouse -->
+              <building id="104" level="7" />
+              <!-- breaker -->
+              <building id="101" level="7" />
+              <!-- PowerPlant -->
+            </buildings>
+          </requirements>
+        </level7>
+        <level8>
+          <cost time="76800" money="0" food="0" junk="182000" stone="128000" energy="51200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="150" />
+          <hidingSpace value="208000" />
+          <requirements>
+          </requirements>
+        </level8>
+        <level9>
+          <cost time="153600" money="0" food="0" junk="364000" stone="256000" energy="102400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="165" />
+          <hidingSpace value="336000" />
+          <requirements>
+          </requirements>
+        </level9>
+        <level10>
+          <cost time="307200" money="0" food="0" junk="728000" stone="512000" energy="204800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="210" />
+          <hidingSpace value="544000" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <building id="16" level="10" />
+              <!-- City Hall -->
+              <building id="102" level="10" />
+              <!-- junkyard -->
+              <building id="103" level="10" />
+              <!-- greenhouse -->
+              <building id="104" level="10" />
+              <!-- breaker -->
+              <building id="101" level="10" />
+              <!-- PowerPlant -->
+            </buildings>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="hideout_01" />
+        <level2 image_path="hideout_01" />
+        <level3 image_path="hideout_01" />
+        <level4 image_path="hideout_02" />
+        <level5 image_path="hideout_02" />
+        <level6 image_path="hideout_02" />
+        <level7 image_path="hideout_03" />
+        <level8 image_path="hideout_03" />
+        <level9 image_path="hideout_03" />
+        <level10 image_path="hideout_04" />
+      </images>
+      <maxQuantity value="0" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="5" />
+    </building>
+    <building name="workshop" id="14">
+      <!-- Workshop -->
+      <properties>
+        <level1>
+          <cost time="180" money="0" food="0" junk="1000" stone="1200" energy="800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+            </buildings>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="360" money="0" food="0" junk="2000" stone="2400" energy="1600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements></requirements>
+        </level2>
+        <level3>
+          <cost time="720" money="0" food="0" junk="4000" stone="4800" energy="3200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements></requirements>
+        </level3>
+        <level4>
+          <cost time="1440" money="0" food="0" junk="8000" stone="9600" energy="6400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements></requirements>
+        </level4>
+        <level5>
+          <cost time="2880" money="0" food="0" junk="16000" stone="19200" energy="12800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements></requirements>
+        </level5>
+        <level6>
+          <cost time="57600" money="0" food="0" junk="32000" stone="38400" energy="25600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements></requirements>
+        </level6>
+        <level7>
+          <cost time="115200" money="0" food="0" junk="64000" stone="76800" energy="51200" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements></requirements>
+        </level7>
+        <level8>
+          <cost time="230400" money="0" food="0" junk="128000" stone="153600" energy="102400" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements></requirements>
+        </level8>
+        <level9>
+          <cost time="460800" money="0" food="0" junk="256000" stone="307200" energy="204800" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements></requirements>
+        </level9>
+        <level10>
+          <cost time="921600" money="0" food="0" junk="512000" stone="614400" energy="409600" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="placeholder" />
+        <level2 image_path="placeholder" />
+        <level3 image_path="placeholder" />
+        <level4 image_path="placeholder" />
+        <level5 image_path="placeholder" />
+        <level6 image_path="placeholder" />
+        <level7 image_path="placeholder" />
+        <level8 image_path="placeholder" />
+        <level9 image_path="placeholder" />
+        <level10 image_path="placeholder" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="false" />
+      <positionInMenu value="0" />
+    </building>
+    <building name="walls" id="15">
+      <!-- Walls -->
+      <properties>
+        <level1>
+          <cost time="240" money="0" food="0" junk="2500" stone="2000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <building id="16" level="1" />
+              <!-- City Hall -->
+            </buildings>
+          </requirements>
+          <health bonus="102" />
+        </level1>
+        <level2>
+          <cost time="420" money="0" food="0" junk="5000" stone="4000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements>
+          </requirements>
+          <health bonus="104" />
+        </level2>
+        <level3>
+          <cost time="900" money="0" food="0" junk="10000" stone="7800" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements>
+          </requirements>
+          <health bonus="106" />
+        </level3>
+        <level4>
+          <cost time="1800" money="0" food="0" junk="20000" stone="16000" energy="2000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements>
+            <buildings>
+              <building id="16" level="4" />
+              <!-- City Hall -->
+            </buildings>
+          </requirements>
+          <health bonus="109" />
+        </level4>
+        <level5>
+          <cost time="3600" money="0" food="0" junk="40000" stone="31000" energy="20000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements>
+          </requirements>
+          <health bonus="112" />
+        </level5>
+        <level6>
+          <cost time="7200" money="0" food="0" junk="80000" stone="62500" energy="56000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements>
+          </requirements>
+          <health bonus="115" />
+        </level6>
+        <level7>
+          <cost time="14400" money="0" food="0" junk="160000" stone="125000" energy="113000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements>
+            <buildings>
+              <building id="16" level="7" />
+              <!-- City Hall -->
+            </buildings>
+          </requirements>
+          <health bonus="119" />
+        </level7>
+        <level8>
+          <cost time="28800" money="0" food="0" junk="212000" stone="250000" energy="225000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements>
+          </requirements>
+          <health bonus="123" />
+        </level8>
+        <level9>
+          <cost time="57600" money="0" food="0" junk="425000" stone="500000" energy="450000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements>
+          </requirements>
+          <health bonus="127" />
+        </level9>
+        <level10>
+          <cost time="115200" money="0" food="0" junk="850000" stone="1000000" energy="700000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <building id="16" level="10" />
+              <!-- City Hall -->
+            </buildings>
+          </requirements>
+          <health bonus="135" />
+        </level10>
+      </properties>
+      <images>
+        <!-- special case, wall level 0 -->
+        <level0 image_path="ramparts_00" front="" />
+        <level1 image_path="ramparts_01" front="" />
+        <level2 image_path="ramparts_01" front="" />
+        <level3 image_path="ramparts_01" front="" />
+        <level4 image_path="ramparts_02_B" front="ramparts_02_F" />
+        <level5 image_path="ramparts_02_B" front="ramparts_02_F" />
+        <level6 image_path="ramparts_02_B" front="ramparts_02_F" />
+        <level7 image_path="ramparts_03_B" front="ramparts_03_F" />
+        <level8 image_path="ramparts_03_B" front="ramparts_03_F" />
+        <level9 image_path="ramparts_03_B" front="ramparts_03_F" />
+        <level10 image_path="ramparts_04_B" front="ramparts_04_F" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="10" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="1" />
+    </building>
+    <building name="townHall" id="16">
+      <!-- City Hall -->
+      <properties>
+        <level1>
+          <cost time="5" money="0" food="0" junk="0" stone="0" energy="0" />
+          <prod money="0" food="100" junk="100" stone="100" energy="0" population="0" />
+          <respect value="20" />
+          <requirements></requirements>
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+          <resourcefields>
+            <range from="101" upto="113" />
+            <!-- resourcefields level1 -->
+          </resourcefields>
+          <townfields>
+            <range from="1" upto="32" />
+            <!-- townfields level1 -->
+          </townfields>
+          <maxValleys value="1" />
+        </level1>
+        <level2>
+          <cost time="900" money="0" food="0" junk="5000" stone="6000" energy="0" />
+          <prod money="0" food="100" junk="100" stone="100" energy="0" population="0" />
+          <respect value="40" />
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+          <resourcefields>
+            <range from="114" upto="116" />
+            <!-- resourcefields level2 -->
+          </resourcefields>
+          <maxValleys value="2" />
+        </level2>
+        <level3>
+          <cost time="1800" money="0" food="0" junk="10000" stone="12000" energy="0" />
+          <prod money="0" food="100" junk="100" stone="100" energy="0" population="0" />
+          <respect value="80" />
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+          <resourcefields>
+            <range from="117" upto="119" />
+            <!-- resourcefields level3 -->
+          </resourcefields>
+          <maxValleys value="3" />
+        </level3>
+        <level4>
+          <cost time="7200" money="0" food="0" junk="16000" stone="18000" energy="0" />
+          <prod money="0" food="100" junk="100" stone="100" energy="100" population="0" />
+          <respect value="160" />
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+          <requirements>
+            <buildings>
+              <building id="15" level="1" />
+              <!-- Wall -->
+            </buildings>
+          </requirements>
+          <resourcefields>
+            <range from="120" upto="122" />
+            <!-- resourcefields level4 -->
+          </resourcefields>
+          <maxValleys value="4" />
+        </level4>
+        <level5>
+          <cost time="14400" money="0" food="0" junk="40000" stone="48000" energy="20000" />
+          <prod money="0" food="100" junk="100" stone="100" energy="100" population="0" />
+          <respect value="320" />
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+          <resourcefields>
+            <range from="123" upto="125" />
+            <!-- resourcefields level5 -->
+          </resourcefields>
+          <maxValleys value="5" />
+        </level5>
+        <level6>
+          <cost time="28800" money="0" food="0" junk="80000" stone="96000" energy="62500" />
+          <prod money="0" food="100" junk="100" stone="100" energy="100" population="0" />
+          <respect value="640" />
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+          <resourcefields>
+            <range from="126" upto="128" />
+            <!-- resourcefields level6 -->
+          </resourcefields>
+          <maxValleys value="6" />
+        </level6>
+        <level7>
+          <cost time="57600" money="0" food="0" junk="160000" stone="192000" energy="125000" />
+          <prod money="0" food="100" junk="100" stone="100" energy="100" population="0" />
+          <respect value="1280" />
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+          <requirements>
+            <buildings>
+              <building id="15" level="4" />
+              <!-- Wall -->
+            </buildings>
+          </requirements>
+          <resourcefields>
+            <range from="129" upto="131" />
+            <!-- resourcefields level7 -->
+          </resourcefields>
+          <maxValleys value="7" />
+        </level7>
+        <level8>
+          <cost time="115200" money="0" food="0" junk="320000" stone="384000" energy="250000" />
+          <prod money="0" food="100" junk="100" stone="100" energy="100" population="0" />
+          <respect value="2560" />
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+          <resourcefields>
+            <range from="132" upto="134" />
+            <!-- resourcefields level8 -->
+          </resourcefields>
+          <maxValleys value="8" />
+        </level8>
+        <level9>
+          <cost time="230400" money="0" food="0" junk="640000" stone="768000" energy="500000" />
+          <prod money="0" food="100" junk="100" stone="100" energy="100" population="0" />
+          <respect value="5120" />
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+          <resourcefields>
+            <range from="135" upto="137" />
+            <!-- resourcefields level9 -->
+          </resourcefields>
+          <maxValleys value="9" />
+        </level9>
+        <level10>
+          <cost time="460800" money="0" food="0" junk="1280000" stone="1440000" energy="1000000" />
+          <prod money="0" food="100" junk="100" stone="100" energy="100" population="0" />
+          <respect value="10240" />
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+            <buildings>
+              <building id="15" level="7" />
+              <!-- Wall -->
+            </buildings>
+          </requirements>
+          <resourcefields>
+            <range from="138" upto="140" />
+            <!-- resourcefields level10 -->
+          </resourcefields>
+          <maxValleys value="12" />
+        </level10>
+        <level0>
+          <cost time="0" money="0" food="0" junk="0" stone="0" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="10240" />
+          <requirements>
+          </requirements>
+          <capacity food="15000" junk="15000" stone="15000" energy="15000" />
+        </level0>
+      </properties>
+      <images>
+        <!-- special case, town hall level 0 -->
+        <level0 image_path="cityHall_00" />
+        <level1 image_path="cityHall_01" />
+        <level2 image_path="cityHall_01" />
+        <level3 image_path="cityHall_01" />
+        <level4 image_path="cityHall_02" />
+        <level5 image_path="cityHall_02" />
+        <level6 image_path="cityHall_02" />
+        <level7 image_path="cityHall_03" />
+        <level8 image_path="cityHall_03" />
+        <level9 image_path="cityHall_03" />
+        <level10 image_path="cityHall_04" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="10" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="1" />
+    </building>
+    <building name="Silo" id="17">
+      <!-- Silo -->
+      <properties>
+        <level1>
+          <cost time="80" money="0" food="0" junk="750" stone="750" energy="0" />
+          <capacity food="4000" junk="4000" stone="4000" energy="4000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="170" money="0" food="0" junk="1500" stone="1500" energy="0" />
+          <capacity food="6000" junk="6000" stone="6000" energy="6000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements>
+          </requirements>
+        </level2>
+        <level3>
+          <cost time="240" money="0" food="0" junk="3000" stone="3000" energy="0" />
+          <capacity food="9000" junk="9000" stone="9000" energy="9000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements>
+          </requirements>
+        </level3>
+        <level4>
+          <cost time="960" money="0" food="0" junk="6000" stone="6000" energy="6000" />
+          <capacity food="13500" junk="13500" stone="13500" energy="13500" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="70" />
+          <requirements>
+          </requirements>
+        </level4>
+        <level5>
+          <cost time="1920" money="0" food="0" junk="12500" stone="12500" energy="12500" />
+          <capacity food="20000" junk="20000" stone="20000" energy="20000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="85" />
+          <requirements>
+          </requirements>
+        </level5>
+        <level6>
+          <cost time="3840" money="0" food="0" junk="25000" stone="25000" energy="25000" />
+          <capacity food="36000" junk="36000" stone="36000" energy="36000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="100" />
+          <requirements>
+          </requirements>
+        </level6>
+        <level7>
+          <cost time="7680" money="0" food="0" junk="50000" stone="50000" energy="50000" />
+          <capacity food="65000" junk="65000" stone="65000" energy="65000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="135" />
+          <requirements>
+          </requirements>
+        </level7>
+        <level8>
+          <cost time="15360" money="0" food="0" junk="100000" stone="100000" energy="100000" />
+          <capacity food="118000" junk="118000" stone="118000" energy="118000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="150" />
+          <requirements>
+          </requirements>
+        </level8>
+        <level9>
+          <cost time="30720" money="0" food="0" junk="200000" stone="200000" energy="200000" />
+          <capacity food="212000" junk="212000" stone="212000" energy="212000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="165" />
+          <requirements>
+          </requirements>
+        </level9>
+        <level10>
+          <cost time="61440" money="0" food="0" junk="400000" stone="400000" energy="400000" />
+          <capacity food="380000" junk="380000" stone="380000" energy="380000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="210" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="silo_01" />
+        <level2 image_path="silo_01" />
+        <level3 image_path="silo_01" />
+        <level4 image_path="silo_02" />
+        <level5 image_path="silo_02" />
+        <level6 image_path="silo_02" />
+        <level7 image_path="silo_03" />
+        <level8 image_path="silo_03" />
+        <level9 image_path="silo_03" />
+        <level10 image_path="silo_04" />
+      </images>
+      <maxQuantity value="0" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="7" />
+    </building>
+    <building name="reclaimer" id="18">
+      <!-- Assembly Plant -->
+      <properties>
+        <level1>
+          <cost time="3600" money="0" food="0" junk="25000" stone="30000" energy="10000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="15" />
+          <requirements>
+            <buildings>
+              <building id="16" level="7" />
+            </buildings>
+            <playerLevel>4</playerLevel>
+          </requirements>
+        </level1>
+        <level2>
+          <cost time="7200" money="0" food="0" junk="50000" stone="60000" energy="20000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="30" />
+          <requirements>
+            <playerLevel>5</playerLevel>
+          </requirements>
+        </level2>
+        <level3>
+          <cost time="14400" money="0" food="0" junk="100000" stone="120000" energy="40000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="45" />
+          <requirements>
+            <playerLevel>6</playerLevel>
+          </requirements>
+        </level3>
+        <level4>
+          <cost time="28800" money="0" food="0" junk="200000" stone="240000" energy="80000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements>
+            <playerLevel>7</playerLevel>
+          </requirements>
+        </level4>
+        <level5>
+          <cost time="57600" money="0" food="0" junk="400000" stone="480000" energy="160000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements>
+            <playerLevel>8</playerLevel>
+          </requirements>
+        </level5>
+        <level6>
+          <cost time="115200" money="0" food="0" junk="800000" stone="960000" energy="320000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="110" />
+          <requirements></requirements>
+        </level6>
+        <level7>
+          <cost time="230400" money="0" food="0" junk="1600000" stone="1920000" energy="640000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="155" />
+          <requirements>
+            <playerLevel>9</playerLevel>
+          </requirements>
+        </level7>
+        <level8>
+          <cost time="460800" money="0" food="0" junk="3200000" stone="3840000" energy="128000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="170" />
+          <requirements>
+            <playerLevel>9</playerLevel>
+          </requirements>
+        </level8>
+        <level9>
+          <cost time="921600" money="0" food="0" junk="6400000" stone="7680000" energy="256000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="185" />
+          <requirements>
+            <playerLevel>10</playerLevel>
+          </requirements>
+        </level9>
+        <level10>
+          <cost time="1843200" money="0" food="0" junk="12800000" stone="15360000" energy="512000" />
+          <prod money="0" food="0" junk="0" stone="0" energy="0" population="0" />
+          <respect value="250" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="assemblyplant" />
+        <level2 image_path="assemblyplant" />
+        <level3 image_path="assemblyplant" />
+        <level4 image_path="assemblyplant" />
+        <level5 image_path="assemblyplant" />
+        <level6 image_path="assemblyplant" />
+        <level7 image_path="assemblyplant" />
+        <level8 image_path="assemblyplant" />
+        <level9 image_path="assemblyplant" />
+        <level10 image_path="assemblyplant" />
+      </images>
+      <maxQuantity value="1" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="6" />
+    </building>
+  </town>
+  <resource type="resource">
+    <building name="powerplant" id="101">
+      <!-- Power Plant ID 1-->
+      <properties>
+        <level1>
+          <cost time="10" money="0" food="0" junk="500" stone="1150" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="75" population="0" />
+          <respect value="10" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="4" />
+            </buildings>
+          </requirements>
+          <capacity food="0" junk="0" stone="0" energy="75" />
+        </level1>
+        <level2>
+          <cost time="170" money="0" food="0" junk="1000" stone="2300" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="150" population="0" />
+          <respect value="20" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="0" energy="150" />
+        </level2>
+        <level3>
+          <cost time="330" money="0" food="0" junk="4000" stone="4600" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="240" population="0" />
+          <respect value="35" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="0" energy="240" />
+        </level3>
+        <level4>
+          <cost time="675" money="0" food="0" junk="8000" stone="9300" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="360" population="0" />
+          <respect value="65" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="0" energy="360" />
+        </level4>
+        <level5>
+          <cost time="1350" money="0" food="0" junk="16000" stone="18700" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="570" population="0" />
+          <respect value="80" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="0" energy="570" />
+        </level5>
+        <level6>
+          <cost time="2700" money="0" food="0" junk="31000" stone="37500" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="810" population="0" />
+          <respect value="95" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="0" energy="840" />
+        </level6>
+        <level7>
+          <cost time="5400" money="0" food="0" junk="62500" stone="75000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="1100" population="0" />
+          <respect value="120" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="0" energy="1100" />
+        </level7>
+        <level8>
+          <cost time="10800" money="0" food="0" junk="125000" stone="150000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="1450" population="0" />
+          <respect value="135" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="0" energy="1500" />
+        </level8>
+        <level9>
+          <cost time="21600" money="0" food="0" junk="250000" stone="300000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="1900" population="0" />
+          <respect value="150" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="0" energy="1900" />
+        </level9>
+        <level10>
+          <cost time="43200" money="0" food="0" junk="500000" stone="600000" energy="0" />
+          <prod money="0" food="0" junk="0" stone="0" energy="2400" population="0" />
+          <respect value="195" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+          <capacity food="0" junk="0" stone="0" energy="2400" />
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="powerplant_01" />
+        <level2 image_path="powerplant_01" />
+        <level3 image_path="powerplant_01" />
+        <level4 image_path="powerplant_02" />
+        <level5 image_path="powerplant_02" />
+        <level6 image_path="powerplant_02" />
+        <level7 image_path="powerplant_03" />
+        <level8 image_path="powerplant_03" />
+        <level9 image_path="powerplant_03" />
+        <level10 image_path="powerplant_04" />
+      </images>
+      <maxQuantity value="0" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="4" />
+    </building>
+    <building name="junkyard" id="102">
+      <!-- Junkyard ID 2-->
+      <properties>
+        <level1>
+          <cost time="10" money="0" food="0" junk="0" stone="500" energy="0" />
+          <prod money="0" food="0" junk="75" stone="0" energy="0" population="0" />
+          <respect value="10" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+            </buildings>
+          </requirements>
+          <capacity food="0" junk="75" stone="0" energy="0" />
+        </level1>
+        <level2>
+          <cost time="170" money="0" food="0" junk="0" stone="1000" energy="0" />
+          <prod money="0" food="0" junk="150" stone="0" energy="0" population="0" />
+          <respect value="20" />
+          <requirements></requirements>
+          <capacity food="0" junk="150" stone="0" energy="0" />
+        </level2>
+        <level3>
+          <cost time="330" money="0" food="0" junk="0" stone="4000" energy="0" />
+          <prod money="0" food="0" junk="240" stone="0" energy="0" population="0" />
+          <respect value="35" />
+          <requirements></requirements>
+          <capacity food="0" junk="240" stone="0" energy="0" />
+        </level3>
+        <level4>
+          <cost time="675" money="0" food="0" junk="0" stone="8000" energy="2000"></cost>
+          <prod money="0" food="0" junk="360" stone="0" energy="0" population="0" />
+          <respect value="65" />
+          <requirements></requirements>
+          <capacity food="0" junk="360" stone="0" energy="0" />
+        </level4>
+        <level5>
+          <cost time="1350" money="0" food="0" junk="0" stone="16000" energy="12500" />
+          <prod money="0" food="0" junk="570" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements></requirements>
+          <capacity food="0" junk="570" stone="0" energy="0" />
+        </level5>
+        <level6>
+          <cost time="2700" money="0" food="0" junk="0" stone="32000" energy="25000" />
+          <prod money="0" food="0" junk="810" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements></requirements>
+          <capacity food="0" junk="840" stone="0" energy="0" />
+        </level6>
+        <level7>
+          <cost time="5400" money="0" food="0" junk="0" stone="62500" energy="50000" />
+          <prod money="0" food="0" junk="1100" stone="0" energy="0" population="0" />
+          <respect value="120" />
+          <requirements></requirements>
+          <capacity food="0" junk="1100" stone="0" energy="0" />
+        </level7>
+        <level8>
+          <cost time="10800" money="0" food="0" junk="0" stone="125000" energy="100000" />
+          <prod money="0" food="0" junk="1450" stone="0" energy="0" population="0" />
+          <respect value="135" />
+          <requirements></requirements>
+          <capacity food="0" junk="1500" stone="0" energy="0" />
+        </level8>
+        <level9>
+          <cost time="21600" money="0" food="0" junk="0" stone="250000" energy="200000" />
+          <prod money="0" food="0" junk="1900" stone="0" energy="0" population="0" />
+          <respect value="150" />
+          <requirements></requirements>
+          <capacity food="0" junk="1900" stone="0" energy="0" />
+        </level9>
+        <level10>
+          <cost time="43200" money="0" food="0" junk="0" stone="500000" energy="400000" />
+          <prod money="0" food="0" junk="2400" stone="0" energy="0" population="0" />
+          <respect value="195" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+          <capacity food="0" junk="2400" stone="0" energy="0" />
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="junkyard_01" />
+        <level2 image_path="junkyard_01" />
+        <level3 image_path="junkyard_01" />
+        <level4 image_path="junkyard_02" />
+        <level5 image_path="junkyard_02" />
+        <level6 image_path="junkyard_02" />
+        <level7 image_path="junkyard_03" />
+        <level8 image_path="junkyard_03" />
+        <level9 image_path="junkyard_03" />
+        <level10 image_path="junkyard_04" />
+      </images>
+      <maxQuantity value="0" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="1" />
+    </building>
+    <building name="greenhouse" id="103">
+      <!-- Greenhouse ID 3-->
+      <properties>
+        <level1>
+          <cost time="10" money="0" food="0" junk="350" stone="350" energy="0" />
+          <prod money="0" food="75" junk="0" stone="0" energy="0" population="0" />
+          <respect value="10" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+            </buildings>
+          </requirements>
+          <capacity food="75" junk="0" stone="0" energy="0" />
+        </level1>
+        <level2>
+          <cost time="170" money="0" food="0" junk="700" stone="700" energy="0" />
+          <prod money="0" food="150" junk="0" stone="0" energy="0" population="0" />
+          <respect value="20" />
+          <requirements></requirements>
+          <capacity food="150" junk="0" stone="0" energy="0" />
+        </level2>
+        <level3>
+          <cost time="330" money="0" food="0" junk="1500" stone="1500" energy="0" />
+          <prod money="0" food="240" junk="0" stone="0" energy="0" population="0" />
+          <respect value="35" />
+          <requirements></requirements>
+          <capacity food="240" junk="0" stone="0" energy="0" />
+        </level3>
+        <level4>
+          <cost time="675" money="0" food="0" junk="3100" stone="3100" energy="3100" />
+          <prod money="0" food="360" junk="0" stone="0" energy="0" population="0" />
+          <respect value="65" />
+          <requirements></requirements>
+          <capacity food="360" junk="0" stone="0" energy="0" />
+        </level4>
+        <level5>
+          <cost time="1350" money="0" food="0" junk="6250" stone="6250" energy="6250" />
+          <prod money="0" food="570" junk="0" stone="0" energy="0" population="0" />
+          <respect value="80" />
+          <requirements></requirements>
+          <capacity food="570" junk="0" stone="0" energy="0" />
+        </level5>
+        <level6>
+          <cost time="2700" money="0" food="0" junk="12500" stone="12500" energy="12500" />
+          <prod money="0" food="810" junk="0" stone="0" energy="0" population="0" />
+          <respect value="95" />
+          <requirements></requirements>
+          <capacity food="840" junk="0" stone="0" energy="0" />
+        </level6>
+        <level7>
+          <cost time="5400" money="0" food="0" junk="25000" stone="25000" energy="25000" />
+          <prod money="0" food="1100" junk="0" stone="0" energy="0" population="0" />
+          <respect value="120" />
+          <requirements></requirements>
+          <capacity food="1100" junk="0" stone="0" energy="0" />
+        </level7>
+        <level8>
+          <cost time="10800" money="0" food="0" junk="50000" stone="50000" energy="50000" />
+          <prod money="0" food="1450" junk="0" stone="0" energy="0" population="0" />
+          <respect value="135" />
+          <requirements></requirements>
+          <capacity food="1500" junk="0" stone="0" energy="0" />
+        </level8>
+        <level9>
+          <cost time="21600" money="0" food="0" junk="100000" stone="100000" energy="100000" />
+          <prod money="0" food="1900" junk="" stone="0" energy="0" population="0" />
+          <respect value="150" />
+          <requirements></requirements>
+          <capacity food="1900" junk="0" stone="0" energy="0" />
+        </level9>
+        <level10>
+          <cost time="43200" money="0" food="0" junk="200000" stone="200000" energy="200000" />
+          <prod money="0" food="2400" junk="0" stone="0" energy="0" population="0" />
+          <respect value="195" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+          <capacity food="2400" junk="0" stone="0" energy="0" />
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="greenhouse_01" />
+        <level2 image_path="greenhouse_01" />
+        <level3 image_path="greenhouse_01" />
+        <level4 image_path="greenhouse_02" />
+        <level5 image_path="greenhouse_02" />
+        <level6 image_path="greenhouse_02" />
+        <level7 image_path="greenhouse_03" />
+        <level8 image_path="greenhouse_03" />
+        <level9 image_path="greenhouse_03" />
+        <level10 image_path="greenhouse_04" />
+      </images>
+      <maxQuantity value="0" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="3" />
+    </building>
+    <building name="breaker" id="104">
+      <!-- Breaker ID 104-->
+      <properties>
+        <level1>
+          <cost time="10" money="0" food="0" junk="500" stone="0" energy="0" />
+          <prod money="0" food="0" junk="0" stone="75" energy="0" population="0" />
+          <respect value="10" />
+          <requirements>
+            <buildings>
+              <!-- City Hall -->
+              <building id="16" level="1" />
+            </buildings>
+          </requirements>
+          <capacity food="0" junk="0" stone="75" energy="0" />
+        </level1>
+        <level2>
+          <cost time="170" money="0" food="0" junk="1000" stone="0" energy="0" />
+          <prod money="0" food="0" junk="0" stone="150" energy="0" population="0" />
+          <respect value="20" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="150" energy="0" />
+        </level2>
+        <level3>
+          <cost time="240" money="0" food="0" junk="4000" stone="0" energy="0" />
+          <prod money="0" food="0" junk="0" stone="240" energy="0" population="0" />
+          <respect value="35" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="240" energy="0" />
+        </level3>
+        <level4>
+          <cost time="480" money="0" food="0" junk="8000" stone="0" energy="2000" />
+          <prod money="0" food="0" junk="0" stone="360" energy="0" population="0" />
+          <respect value="65" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="360" energy="0" />
+        </level4>
+        <level5>
+          <cost time="960" money="0" food="0" junk="16000" stone="0" energy="12500" />
+          <prod money="0" food="0" junk="0" stone="570" energy="0" population="0" />
+          <respect value="80" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="570" energy="0" />
+        </level5>
+        <level6>
+          <cost time="1920" money="0" food="0" junk="32000" stone="0" energy="25000" />
+          <prod money="0" food="0" junk="0" stone="810" energy="0" population="0" />
+          <respect value="95" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="840" energy="0" />
+        </level6>
+        <level7>
+          <cost time="2840" money="0" food="0" junk="62500" stone="0" energy="50000" />
+          <prod money="0" food="0" junk="0" stone="1100" energy="0" population="0" />
+          <respect value="120" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="1100" energy="0" />
+        </level7>
+        <level8>
+          <cost time="5680" money="0" food="0" junk="125000" stone="0" energy="100000" />
+          <prod money="0" food="0" junk="0" stone="1450" energy="0" population="0" />
+          <respect value="135" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="1500" energy="0" />
+        </level8>
+        <level9>
+          <cost time="11360" money="0" food="0" junk="250000" stone="0" energy="200000" />
+          <prod money="0" food="0" junk="0" stone="1900" energy="0" population="0" />
+          <respect value="150" />
+          <requirements></requirements>
+          <capacity food="0" junk="0" stone="1900" energy="0" />
+        </level9>
+        <level10>
+          <cost time="22720" money="0" food="0" junk="500000" stone="0" energy="400000" />
+          <prod money="0" food="0" junk="0" stone="2400" energy="0" population="0" />
+          <respect value="195" />
+          <requirements>
+            <items>
+              <item id="28" amount="1" />
+            </items>
+          </requirements>
+          <capacity food="0" junk="0" stone="2400" energy="0" />
+        </level10>
+      </properties>
+      <images>
+        <level1 image_path="breaker_01" />
+        <level2 image_path="breaker_01" />
+        <level3 image_path="breaker_01" />
+        <level4 image_path="breaker_02" />
+        <level5 image_path="breaker_02" />
+        <level6 image_path="breaker_02" />
+        <level7 image_path="breaker_03" />
+        <level8 image_path="breaker_03" />
+        <level9 image_path="breaker_03" />
+        <level10 image_path="breaker_04" />
+      </images>
+      <maxQuantity value="0" />
+      <downgradeLimit value="0" />
+      <buildable value="true" />
+      <mainCityOnly value="false" />
+      <showIngame value="true" />
+      <positionInMenu value="2" />
+    </building>
+  </resource>
+</Buildings>

@@ -1,6 +1,6 @@
 import { ItemTypeId } from '../../types/item.types';
-import { BuildingTypeId } from '../buildings/buildings.types';
-import { ResourceId } from '../resources/resources.types';
+import { BuildingLevel, BuildingTypeId } from '../buildings/buildings.types';
+import { ResourceId, ResourceTypeId } from '../resources/resources.types';
 
 type RequirementNegator = { not?: boolean };
 
@@ -36,3 +36,29 @@ export type Requirement =
   | ItemRequirement
   | BuildingRequirement
   | ResourceAmountRequirement;
+
+export type Requirement2 =
+  | ({
+      type: 'has/building';
+      data: {
+        buildingTypeId: BuildingTypeId;
+        buildingLevel: BuildingLevel;
+        amount: number;
+        global?: boolean;
+      };
+    } & RequirementNegator)
+  | ({
+      type: 'has/resources';
+      data: {
+        resourceTypeId: ResourceTypeId;
+        amount: number;
+        global?: boolean;
+      };
+    } & RequirementNegator)
+  | ({
+      type: 'has/item';
+      data: {
+        itemTypeId: ItemTypeId;
+        amount: number;
+      };
+    } & RequirementNegator);

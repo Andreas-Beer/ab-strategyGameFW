@@ -52,13 +52,6 @@ export class BuildingsSystem extends EventEmitter {
     this.guard.hasFulfilledTheRequirements(levelConfig.requirements);
     this.guard.placeIsValid(buildingTypeId, buildingTownPosition);
 
-    payBuildingPrice({
-      resourceSystem: this.resourcesSystem,
-      requirementsSystem: this.requirementsSystem,
-      buildingPrices: buildingConfig.levels[1].price,
-      townData,
-    });
-
     const newBuilding = createNewBuilding(
       buildingConfig,
       buildingTownPosition,
