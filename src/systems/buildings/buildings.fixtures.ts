@@ -12,12 +12,13 @@ export const buildingConfig1: BuildingConfig = {
             { type: 'has/playerLevel', data: { playerLevel: 1 } },
           ],
           effects: {
-            start: [],
-            finish: [
+            start: [
               {
                 type: 'modify/resources',
                 data: { resourceTypeId: 1, amount: '-10' },
               },
+            ],
+            finish: [
               {
                 type: 'modify/capacity',
                 data: { resourceTypeId: 2, amount: '+10' },
@@ -41,12 +42,13 @@ export const buildingConfig1: BuildingConfig = {
             { type: 'has/playerLevel', data: { playerLevel: 1 } },
           ],
           effects: {
-            start: [],
-            finish: [
+            start: [
               {
                 type: 'modify/resources',
                 data: { resourceTypeId: 1, amount: '-10' },
               },
+            ],
+            finish: [
               {
                 type: 'modify/capacity',
                 data: { resourceTypeId: 2, amount: '+10' },
@@ -73,12 +75,13 @@ export const buildingConfig1: BuildingConfig = {
             { type: 'has/playerLevel', data: { playerLevel: 1 } },
           ],
           effects: {
-            start: [],
-            finish: [
+            start: [
               {
                 type: 'modify/resources',
                 data: { resourceTypeId: 1, amount: '-99999999999999' },
               },
+            ],
+            finish: [
               {
                 type: 'modify/capacity',
                 data: { resourceTypeId: 2, amount: '+10' },
@@ -111,12 +114,13 @@ export const buildingConfig2: BuildingConfig = {
             { type: 'has/playerLevel', data: { playerLevel: 1 } },
           ],
           effects: {
-            start: [],
-            finish: [
+            start: [
               {
                 type: 'modify/resources',
                 data: { resourceTypeId: 1, amount: '-9999999999999' },
               },
+            ],
+            finish: [
               {
                 type: 'modify/capacity',
                 data: { resourceTypeId: 2, amount: '+10' },
@@ -144,12 +148,13 @@ export const buildingConfig2: BuildingConfig = {
             { type: 'has/playerLevel', data: { playerLevel: 1 } },
           ],
           effects: {
-            start: [],
-            finish: [
+            start: [
               {
                 type: 'modify/resources',
                 data: { resourceTypeId: 1, amount: '-9999999999999' },
               },
+            ],
+            finish: [
               {
                 type: 'modify/capacity',
                 data: { resourceTypeId: 2, amount: '+10' },
@@ -182,12 +187,13 @@ export const buildingConfig3: BuildingConfig = {
             { type: 'has/playerLevel', data: { playerLevel: 1 } },
           ],
           effects: {
-            start: [],
-            finish: [
+            start: [
               {
                 type: 'modify/resources',
                 data: { resourceTypeId: 1, amount: '-9999999999999' },
               },
+            ],
+            finish: [
               {
                 type: 'modify/capacity',
                 data: { resourceTypeId: 2, amount: '+10' },
@@ -215,12 +221,13 @@ export const buildingConfig3: BuildingConfig = {
             { type: 'has/playerLevel', data: { playerLevel: 1 } },
           ],
           effects: {
-            start: [],
-            finish: [
+            start: [
               {
                 type: 'modify/resources',
                 data: { resourceTypeId: 1, amount: '-9999999999999' },
               },
+            ],
+            finish: [
               {
                 type: 'modify/capacity',
                 data: { resourceTypeId: 2, amount: '+10' },

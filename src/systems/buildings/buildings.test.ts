@@ -133,33 +133,26 @@ describe('systems/buildings.test', () => {
         done();
       }, 0);
     });
-    it('should remove the necessary resources from the playerData.', () => {
+    it('should call the start effects for the update action.', () => {
       const buildingConfig = buildingConfig1;
       const buildingTypeId = buildingConfig.typeId;
       const buildingPosition = 1;
-      const townId = 1;
 
-      const buildingPriceLvl1 = buildingConfig.levels[1].price[0];
-      const resourceAmount = buildingPriceLvl1.amount;
-      const resourceId = buildingPriceLvl1.resourceId;
-
-      const resourceAmountBefore =
-        playerDataFacade._playerData.towns[0].resources[resourceId].amount;
-      const resourceAmountExpected = resourceAmountBefore - resourceAmount;
+      const startEffect =
+        buildingConfig1.levels['1'].actions.upgrading.effects?.start[0]!;
 
       buildingsSystem.build(buildingTypeId, buildingPosition);
 
-      const resourceAmountAfter =
-        playerDataFacade._playerData.towns[0].resources[resourceId].amount;
-
-      expect(resourceAmountAfter).to.be.equal(resourceAmountExpected);
+      expect(effectBus.triggerEffect).to.be.calledOnceWith(
+        startEffect.type,
+        startEffect.data,
+      );
     });
     it('should throw an error if the max building parallel', () => {
       buildingsSystem.build(1, 2);
 
       const buildingTypeId = buildingConfig1.typeId;
       const buildingPosition = 1;
-      const townId = 1;
 
       const fn = () => buildingsSystem.build(buildingTypeId, buildingPosition);
 
@@ -169,22 +162,11 @@ describe('systems/buildings.test', () => {
       const buildingConfig = buildingConfig2;
       const buildingTypeId = buildingConfig.typeId;
       const buildingPosition = 1;
-      const townId = 1;
-
-      const buildingPriceLvl1 = buildingConfig.levels[1].price[0];
-      const resourceId = buildingPriceLvl1.resourceId;
 
       const fn = () => buildingsSystem.build(buildingTypeId, buildingPosition);
-
-      const resourceAmountBefore =
-        playerDataFacade._playerData.towns[0].resources[resourceId].amount;
-
       expect(fn).to.throw(BuildingRequirementNotFulfilledError);
 
-      const resourceAmountAfter =
-        playerDataFacade._playerData.towns[0].resources[resourceId].amount;
-
-      expect(resourceAmountAfter).to.be.equal(resourceAmountBefore);
+      expect(effectBus.triggerEffect).to.be.not.called;
     });
   });
 
