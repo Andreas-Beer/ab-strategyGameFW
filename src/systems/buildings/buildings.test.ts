@@ -313,6 +313,7 @@ describe('systems/buildings.test', () => {
 
       // expect(taskQueue._queue).to.have.a.lengthOf(1);
     });
+    it('should call the finish effects when the building was upgraded');
     it('should throw an error if the building id does not exists', () => {
       const fn = () => buildingsSystem.upgrade(9999999);
       expect(fn).to.throw(PlayerDataBuildingNotFoundError);

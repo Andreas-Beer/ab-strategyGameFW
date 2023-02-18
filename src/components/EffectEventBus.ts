@@ -24,7 +24,7 @@ export class EffectBus {
   >(effectKey: T, data: U) {
     const handler = this.effectsMap[effectKey];
 
-    if (!handler) {
+    if (!handler && process.env.NODE_ENV !== 'test') {
       console.warn(
         `[EffectEventBus] activateEvent - No handler found for the key ${effectKey}`,
       );

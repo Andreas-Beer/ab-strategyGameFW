@@ -7,7 +7,7 @@
     "start": "ts-node .",
     "build": "rimraf dist && tsc",
     "dev": "nodemon",
-    "test": "ts-mocha '{src,test}/**/*[spec,test].ts'",
+    "test": "cross-env NODE_ENV=test ts-mocha '{src,test}/**/*[spec,test].ts'",
     "test:watch": "npm run test -- --watch --watch-files 'src/**/*.ts'",
     "test:coverage": "rm -rf ./coverage && nyc npm run test -- --reporter min",
     "prepare": "husky install"
@@ -34,6 +34,7 @@
     "@types/sinon": "^10.0.13",
     "@types/sinon-chai": "^3.2.8",
     "chai": "^4.3.6",
+    "cross-env": "^7.0.3",
     "fast-xml-parser": "^4.0.15",
     "googleapis": "^105.0.0",
     "husky": "^8.0.2",
