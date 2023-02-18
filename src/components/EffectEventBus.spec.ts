@@ -13,7 +13,7 @@ describe('components/EffectEventBus.ts', () => {
       bus = new EffectBus();
     });
 
-    beforeEach(() => {
+    afterEach(() => {
       Sinon.restore();
     });
 
@@ -22,7 +22,6 @@ describe('components/EffectEventBus.ts', () => {
       const handler = () => {};
 
       bus.registerEffectHandler(handlerKey, handler);
-
       expect(bus)
         .to.have.property('effectsMap')
         .have.property(handlerKey, handler);
@@ -31,17 +30,21 @@ describe('components/EffectEventBus.ts', () => {
     it('should warn if the key was not found', () => {
       const warnStub = Sinon.stub(console, 'warn');
       const handlerKey = 'myKey';
-      bus.triggerEffect(handlerKey, {});
 
+      global.NODE_ENV = 'test';
+      bus.triggerEffect(handlerKey, {});
       expect(warnStub).to.be.called;
+      global.NODE_ENV = '';
     });
 
     it('should call the given handler if the key was not found', () => {
       const handlerKey = 'myKey';
       const handler = Sinon.spy();
 
+      global.NODE_ENV = 'test';
       bus.registerEffectHandler(handlerKey, handler);
       bus.triggerEffect(handlerKey, {});
+      global.NODE_ENV = '';
 
       expect(handler).to.be.called;
     });

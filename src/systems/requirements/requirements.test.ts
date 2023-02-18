@@ -18,9 +18,13 @@ describe('systems/requirements/requirements.test.ts', () => {
   describe('check', () => {
     it('should pass if the requirements fits', () => {
       const result = requirementsSystem.check([
-        { type: 'playerLevel', level: 1 },
-        { type: 'item', itemTypeId: 1, amount: 10 },
-        { type: 'building', buildingTypeId: 999, level: 1, not: true },
+        { type: 'has/playerLevel', data: { playerLevel: 1 } },
+        { type: 'has/item', data: { itemTypeId: 1, amount: 10 } },
+        {
+          type: 'has/building',
+          data: { buildingTypeId: 999, buildingLevel: 1, amount: 1 },
+          not: true,
+        },
       ]);
 
       expect(result).to.be.true;
