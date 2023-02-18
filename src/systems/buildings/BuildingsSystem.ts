@@ -91,7 +91,6 @@ export class BuildingsSystem extends EventEmitter {
     const buildingConfig = this.configData.findBuildingConfigByTypeId(
       building.buildingTypeId,
     );
-    const currentTownData = this.playerData.getCurrentActiveTown();
     const currentBuildingLevel = building.level;
 
     this.guard.hasCompletedItsProcess(building);
@@ -99,20 +98,20 @@ export class BuildingsSystem extends EventEmitter {
 
     // Get next Level Specs
     const nextLevel = (currentBuildingLevel + 1) as BuildingLevel;
-    const nextLevelConfig = buildingConfig.levels[nextLevel];
+    const nextLevelConfig = buildingConfig.levels[nextLevel].actions.upgrading;
     const nextLevelDuration = nextLevelConfig.duration;
     const nextLevelRequirements = nextLevelConfig.requirements;
-    const nextLevelPrice = nextLevelConfig.price;
+    const nextLevelEffects = nextLevelConfig.effects;
+    const nextLevelStartEffects = nextLevelEffects.start ?? [];
+    const nextLevelFinishEffects = nextLevelEffects.finish ?? [];
 
     this.guard.hasFulfilledTheRequirements(nextLevelRequirements);
 
-    // Pay Building Price
-    payBuildingPrice({
-      buildingPrices: nextLevelPrice,
-      requirementsSystem: this.requirementsSystem,
-      resourceSystem: this.resourcesSystem,
-      townData: currentTownData,
-    });
+    for (const effect of nextLevelStartEffects) {
+      if (isEventHandlerKey(effect.type)) {
+        this.effectBus.triggerEffect(effect.type, effect.data);
+      }
+    }
 
     // Reset Build Process
     building.constructionProgress = 0;
@@ -134,7 +133,6 @@ export class BuildingsSystem extends EventEmitter {
     const buildingConfig = this.configData.findBuildingConfigByTypeId(
       building.buildingTypeId,
     );
-    const currentTownData = this.playerData.getCurrentActiveTown();
     const currentBuildingLevel = building.level;
 
     this.guard.hasCompletedItsProcess(building);
@@ -142,7 +140,8 @@ export class BuildingsSystem extends EventEmitter {
 
     // Get next Level Specs
     const nextLevel = (currentBuildingLevel - 1) as BuildingLevel;
-    const nextLevelConfig = buildingConfig.levels[nextLevel];
+    const nextLevelConfig =
+      buildingConfig.levels[nextLevel].actions.downgrading;
     const nextLevelDuration = nextLevelConfig.duration;
     const nextLevelRequirements = nextLevelConfig.requirements;
 

@@ -51,7 +51,7 @@ describe('systems/buildings.test', () => {
   let effectBus: EffectBus;
   let townData: TownData;
 
-  describe.only('build', () => {
+  describe('build', () => {
     beforeEach(() => {
       townData = {
         id: 1,
@@ -205,7 +205,7 @@ describe('systems/buildings.test', () => {
             id: 4,
             buildingTypeId: 2,
             constructionProgress: 100,
-            level: 2,
+            level: 1,
             location: 4,
           },
           {
@@ -265,6 +265,8 @@ describe('systems/buildings.test', () => {
       buildingsSystem.upgrade(buildingId);
       taskQueue.callExpiredTasks(Date.now() + 2000);
 
+      expect(buildingData.level).to.be.equal(buildingLevelBefore);
+
       setTimeout(() => {
         const buildingLevelAfter = buildingData.level;
         expect(buildingLevelAfter).to.be.equal(buildingLevelExpected);
@@ -280,42 +282,29 @@ describe('systems/buildings.test', () => {
 
       expect(fn).to.throw(BuildingHasReachedMaxLevelError);
     });
-    it('should pay the corresponding price.', () => {
+    it('should add a building finish task into the global task queue.', () => {
       const buildingData = townData.buildings[0];
       const buildingId: BuildingId = buildingData.id;
 
       const buildingConfig = buildingConfig1;
       const buildingLevel = buildingData.level;
       const nextLevel = buildingLevel + 1;
-
-      const buildingPrice = buildingConfig.levels[nextLevel].price[0];
-      const resourceAmount = buildingPrice.amount;
-      const resourceId = buildingPrice.resourceId;
-
-      const resourceAmountBefore =
-        playerDataFacade._playerData.towns[0].resources[resourceId].amount;
-      const resourceAmountExpected = resourceAmountBefore - resourceAmount;
+      const startEffect =
+        buildingConfig.levels[nextLevel].actions.upgrading.effects?.start[0]!;
 
       buildingsSystem.upgrade(buildingId);
 
-      const resourceAmountAfter =
-        playerDataFacade._playerData.towns[0].resources[resourceId].amount;
-
-      expect(resourceAmountAfter).to.be.equal(resourceAmountExpected);
+      expect(effectBus.triggerEffect).to.be.calledOnceWith(
+        startEffect.type,
+        startEffect.data,
+      );
+      expect(effectBus.triggerEffect).not.to.be.calledTwice;
     });
     it('should add a building finish task into the global task queue.', () => {
       const buildingData = townData.buildings[0];
       const buildingId: BuildingId = buildingData.id;
 
       const buildingConfig = buildingConfig1;
-
-      const buildingPriceLvl2 = buildingConfig.levels[2].price[0];
-      const resourceAmount = buildingPriceLvl2.amount;
-      const resourceId = buildingPriceLvl2.resourceId;
-
-      const resourceAmountBefore =
-        playerDataFacade._playerData.towns[0].resources[resourceId].amount;
-      const resourceAmountExpected = resourceAmountBefore - resourceAmount;
 
       buildingsSystem.upgrade(buildingId);
 
@@ -345,7 +334,7 @@ describe('systems/buildings.test', () => {
       const buildingId: BuildingId = buildingData.id;
 
       const fn = () => buildingsSystem.upgrade(buildingId);
-      expect(fn).to.throw(BuildingNotEnoughResourcesError);
+      expect(fn).to.throw(BuildingRequirementNotFulfilledError);
     });
     it('should throw an error if the building does not pass the requirements.', () => {
       const buildingData = townData.buildings[3];
@@ -353,6 +342,14 @@ describe('systems/buildings.test', () => {
 
       const fn = () => buildingsSystem.upgrade(buildingId);
       expect(fn).to.throw(BuildingRequirementNotFulfilledError);
+    });
+    it('should throw an error if the maximum parallel capacity was reached.', () => {
+      const buildingData = townData.buildings[0];
+      const buildingId: BuildingId = buildingData.id;
+
+      buildingsSystem.upgrade(buildingId);
+      const fn = () => buildingsSystem.upgrade(buildingId);
+      expect(fn).to.throw(BuildingParallelCapacityNotFree);
     });
     it('should trigger an error if the construction progress is not yet complete.', () => {
       const buildingData = townData.buildings[4];
@@ -377,7 +374,7 @@ describe('systems/buildings.test', () => {
             id: 1,
             buildingTypeId: 3,
             constructionProgress: 100,
-            level: 4,
+            level: 3,
             location: 1,
           },
           {

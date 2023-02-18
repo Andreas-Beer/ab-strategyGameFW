@@ -6,7 +6,7 @@ export type EventData<T extends string> = {
   [key in T]: {
     duration: Duration;
     requirements: Requirement[];
-    effects?: Partial<Record<'start' | 'finish', EffectConfig[]>>;
+    effects: Partial<Record<'start' | 'finish', EffectConfig[]>>;
   };
 };
 
