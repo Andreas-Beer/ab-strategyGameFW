@@ -2,7 +2,9 @@ import { BuildingsConfigData } from '../../systems/buildings/buildings.interface
 import {
   BuildingConfig,
   BuildingId,
+  BuildingLevel,
   BuildingTypeId,
+  isBuildingLevelGuard,
 } from '../../systems/buildings/buildings.types';
 import { ItemConfig, ItemTypeId } from '../../types/item.types';
 import { UnitConfig, UnitTypeId } from '../../types/units.types';
@@ -16,9 +18,12 @@ class ConfigNotFoundError extends Error {
 class ConfigDataFacade implements BuildingsConfigData {
   constructor(public configData: ConfigData) {}
 
-  getBuildingMaxLevel(buildingConfig: BuildingConfig): number {
+  getBuildingMaxLevel(buildingConfig: BuildingConfig): BuildingLevel {
     const buildingLevels = Object.keys(buildingConfig.levels).sort();
     const maxLevel = Number(buildingLevels[buildingLevels.length - 1]);
+    if (!isBuildingLevelGuard(maxLevel)) {
+      throw new Error('no building level');
+    }
     return maxLevel;
   }
 

@@ -1,16 +1,21 @@
 import { EffectConfig } from '../../types/effect.types';
 import { Duration } from '../../types/time.types';
-import { Requirement, Requirement2 } from '../requirements/requirements.types';
+import { Requirement } from '../requirements/requirements.types';
 
 export type EventData<T extends string> = {
   [key in T]: {
-    requirements?: Requirement2[];
-    effects: Record<'start' | 'finish', EffectConfig[]>;
+    duration: Duration;
+    requirements: Requirement[];
+    effects?: Partial<Record<'start' | 'finish', EffectConfig[]>>;
   };
 };
 
 export type BuildingConstructionProcess = number;
 export type BuildingLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export const isBuildingLevelGuard = (lvl: number): lvl is BuildingLevel => {
+  return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(lvl);
+};
+
 export type BuildingId = number;
 export type BuildingActions = 'upgrading' | 'downgrading';
 export type BuildingTypeId = number;
@@ -31,7 +36,6 @@ export type BuildingConfig = {
 };
 
 export type BuildingLevelConfig = {
-  duration: Duration;
   actions: EventData<BuildingActions>;
 };
 
@@ -45,7 +49,7 @@ export type BuildingSlot = {
 
 export type BuildingData = {
   id: BuildingId;
-  typeId: BuildingTypeId;
+  buildingTypeId: BuildingTypeId;
   level: BuildingLevel;
   location: BuildingTownPosition;
   constructionProgress: BuildingConstructionProcess;

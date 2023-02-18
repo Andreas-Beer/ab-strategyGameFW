@@ -1,5 +1,5 @@
 import { EventEmitter } from 'stream';
-import { EffectBus } from '../../components/EffectEventBus';
+import { EffectBus, isEventHandlerKey } from '../../components/EffectEventBus';
 import { Task } from '../../components/Task';
 import { TaskQueue } from '../../components/TaskQueue';
 import { RequirementsSystem } from '../requirements/Requirements.system';
@@ -48,8 +48,9 @@ export class BuildingsSystem extends EventEmitter {
       this.configData.findBuildingConfigByTypeId(buildingTypeId);
     const townData = this.playerData.getCurrentActiveTown();
     const levelConfig = buildingConfig.levels[1];
+    const buildingAction = levelConfig.actions.upgrading;
 
-    this.guard.hasFulfilledTheRequirements(levelConfig.requirements);
+    this.guard.hasFulfilledTheRequirements(buildingAction.requirements);
     this.guard.placeIsValid(buildingTypeId, buildingTownPosition);
 
     const newBuilding = createNewBuilding(
@@ -59,14 +60,23 @@ export class BuildingsSystem extends EventEmitter {
     );
     townData.buildings.push(newBuilding);
 
+    const buildingStartEffects = buildingAction.effects?.start || [];
+    const buildingFinishEffects = buildingAction.effects?.finish || [];
+
+    for (const effect of buildingStartEffects) {
+      if (isEventHandlerKey(effect.type)) {
+        this.effectBus.triggerEffect(effect.type, effect.data);
+      }
+    }
+
     this.taskQueue.addTask(
-      new Task(levelConfig.duration, () => {
+      new Task(buildingAction.duration, () => {
         newBuilding.constructionProgress = 100;
 
-        const buildingEffects =
-          levelConfig.hooks.onFinishConstructing?.effects || [];
-        for (const effect of buildingEffects) {
-          this.effectBus.triggerEffect(effect.type, effect.data);
+        for (const effect of buildingFinishEffects) {
+          if (isEventHandlerKey(effect.type)) {
+            this.effectBus.triggerEffect(effect.type, effect.data);
+          }
         }
       }),
     );
@@ -79,7 +89,7 @@ export class BuildingsSystem extends EventEmitter {
 
     const building = this.playerData.findBuildingById(buildingId);
     const buildingConfig = this.configData.findBuildingConfigByTypeId(
-      building.typeId,
+      building.buildingTypeId,
     );
     const currentTownData = this.playerData.getCurrentActiveTown();
     const currentBuildingLevel = building.level;
@@ -122,7 +132,7 @@ export class BuildingsSystem extends EventEmitter {
 
     const building = this.playerData.findBuildingById(buildingId);
     const buildingConfig = this.configData.findBuildingConfigByTypeId(
-      building.typeId,
+      building.buildingTypeId,
     );
     const currentTownData = this.playerData.getCurrentActiveTown();
     const currentBuildingLevel = building.level;

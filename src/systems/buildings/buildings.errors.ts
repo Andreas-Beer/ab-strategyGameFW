@@ -15,7 +15,7 @@ export class BuildingNotEnoughResourcesError
   }
 }
 
-export class BuildingRequirementsNotFulfilledError
+export class BuildingRequirementNotFulfilledError
   extends Error
   implements GameError
 {
@@ -23,11 +23,11 @@ export class BuildingRequirementsNotFulfilledError
   public type: ErrorType = 'NOT_GATE_PASSED';
   public level: ErrorLevel = 'WARNING';
 
-  constructor(requirements: Requirement[]) {
+  constructor(requirements: Requirement) {
     super(
-      `The building requirements are not fulfilled! (${JSON.stringify(
+      `The building requirement was not fulfilled! (${JSON.stringify(
         requirements,
-      )}`,
+      )})`,
     );
   }
 }

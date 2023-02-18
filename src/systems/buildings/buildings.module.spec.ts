@@ -90,7 +90,7 @@ describe('systems/buildings.module.spec', () => {
         {
           id: 111111,
           level: 1,
-          typeId: 1,
+          buildingTypeId: 1,
           constructionProgress: 100,
           location: 2,
         },

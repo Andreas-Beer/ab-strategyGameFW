@@ -5,7 +5,7 @@ import {
   BuildingHasReachedMaxLevelError,
   BuildingParallelCapacityNotFree,
   BuildingProcessHasNotYetCompleted,
-  BuildingRequirementsNotFulfilledError,
+  BuildingRequirementNotFulfilledError,
 } from './buildings.errors';
 import {
   BuildingsConfigData,
@@ -38,7 +38,7 @@ export class BuildingGuard {
 
   hasNotReachedItsMaxLevel(building: BuildingData) {
     const buildingConfig = this.configData.findBuildingConfigByTypeId(
-      building.typeId,
+      building.buildingTypeId,
     );
     const currentBuildingLevel = building.level;
     const maxLevel = this.configData.getBuildingMaxLevel(buildingConfig);
@@ -51,7 +51,7 @@ export class BuildingGuard {
 
   hasNotTheLowestLevel(building: BuildingData) {
     const buildingConfig = this.configData.findBuildingConfigByTypeId(
-      building.typeId,
+      building.buildingTypeId,
     );
     const currentBuildingLevel = building.level;
     const hasTheLowestLevel = currentBuildingLevel === 1;
@@ -70,10 +70,13 @@ export class BuildingGuard {
   }
 
   hasFulfilledTheRequirements(requirements: Requirement[]) {
-    const hasFulfilledTheRequirements =
-      this.requirementsSystem.check(requirements);
-    if (!hasFulfilledTheRequirements) {
-      throw new BuildingRequirementsNotFulfilledError(requirements);
+    for (const requirement of requirements) {
+      const hasFulfilledTheRequirements = this.requirementsSystem.check([
+        requirement,
+      ]);
+      if (!hasFulfilledTheRequirements) {
+        throw new BuildingRequirementNotFulfilledError(requirement);
+      }
     }
   }
 

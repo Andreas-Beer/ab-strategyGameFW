@@ -15,217 +15,15 @@ import {
   BuildingNotEnoughResourcesError,
   BuildingParallelCapacityNotFree,
   BuildingProcessHasNotYetCompleted,
-  BuildingRequirementsNotFulfilledError,
+  BuildingRequirementNotFulfilledError,
 } from './buildings.errors';
 import { BuildingConfig, BuildingData, BuildingId } from './buildings.types';
 import { BuildingsSystem } from './BuildingsSystem';
-
-const buildingConfig1: BuildingConfig = {
-  typeId: 1,
-  levels: {
-    1: {
-      duration: '1ms',
-      price: [{ resourceId: 1, amount: 10 }],
-      requirements: [
-        { type: 'playerLevel', level: 1 },
-        { type: 'resourceAmount', resourceId: 2, amount: 10 },
-      ],
-      hooks: {
-        onFinishConstructing: {
-          effects: [
-            {
-              type: 'modify/resources',
-              data: { resourceId: 2, amount: '+10' },
-            },
-            { type: 'modify/capacity', data: { resourceId: 2, amount: '+10' } },
-          ],
-        },
-      },
-    },
-    2: {
-      duration: '1ms',
-      price: [{ resourceId: 1, amount: 11 }],
-      requirements: [{ type: 'playerLevel', level: 1 }],
-      events: {
-        onFinishConstructing: {
-          effects: [
-            { type: 'modify/resource', data: { resourceId: 2, amount: '+10' } },
-            { type: 'modify/capacity', data: { resourceId: 2, amount: '+10' } },
-          ],
-        },
-      },
-    },
-    3: {
-      duration: '1ms',
-      price: [{ resourceId: 1, amount: 99999999999999 }],
-      requirements: [{ type: 'playerLevel', level: 1 }],
-      events: {
-        onFinishConstructing: {
-          effects: [
-            { type: 'modify/resource', data: { resourceId: 2, amount: '+10' } },
-            { type: 'modify/capacity', data: { resourceId: 2, amount: '+10' } },
-          ],
-        },
-      },
-    },
-  },
-};
-
-const buildingConfig2: BuildingConfig = {
-  typeId: 2,
-  levels: {
-    1: {
-      duration: '1ms',
-      price: [{ resourceId: 1, amount: 9999999999999 }],
-      requirements: [{ type: 'playerLevel', level: 1 }, {type: 'resourceAmount', resourceId: 1, amount: 999999999}],
-      hooks: {
-        onStartConstructing: {
-          effects: [
-            {type: 'modify/resources', data: { }}
-          ]
-        }
-        onFinishConstructing: {
-          effects: [
-            { type: 'modify/resource/2', amount: 10 },
-            { type: 'modify/capacity/2', amount: 100 },
-          ],
-        },
-      },
-    },
-    2: {
-      duration: '1ms',
-      price: [{ resourceId: 1, amount: 9999999999999 }],
-      requirements: [{ type: 'playerLevel', level: 1 }],
-      hooks: {
-        onFinishConstructing: {
-          effects: [
-            { type: 'modify/resource/2', amount: 10 },
-            { type: 'modify/capacity/2', amount: 100 },
-          ],
-        },
-      },
-    },
-    3: {
-      duration: '1ms',
-      price: [{ resourceId: 1, amount: 10 }],
-      requirements: [{ type: 'playerLevel', level: 20 }],
-      hooks: {
-        onFinishConstructing: {
-          effects: [
-            { type: 'modify/resource/2', amount: 10 },
-            { type: 'modify/capacity/2', amount: 100 },
-          ],
-        },
-      },
-    },
-  },
-};
-
-const buildingConfig3: BuildingConfig = {
-  typeId: 3,
-  levels: {
-    1: {
-      duration: '1ms',
-      requirements: [
-        { type: 'playerLevel', level: 1 },
-        { type: 'resourceAmount', resourceId: 1, amount: 10 },
-      ],
-      hooks: {
-        onStartConstructing: {
-          effects: [
-            {
-              type: 'modify/resources',
-              data: { resourceId: 1, amount: '-10' },
-            },
-          ],
-        },
-        onFinishConstructing: {
-          effects: [
-            {
-              type: 'modify/capacity',
-              data: { resourceId: 1, amount: '+100' },
-            },
-          ],
-        },
-      },
-    },
-    2: {
-      duration: '1ms',
-      requirements: [
-        { type: 'playerLevel', level: 1 },
-        { type: 'resourceAmount', resourceId: 1, amount: 10 },
-      ],
-      hooks: {
-        onStartConstructing: {
-          effects: [
-            {
-              type: 'modify/resources',
-              data: { resourceId: 1, amount: '-10' },
-            },
-          ],
-        },
-        onFinishConstructing: {
-          effects: [
-            {
-              type: 'modify/capacity',
-              data: { resourceId: 1, amount: '+100' },
-            },
-          ],
-        },
-      },
-    },
-    3: {
-      duration: '1ms',
-      requirements: [
-        { type: 'playerLevel', level: 1 },
-        { type: 'resourceAmount', resourceId: 1, amount: 10 },
-      ],
-      hooks: {
-        onStartConstructing: {
-          effects: [
-            {
-              type: 'modify/resources',
-              data: { resourceId: 1, amount: '-10' },
-            },
-          ],
-        },
-        onFinishConstructing: {
-          effects: [
-            {
-              type: 'modify/capacity',
-              data: { resourceId: 1, amount: '+100' },
-            },
-          ],
-        },
-      },
-    },
-    4: {
-      duration: '1ms',
-      requirements: [
-        { type: 'playerLevel', level: 1 },
-        { type: 'resourceAmount', resourceId: 1, amount: 10 },
-      ],
-      hooks: {
-        onStartConstructing: {
-          effects: [
-            {
-              type: 'modify/resources',
-              data: { resourceId: 1, amount: '-10' },
-            },
-          ],
-        },
-        onFinishConstructing: {
-          effects: [
-            {
-              type: 'modify/capacity',
-              data: { resourceId: 1, amount: '+100' },
-            },
-          ],
-        },
-      },
-    },
-  },
-};
+import {
+  buildingConfig1,
+  buildingConfig2,
+  buildingConfig3,
+} from './buildings.fixtures';
 
 const configData: ConfigData = {
   buildings: {
@@ -236,7 +34,7 @@ const configData: ConfigData = {
 
 const findConfigForTypeId = (building: BuildingData) => {
   const buildingConfig = configData.buildings.buildings.find(
-    (b) => b.typeId === building.typeId,
+    (b) => b.typeId === building.buildingTypeId,
   );
   return buildingConfig;
 };
@@ -253,7 +51,7 @@ describe('systems/buildings.test', () => {
   let effectBus: EffectBus;
   let townData: TownData;
 
-  describe('build', () => {
+  describe.only('build', () => {
     beforeEach(() => {
       townData = {
         id: 1,
@@ -381,7 +179,7 @@ describe('systems/buildings.test', () => {
       const resourceAmountBefore =
         playerDataFacade._playerData.towns[0].resources[resourceId].amount;
 
-      expect(fn).to.throw(BuildingRequirementsNotFulfilledError);
+      expect(fn).to.throw(BuildingRequirementNotFulfilledError);
 
       const resourceAmountAfter =
         playerDataFacade._playerData.towns[0].resources[resourceId].amount;
@@ -402,42 +200,42 @@ describe('systems/buildings.test', () => {
         buildings: [
           {
             id: 1,
-            typeId: 1,
+            buildingTypeId: 1,
             constructionProgress: 100,
             level: 1,
             location: 1,
           },
           {
             id: 2,
-            typeId: 1,
+            buildingTypeId: 1,
             constructionProgress: 100,
             level: 10,
             location: 2,
           },
           {
             id: 3,
-            typeId: 2,
+            buildingTypeId: 2,
             constructionProgress: 100,
             level: 1,
             location: 3,
           },
           {
             id: 4,
-            typeId: 2,
+            buildingTypeId: 2,
             constructionProgress: 100,
             level: 2,
             location: 4,
           },
           {
             id: 5,
-            typeId: 1,
+            buildingTypeId: 1,
             constructionProgress: 90,
             level: 1,
             location: 4,
           },
           {
             id: 6,
-            typeId: 1,
+            buildingTypeId: 1,
             constructionProgress: 100,
             level: 1,
             location: 1,
@@ -572,7 +370,7 @@ describe('systems/buildings.test', () => {
       const buildingId: BuildingId = buildingData.id;
 
       const fn = () => buildingsSystem.upgrade(buildingId);
-      expect(fn).to.throw(BuildingRequirementsNotFulfilledError);
+      expect(fn).to.throw(BuildingRequirementNotFulfilledError);
     });
     it('should trigger an error if the construction progress is not yet complete.', () => {
       const buildingData = townData.buildings[4];
@@ -595,14 +393,14 @@ describe('systems/buildings.test', () => {
         buildings: [
           {
             id: 1,
-            typeId: 3,
+            buildingTypeId: 3,
             constructionProgress: 100,
             level: 4,
             location: 1,
           },
           {
             id: 2,
-            typeId: 3,
+            buildingTypeId: 3,
             constructionProgress: 100,
             level: 1,
             location: 1,

@@ -20,11 +20,13 @@ type CheckRequirementsAgainstPlayerDataArgs = {
   requirements: Requirement[];
 };
 
-export const checkHasResourceAmount: CheckPlayerData<
-  ResourceAmountRequirement
-> = ({ playerData, requirement, townData }) => {
-  const requiredResourceTypeId = requirement.resourceId;
-  const requiredREsourceAmount = requirement.amount;
+export const checkHasResources: CheckPlayerData<ResourceAmountRequirement> = ({
+  playerData,
+  requirement,
+  townData,
+}) => {
+  const requiredResourceTypeId = requirement.data.resourceTypeId;
+  const requiredREsourceAmount = requirement.data.amount;
   const currentResources = playerData.getResources(townData);
 
   const searchedResource = currentResources[requiredResourceTypeId];
@@ -41,7 +43,7 @@ export const checkHasPlayerLevel: CheckPlayerData<PlayerLevelRequirement> = ({
   requirement,
 }) => {
   const currentLevel = playerData.getPlayerLevel();
-  const requiredLevel = requirement.level;
+  const requiredLevel = requirement.data.playerLevel;
   const passRequirement = currentLevel >= requiredLevel;
   return passRequirement;
 };
@@ -50,8 +52,8 @@ export const checkHasItem: CheckPlayerData<ItemRequirement> = ({
   playerData,
   requirement,
 }) => {
-  const requiredItemTypeId = requirement.itemTypeId;
-  const requiredItemAmount = requirement.amount ?? 1;
+  const requiredItemTypeId = requirement.data.itemTypeId;
+  const requiredItemAmount = requirement.data.amount;
   const currentItems = playerData.getItems();
   const passRequirement =
     currentItems[requiredItemTypeId] >= requiredItemAmount;
@@ -63,14 +65,24 @@ export const checkHasBuilding: CheckPlayerData<BuildingRequirement> = ({
   requirement,
   townData,
 }) => {
-  const requiredBuildingTypeId = requirement.buildingTypeId;
-  const requiredBuildingLevel = requirement.level;
+  const requiredBuildingTypeId = requirement.data.buildingTypeId;
+  const requiredBuildingLevel = requirement.data.buildingLevel;
+  const requiredBuildingAmount = requirement.data.amount;
   const currentBuildings = playerData.getBuildings(townData);
 
   const filteredBuildings = currentBuildings.filter(
-    (building) => building.typeId === requiredBuildingTypeId,
+    (building) =>
+      building.buildingTypeId === requiredBuildingTypeId &&
+      building.level >= requiredBuildingLevel,
   );
-  if (filteredBuildings.length === 0) {
+
+  const hasRequiredBuilding = filteredBuildings.length > 0;
+  if (!hasRequiredBuilding) {
+    return false;
+  }
+
+  const hasEnoughBuildings = requiredBuildingAmount <= filteredBuildings.length;
+  if (!hasEnoughBuildings) {
     return false;
   }
 
@@ -87,10 +99,11 @@ export const checkHasBuilding: CheckPlayerData<BuildingRequirement> = ({
 const requirementTypeCheckerMap: {
   [Key in RequirementKey]: CheckPlayerData<Requirement>;
 } = {
-  building: checkHasBuilding,
-  item: checkHasItem,
-  playerLevel: checkHasPlayerLevel,
-  resourceAmount: checkHasResourceAmount,
+  'has/building': checkHasBuilding,
+  'has/item': checkHasItem,
+  'has/playerLevel': checkHasPlayerLevel,
+  'has/resources': checkHasResources,
+  theImpossible: () => false,
 };
 
 export function checkRequirementsAgainstPlayerData({
@@ -98,14 +111,20 @@ export function checkRequirementsAgainstPlayerData({
   requirements,
 }: CheckRequirementsAgainstPlayerDataArgs): boolean {
   for (const requirement of requirements) {
-    const { type, not } = requirement;
+    const { type, not = false } = requirement;
     const townData = playerData.getCurrentActiveTown();
     const checker = requirementTypeCheckerMap[type];
+
+    if (!checker) {
+      throw new Error(`The requirement type ${type} has no handler`);
+    }
+
     const result = checker({
       playerData,
       requirement,
       townData,
     });
+
     const modifiedResult = not ? !result : result;
 
     if (!modifiedResult) {

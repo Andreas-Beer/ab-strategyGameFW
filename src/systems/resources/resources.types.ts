@@ -1,8 +1,5 @@
 import { TownId } from '../../data/playerData/playerData.types';
-import {
-  AmountCalculator,
-  CalculatorAmount,
-} from '../../helpers/amountCalculator';
+import { CalculatorAmount } from '../../helpers/amountCalculator';
 
 export type ResourceTypeId = number;
 export type ResourceLimits = { max?: number; min?: number };

@@ -6,7 +6,7 @@ import { Duration } from './time.types';
 
 type EffectModifiers = {
   expire?: Duration;
-  repeat?: boolean;
+  repeat?: Duration;
 };
 
 type Effect<T extends keyof EffectHandlerMap, U extends EffectHandlerMap[T]> = {

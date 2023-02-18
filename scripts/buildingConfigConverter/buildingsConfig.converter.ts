@@ -11,17 +11,21 @@ import {
   BuildingConfig,
   BuildingLevelConfig,
   BuildingsConfig,
+  BuildingTypeId,
 } from '../../src/systems/buildings/buildings.types';
 
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
 
 import { XMLParser } from 'fast-xml-parser';
-import { Requirement2 } from '../../src/systems/requirements/requirements.types';
+import { Requirement } from '../../src/systems/requirements/requirements.types';
 import { EffectConfig } from '../../src/types/effect.types';
 
 const inputPath = join(__dirname, '../../data/config/buildingsConfig.xml');
 const outputPath = join(__dirname, '../../data/config/buildingsConfig.json');
+
+const excludeTypeIds = [1, 6, 7, 8, 9, 11, 12, 14];
+const notDowngradeAble = [16];
 
 const downgradeRewardMultiplier = 0.5;
 const downgradeDurationMultiplier = 0.5;
@@ -45,7 +49,17 @@ const convertPriceIntoEffects =
     },
   });
 
-const convertRequirements = ([key, val]: [any, any]): Requirement2 | {} => {
+const convertPriceIntoRequirement =
+  () =>
+  ([key, val]): Requirement => ({
+    type: 'has/resources',
+    data: {
+      resourceTypeId: `${resourceIdMap[key]}`,
+      amount: `${val}`,
+    },
+  });
+
+const convertRequirements = ([key, val]: [any, any]): Requirement | {} => {
   switch (key) {
     case 'buildings':
       if (val.building instanceof Array) {
@@ -79,10 +93,10 @@ const convertRequirements = ([key, val]: [any, any]): Requirement2 | {} => {
   }
 };
 
-const parseBuildingLevel = ([key, val]: [key: string, val: BuildingLevelVal]): [
-  string,
-  BuildingLevelConfig,
-] => [
+const parseBuildingLevel = (
+  [key, val]: [key: string, val: BuildingLevelVal],
+  buildingTypeId: BuildingTypeId,
+): [string, BuildingLevelConfig] => [
   key.replace('level', ''),
   {
     actions: {
@@ -92,6 +106,9 @@ const parseBuildingLevel = ([key, val]: [key: string, val: BuildingLevelVal]): [
           ...(val.requirements
             ? Object.entries(val.requirements).map(convertRequirements).flat()
             : []),
+          ...Object.entries(val.cost)
+            .filter(([key, val]) => +val > 0 && resourceIdMap[key] > 0)
+            .map(convertPriceIntoRequirement()),
         ],
         effects: {
           start: [
@@ -115,8 +132,8 @@ const parseBuildingLevel = ([key, val]: [key: string, val: BuildingLevelVal]): [
                       type: 'modify/resources',
                       data: {
                         resourceTypeId: resourceIdMap[k],
-                        amount: `+${+v}`,
-                        repeat: '1h',
+                        amount: `+${+v / 60}`,
+                        repeat: '1min',
                       },
                     } as EffectConfig),
                 )),
@@ -138,47 +155,101 @@ const parseBuildingLevel = ([key, val]: [key: string, val: BuildingLevelVal]): [
         },
       },
       downgrading: {
-        duration: `${+val.cost['@_time'] * downgradeDurationMultiplier}s`,
-        effects: {
-          start: [
-            ...Object.entries(val.cost)
-              .filter(([key, val]) => +val > 0 && resourceIdMap[key] > 0)
-              .map(
-                convertPriceIntoEffects(
-                  'modify/resources',
-                  '+',
-                  downgradeRewardMultiplier,
-                ),
-              ),
-          ],
-          finish: [
-            val.respect && {
-              type: 'modify/xp',
-              data: {
-                amount: `-${val.respect?.['@_value']}`,
-              },
+        requirements: [
+          ...[
+            notDowngradeAble.includes(buildingTypeId) && {
+              type: 'theImpossible',
             },
           ],
+        ].filter(Boolean),
+        duration: notDowngradeAble.includes(buildingTypeId)
+          ? '0ms'
+          : `${+val.cost['@_time'] * downgradeDurationMultiplier}s`,
+        effects: {
+          start: [],
+          finish: notDowngradeAble.includes(buildingTypeId)
+            ? []
+            : [
+                ...Object.entries(val.cost)
+                  .filter(([key, val]) => +val > 0 && resourceIdMap[key] > 0)
+                  .map(
+                    convertPriceIntoEffects(
+                      'modify/resources',
+                      '+',
+                      downgradeRewardMultiplier,
+                    ),
+                  ),
+                val.respect && {
+                  type: 'modify/xp',
+                  data: {
+                    amount: `-${val.respect?.['@_value']}`,
+                  },
+                },
+                ...(val.prod &&
+                  Object.entries(val.prod)
+                    .filter(([, v]) => +v !== 0)
+                    .map(
+                      ([k, v]) =>
+                        ({
+                          type: 'modify/resources',
+                          data: {
+                            resourceTypeId: resourceIdMap[k],
+                            amount: `-${+v / 60}`,
+                            repeat: '1min',
+                          },
+                        } as EffectConfig),
+                    )),
+                ...((val.capacity &&
+                  Object.entries(val.capacity)
+                    .filter(([, v]) => +v !== 0)
+                    .map(
+                      ([k, v]) =>
+                        ({
+                          type: 'modify/capacity',
+                          data: {
+                            resourceTypeId: resourceIdMap[k],
+                            amount: `-${+v}`,
+                          },
+                        } as EffectConfig),
+                    )) ||
+                  []),
+              ].filter(Boolean),
         },
       },
     },
   },
 ];
 
-const parseBuilding = (buildingXML: ParsedXMLBuilding): any => ({
-  typeId: Number(buildingXML['@_id']),
-  levels: Object.fromEntries(
-    Object.entries(buildingXML.properties).map(parseBuildingLevel),
-  ),
-});
+const parseBuilding = (buildingXML: ParsedXMLBuilding): any => {
+  const typeId = Number(buildingXML['@_id']);
+
+  if (excludeTypeIds.includes(typeId)) {
+    return null;
+  }
+
+  const conf = {
+    typeId,
+    levels: Object.fromEntries(
+      Object.entries(buildingXML.properties).map((l) =>
+        parseBuildingLevel(l, typeId),
+      ),
+    ),
+  };
+
+  return conf;
+};
 
 const convertParsedBuildingsConfig = (
   parsedXMLConfig: ParsedXMLBuildingsConfig,
 ): any => ({
   buildingsBuildParallel: 1,
   buildings: [
-    ...parsedXMLConfig.Buildings.town.building.map(parseBuilding),
-    ...parsedXMLConfig.Buildings.resource.building.map(parseBuilding),
+    ...parsedXMLConfig.Buildings.town.building
+      .map(parseBuilding)
+      .filter(Boolean),
+    ...parsedXMLConfig.Buildings.resource.building
+      .map(parseBuilding)
+      .filter(Boolean),
   ],
 });
 
@@ -191,7 +262,7 @@ const convert = async (xmlFilePath: string) => {
   const parsedXml = parser.parse(xmlString) as ParsedXMLBuildingsConfig;
   const configObj = convertParsedBuildingsConfig(parsedXml);
 
-  writeFile(outputPath, JSON.stringify(configObj, null, 4)).catch((err) => {
+  writeFile(outputPath, JSON.stringify(configObj, null, 2)).catch((err) => {
     console.log('ERR', err);
   });
 };

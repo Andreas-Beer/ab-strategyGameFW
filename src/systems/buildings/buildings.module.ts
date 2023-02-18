@@ -33,7 +33,7 @@ export function createNewBuilding(
   id: BuildingCityId,
 ): BuildingData {
   return {
-    typeId: buildingConfigData.typeId,
+    buildingTypeId: buildingConfigData.typeId,
     id,
     constructionProgress: 0,
     level: 1,

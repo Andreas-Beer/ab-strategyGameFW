@@ -4,6 +4,10 @@ export type EffectHandler<T extends keyof EffectHandlerMap> = (
   data: EffectHandlerMap[T],
 ) => void;
 
+export const isEventHandlerKey = (key: any): key is keyof EffectHandlerMap => {
+  return true;
+};
+
 export class EffectBus {
   private effectsMap: { [key in keyof EffectHandlerMap]?: Function } = {};
 

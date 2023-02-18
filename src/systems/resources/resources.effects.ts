@@ -8,30 +8,17 @@ export function initEffectHandlers(
 ) {
   const modifyResources: EffectHandler<'modify/resources'> = ({
     amount,
-    resourceId,
-    townId,
+    resourceTypeId,
   }) => {
-    if (amount === 0) {
-      return;
-    }
-
-    townId = townId ?? resourcesPlayerData.getCurrentActiveTown().id;
-
-    if (amount < 0) {
-      resourceSystem.decreaseAmount(resourceId, amount, {
-        townId,
-      });
-    } else {
-      resourceSystem.increaseAmount(resourceId, amount, {
-        townId,
-      });
-    }
+    resourceSystem.modifyAmount(resourceTypeId, amount, {});
   };
 
   const modifyCapacities: EffectHandler<'modify/capacity'> = ({
     amount,
-    resourceId,
-  }) => {};
+    resourceTypeId,
+  }) => {
+    resourceSystem.modifyLimit(resourceTypeId, amount);
+  };
 
   effectBus.registerEffectHandler('modify/resources', modifyResources);
   effectBus.registerEffectHandler('modify/capacity', modifyCapacities);

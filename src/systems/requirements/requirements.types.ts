@@ -1,6 +1,6 @@
 import { ItemTypeId } from '../../types/item.types';
 import { BuildingLevel, BuildingTypeId } from '../buildings/buildings.types';
-import { ResourceId, ResourceTypeId } from '../resources/resources.types';
+import { ResourceTypeId } from '../resources/resources.types';
 
 type RequirementNegator = { not?: boolean };
 
@@ -11,54 +11,46 @@ export type RequirementKey =
   | 'building';
 
 export type ResourceAmountRequirement = RequirementNegator & {
-  type: 'resourceAmount';
-  resourceId: ResourceId;
-  amount: number;
+  type: 'has/resources';
+  data: {
+    resourceTypeId: ResourceTypeId;
+    amount: number;
+    global?: boolean;
+  };
 };
 
 export type PlayerLevelRequirement = RequirementNegator & {
-  type: 'playerLevel';
-  level: number;
+  type: 'has/playerLevel';
+  data: {
+    playerLevel: number;
+  };
 };
+
 export type ItemRequirement = RequirementNegator & {
-  type: 'item';
-  itemTypeId: ItemTypeId;
-  amount?: number;
+  type: 'has/item';
+  data: {
+    itemTypeId: ItemTypeId;
+    amount: number;
+  };
 };
+
 export type BuildingRequirement = RequirementNegator & {
-  type: 'building';
-  buildingTypeId: BuildingTypeId;
-  level: number;
+  type: 'has/building';
+  data: {
+    buildingTypeId: BuildingTypeId;
+    buildingLevel: BuildingLevel;
+    amount: number;
+    global?: boolean;
+  };
+};
+
+export type ImpossibleRequirement = RequirementNegator & {
+  type: 'theImpossible';
 };
 
 export type Requirement =
+  | ImpossibleRequirement
   | PlayerLevelRequirement
   | ItemRequirement
   | BuildingRequirement
   | ResourceAmountRequirement;
-
-export type Requirement2 =
-  | ({
-      type: 'has/building';
-      data: {
-        buildingTypeId: BuildingTypeId;
-        buildingLevel: BuildingLevel;
-        amount: number;
-        global?: boolean;
-      };
-    } & RequirementNegator)
-  | ({
-      type: 'has/resources';
-      data: {
-        resourceTypeId: ResourceTypeId;
-        amount: number;
-        global?: boolean;
-      };
-    } & RequirementNegator)
-  | ({
-      type: 'has/item';
-      data: {
-        itemTypeId: ItemTypeId;
-        amount: number;
-      };
-    } & RequirementNegator);
